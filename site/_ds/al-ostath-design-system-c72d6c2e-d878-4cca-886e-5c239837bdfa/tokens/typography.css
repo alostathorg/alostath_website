@@ -1,0 +1,37 @@
+/* ==========================================================================
+   Typography — one family (IBM Plex Sans Arabic), weight carries hierarchy.
+   Letter-spacing stays 0 out of respect for connected Arabic letterforms.
+   Scale: Display 60 → Fine 12.
+   ========================================================================== */
+
+:root {
+  /* Sizes */
+  --text-display:   60px;
+  --text-h1:        46px;
+  --text-h2:        32px;
+  --text-h3:        24px;
+  --text-title:     20px;
+  --text-body-lg:   18px;
+  --text-body-md:   16px;
+  --text-support:   14px;
+  --text-caption:   13px;
+  --text-fine:      12px;
+
+  /* Weights */
+  --weight-thin:     100;
+  --weight-extralight: 200;
+  --weight-light:    300;
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Line heights (RTL Arabic reads comfortably at generous leading) */
+  --leading-tight:   1.1;
+  --leading-heading: 1.25;
+  --leading-snug:    1.45;
+  --leading-body:    1.75;
+
+  /* Letter spacing — kept at 0 for Arabic; small positive only for latin eyebrows */
+  --tracking-eyebrow: 0.5px;
+}

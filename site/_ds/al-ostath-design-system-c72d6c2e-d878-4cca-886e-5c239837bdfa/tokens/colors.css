@@ -1,0 +1,96 @@
+/* ==========================================================================
+   Colors — Al-Ostath
+   Three brand hues used by role: Olive (structure/actions), Gold (emphasis/
+   celebration), Sage (supporting surfaces). Plus surfaces, ink, semantics.
+   Base values first, then semantic aliases.
+   ========================================================================== */
+
+:root {
+  /* --- Olive · primary (structure + primary actions) --- */
+  --olive-900: #1E2814;   /* deep canvas / inverse surface */
+  --olive-800: #2A331A;   /* deep surface 1 */
+  --olive-700: #313A1E;   /* primary pressed */
+  --olive-600: #3E4926;   /* primary hover */
+  --olive-500: #4E5B30;   /* primary */
+  --olive-100: #E7EADD;   /* primary tint */
+  --olive-50:  #F4F6EE;   /* primary tint soft */
+
+  /* --- Gold · secondary (emphasis, celebration, subscribe) --- */
+  --gold-700: #8C7019;    /* pressed */
+  --gold-600: #A8881F;    /* hover */
+  --gold-500: #BF9B2F;    /* secondary */
+  --gold-100: #F2E7BE;    /* tint */
+  --gold-50:  #FBF6E7;    /* tint soft */
+
+  /* --- Sage · tertiary (supporting surfaces, soft accents) --- */
+  --sage-700: #4C7256;    /* pressed */
+  --sage-600: #5F8A6B;    /* hover */
+  --sage-500: #78A183;    /* tertiary */
+  --sage-100: #DCE6DF;    /* tint */
+  --sage-50:  #F1F6F2;    /* tint soft */
+
+  /* --- Neutrals · surfaces (warm, olive-leaning) --- */
+  --canvas:     #FFFFFF;
+  --surface-1:  #F8F9F4;
+  --surface-2:  #F1F3EA;
+  --surface-3:  #E9ECDF;
+  --hairline:   #E6E8DD;
+  --hairline-strong: #D4D7C7;
+
+  /* --- Neutrals · ink (text) --- */
+  --ink:          #23271A;   /* primary text */
+  --ink-muted:    #4F5443;   /* secondary text */
+  --ink-subtle:   #868B73;   /* tertiary / captions */
+  --ink-tertiary: #ABAF9C;   /* disabled */
+  --ink-inverse:  #F4F6EE;   /* text on deep olive */
+  --inverse-muted:  #C7CDB7;
+  --inverse-subtle: #9AA088;
+
+  /* --- Semantic --- */
+  --success: #5F8A6B;
+  --warning: #BF9B2F;
+  --error:   #A4442E;
+  --info:    #78A183;
+
+  /* ====================================================================
+     SEMANTIC ALIASES — prefer these in product code
+     ==================================================================== */
+
+  /* Brand roles */
+  --color-primary:          var(--olive-500);
+  --color-primary-hover:    var(--olive-600);
+  --color-primary-pressed:  var(--olive-700);
+  --color-primary-tint:     var(--olive-100);
+
+  --color-secondary:         var(--gold-500);
+  --color-secondary-hover:   var(--gold-600);
+  --color-secondary-pressed: var(--gold-700);
+  --color-secondary-tint:    var(--gold-100);
+
+  --color-tertiary:         var(--sage-500);
+  --color-tertiary-hover:   var(--sage-600);
+  --color-tertiary-pressed: var(--sage-700);
+  --color-tertiary-tint:    var(--sage-100);
+
+  /* Surfaces */
+  --surface-card:    var(--canvas);
+  --surface-muted:   var(--surface-1);
+  --surface-sunken:  var(--surface-2);
+  --surface-deep:    var(--olive-900);
+
+  /* Text */
+  --text-body:     var(--ink);
+  --text-muted:    var(--ink-muted);
+  --text-subtle:   var(--ink-subtle);
+  --text-disabled: var(--ink-tertiary);
+  --text-inverse:  var(--ink-inverse);
+  --text-on-gold:  var(--ink);
+
+  /* Borders */
+  --border-subtle:  var(--hairline);
+  --border-strong:  var(--hairline-strong);
+  --border-focus:   var(--olive-500);
+
+  /* Focus ring */
+  --ring: 0 0 0 2px rgba(78, 91, 48, 0.30);
+}

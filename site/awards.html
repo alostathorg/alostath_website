@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الجوائز – مؤسسة الأستاذ</title>
+<link rel="stylesheet" href="_ds/al-ostath-design-system-c72d6c2e-d878-4cca-886e-5c239837bdfa/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/al-ostath-design-system-c72d6c2e-d878-4cca-886e-5c239837bdfa/tokens/colors.css">
+<link rel="stylesheet" href="_ds/al-ostath-design-system-c72d6c2e-d878-4cca-886e-5c239837bdfa/tokens/typography.css">
+<link rel="stylesheet" href="_ds/al-ostath-design-system-c72d6c2e-d878-4cca-886e-5c239837bdfa/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/al-ostath-design-system-c72d6c2e-d878-4cca-886e-5c239837bdfa/tokens/elevation.css">
+<link rel="stylesheet" href="css/design-system.css">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--canvas); color: var(--text-body); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--gold-500); color: var(--ink); }
+  section[id] { scroll-margin-top: 96px; }
+  @keyframes ostRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  [data-reveal].in { animation: ostRise .7s cubic-bezier(.22,.7,.25,1) both; }
+  @media (prefers-reduced-motion: reduce) { [data-reveal].in { animation: none; } html { scroll-behavior: auto; } }
+  @media (max-width: 880px) { .award-row { grid-template-columns: 1fr !important; } }
+</style>
+</head>
+<body>
+<div dir="rtl" style="font-family:var(--font-sans);background:var(--canvas);overflow-x:hidden">
+
+<!-- HEADER -->
+<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)">
+  <div style="max-width:var(--container-max);margin:0 auto;min-height:74px;padding:12px 28px;display:flex;align-items:center;gap:24px">
+    <a href="index.html#hero" style="display:flex;align-items:center;text-decoration:none;flex:none"><img src="assets/alostath-logo.png" alt="مؤسسة الأستاذ" style="height:46px;width:auto"></a>
+    <nav data-mainnav="1" style="gap:2px;flex:1 1 auto;align-items:center">
+      <a class="nav-a" href="index.html#hero">الرئيسية</a>
+      <a class="nav-a" href="council.html">المجلس</a>
+      <a class="nav-a" data-active="true" href="awards.html">الجوائز</a>
+      <a class="nav-a" href="initiatives.html">المبادرات</a>
+      <a class="nav-a" href="blog.html">المدونة</a>
+      <a class="nav-a" href="about.html">من نحن</a>
+      <a class="nav-a" href="press.html">الملف الإعلامي</a>
+      <a href="contact.html" class="nav-a nav-cta">تواصل معنا</a>
+    </nav>
+    <div class="header-cta" style="margin-inline-start:auto;flex:none">
+      <a href="contact.html" class="btn btn-primary btn-sm">تواصل معنا</a>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section style="position:relative;overflow:hidden;background:var(--olive-900);color:var(--ink-inverse)">
+  <img src="assets/alostath-logo-inverse.png" alt="" style="position: absolute; top: 50%; left: -60px; transform: translateY(-50%); width: min(820px,72%); height: auto; opacity: 0.06; pointer-events: none">
+  <div data-reveal="1" style="position:relative;max-width:var(--container-max);margin:0 auto;padding:104px 32px 64px">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.5px;color:var(--gold-500);text-transform:uppercase;margin-bottom:16px">تقديرٌ واحتفاء</div>
+    <h1 style="font-size:clamp(40px,6vw,72px);font-weight:700;line-height:1.15;margin:0;max-width:16ch">جوائز الأستاذ</h1>
+    <p style="font-size:clamp(17px,2vw,21px);line-height:1.85;color:var(--inverse-muted);margin:24px 0 0;max-width:64ch">جوائز ومسابقات ثقافية تنافسية تكتشف وتُبرز المواهب الكامنة لدى المعلّمين والمعلّمات، وتنقلها إلى واجهة المشهد الثقافي والتربوي — بما يعزّز مكانة المعلّم ويُرسّخ ثقافة التقدير.</p>
+  </div>
+  
+</section>
+
+<!-- AWARD: ريشة معلم -->
+<section id="resha" data-reveal="1" style="max-width:var(--container-max);margin:0 auto;padding:84px 32px 56px">
+  <div class="award-row" style="display:grid;grid-template-columns:1.05fr 0.95fr;gap:52px;align-items:center">
+    <div style="position:relative">
+      <div style="position:absolute;inset:0;transform:translate(14px,14px);background:var(--gold-100);border-radius:18px;z-index:0"></div>
+      <img src="https://framerusercontent.com/images/Oufg4V3LnCZ23EQvXyw818N7P8.png?width=1237&amp;height=628" alt="جائزة ريشة معلم" style="position:relative;z-index:1;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:18px;display:block;border:1px solid var(--gold-100)">
+    </div>
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <span style="width:40px;height:2px;background:var(--gold-500)"></span>
+        <span class="badge badge-gold">جائزة فنّية</span>
+        <span class="dp-status on-light is-open" style="font-size:13px;padding:6px 13px 6px 11px"><span class="dot"></span>التقديم مفتوح</span>
+      </div>
+      <h2 style="font-size:clamp(30px,4vw,48px);font-weight:700;margin:0 0 18px">جائزة ريشة معلّم</h2>
+      <p style="font-size:18px;line-height:1.95;color:var(--text-muted);margin:0 0 20px">منصّةٌ وطنية تحتفي بالفنّانين من المعلّمين والمعلّمات السعوديين، وتشجّعهم على الإبداع والإنتاج الفنّي الراقي.</p>
+      <a href="award-resha.html" class="btn btn-secondary btn-md">صفحة الجائزة الكاملة ←</a>
+    </div>
+  </div>
+</section>
+
+<!-- AWARD: القصة القصيرة -->
+<section id="qissa" style="background:var(--surface-1);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)">
+ <div data-reveal="1" style="max-width:var(--container-max);margin:0 auto;padding:84px 32px">
+  <div class="award-row" style="display:grid;grid-template-columns:0.95fr 1.05fr;gap:52px;align-items:center">
+    <div>
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+        <span style="width:40px;height:2px;background:var(--olive-500)"></span>
+        <span class="badge badge-olive">جائزة أدبية</span>
+        <span class="dp-status on-light is-soon" style="font-size:13px;padding:6px 13px 6px 11px"><span class="dot"></span>التقديم يفتح قريباً</span>
+      </div>
+      <h2 style="font-size:clamp(30px,4vw,48px);font-weight:700;margin:0 0 18px">جائزة الأستاذ للقصة القصيرة</h2>
+      <p style="font-size:18px;line-height:1.95;color:var(--text-muted);margin:0 0 20px">حضورٌ أدبيٌّ يليق بمكانة المعلّم، يُرسّخ صورته في الأدب والذاكرة الثقافية من خلال القصة القصيرة.</p>
+      <a href="award-qissa.html" class="btn btn-secondary btn-md">صفحة الجائزة الكاملة ←</a>
+    </div>
+    <div style="position:relative">
+      <div style="position:absolute;inset:0;transform:translate(-14px,14px);background:var(--olive-100);border-radius:18px;z-index:0"></div>
+      <img src="https://framerusercontent.com/images/2yxfICYwCUINVvjVkCoNu5Muyc.png?width=988&amp;height=502" alt="جائزة الأستاذ للقصة القصيرة" style="position:relative;z-index:1;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:18px;display:block;border:1px solid var(--hairline)">
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- PARTNERSHIP BAND -->
+<section style="position:relative;overflow:hidden;background:var(--olive-900);color:var(--ink-inverse)">
+  
+  <div data-reveal="1" style="position:relative;max-width:920px;margin:0 auto;padding:84px 32px;text-align:center">
+    <div style="font-size:13px;font-weight:600;letter-spacing:0.5px;color:var(--gold-500);text-transform:uppercase;margin-bottom:16px">تكاملٌ وطني</div>
+    <p style="font-size:clamp(20px,2.6vw,28px);font-weight:600;line-height:1.65;margin:0 0 18px">تُنفَّذ جوائز الأستاذ في إطارٍ تكاملي مع وزارة التعليم ووزارة الثقافة وهيئاتها المتخصصة.</p>
+    <p style="font-size:16px;line-height:1.85;color:var(--inverse-muted);margin:0 auto;max-width:60ch">بما يعزّز مواءمتها مع التوجّهات الوطنية، ويدعم استدامة أثرها الثقافي والتربوي على مكانة المعلّم.</p>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="max-width:var(--container-max);margin:0 auto;padding:84px 32px">
+  <div data-reveal="1" style="text-align:center">
+    <h2 style="font-size:clamp(26px,3.4vw,40px);font-weight:700;margin:0 0 14px">معلّمٌ صانعٌ للجمال والكلمة؟</h2>
+    <p style="font-size:17px;line-height:1.85;color:var(--text-muted);margin:0 auto 32px;max-width:56ch">تابع إعلانات فتح باب الترشّح لجوائز الأستاذ عبر نشرتنا البريدية وقنواتنا الرسمية.</p>
+    <a href="contact.html" class="btn btn-primary btn-lg">تواصل معنا</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:var(--olive-900);color:var(--inverse-muted)">
+  <div style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:48px">
+    <div style="max-width:34ch">
+      <img src="assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" style="height:64px;width:auto;display:block;margin-bottom:18px">
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:14px">تابعنا على</div>
+      <div style="display:flex;gap:12px">
+        <a class="social-ico" href="https://www.instagram.com/alostathorg/" target="_blank" rel="noopener" aria-label="Instagram" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg></a>
+        <a class="social-ico" href="https://www.linkedin.com/company/alostathorg" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg></a>
+        <a class="social-ico" href="https://x.com/AlOstathOrg" target="_blank" rel="noopener" aria-label="X" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:16px">تواصل معنا</div>
+      <div style="font-size:14px;line-height:1.9;color:var(--inverse-subtle);margin-bottom:14px">طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض ١٢٣١٤</div>
+      <a class="footer-link" href="tel:+966550757424" dir="ltr" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px;display:block;text-align:start;margin-bottom:8px">+966 55 075 7424</a>
+      <a class="footer-link" href="mailto:contact@ostath.sa" dir="ltr" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px;display:block;text-align:start">contact@ostath.sa</a>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:16px">روابط سريعة</div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px">
+        <li><a class="footer-link" href="index.html#hero" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الرئيسية</a></li>
+        <li><a class="footer-link" href="council.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المجلس</a></li>
+        <li><a class="footer-link" href="awards.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الجوائز</a></li>
+        <li><a class="footer-link" href="initiatives.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المبادرات</a></li>
+        <li><a class="footer-link" href="blog.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المدونة</a></li>
+        <li><a class="footer-link" href="press.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الملف الإعلامي</a></li>
+        <li><a class="footer-link" href="about.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">من نحن</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(244,246,238,0.1);padding:20px 32px;font-size:13px;color:var(--inverse-subtle);text-align:center">جميع الحقوق محفوظة لمؤسسة الأستاذ ٢٠٢٦</div>
+</footer>
+
+</div>
+<script src="js/site.js" defer></script>
+</body>
+</html>

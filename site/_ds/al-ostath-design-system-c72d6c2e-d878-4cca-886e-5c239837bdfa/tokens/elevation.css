@@ -1,0 +1,22 @@
+/* ==========================================================================
+   Elevation — soft, warm, low-contrast shadows tinted toward olive ink.
+   The system leans on hairline borders first; shadow appears on hover/lift.
+   ========================================================================== */
+
+:root {
+  /* Resting cards use a hairline border, no shadow. */
+  --shadow-none: none;
+
+  /* Hover lift on interactive cards / buttons */
+  --shadow-sm: 0 4px 12px rgba(35, 39, 26, 0.08);
+  --shadow-md: 0 6px 16px rgba(35, 39, 26, 0.12);
+  --shadow-lg: 0 8px 20px rgba(35, 39, 26, 0.16);
+
+  /* Floating surfaces (toasts, menus, dialogs) */
+  --shadow-overlay: 0 8px 24px rgba(35, 39, 26, 0.30);
+
+  /* Colored glows used on hover for brand buttons */
+  --glow-primary:   0 6px 16px rgba(78, 91, 48, 0.22);
+  --glow-secondary: 0 6px 16px rgba(191, 155, 47, 0.30);
+  --glow-tertiary:  0 6px 16px rgba(120, 161, 131, 0.30);
+}

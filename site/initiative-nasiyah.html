@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مبادرة ناصية – مؤسسة الأستاذ</title>
+<link rel="stylesheet" href="css/design-system.css">
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--canvas); color: var(--text-body); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  ::selection { background: var(--gold-500); color: var(--ink); }
+  @keyframes ostRise { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+  @keyframes ostHero { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+  [data-reveal].in { animation: ostRise .7s cubic-bezier(.22,.7,.25,1) both; }
+  .hero-in { animation: ostHero 1s cubic-bezier(.22,.7,.25,1) both; }
+  @media (prefers-reduced-motion: reduce) { [data-reveal].in, .hero-in { animation: none; } html { scroll-behavior: auto; } }
+</style>
+</head>
+<body>
+<div style="font-family:var(--font-sans);background:var(--canvas);overflow-x:hidden">
+
+<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--hairline)">
+  <div style="max-width:var(--container-max);margin:0 auto;min-height:74px;padding:12px 28px;display:flex;align-items:center;gap:24px">
+    <a href="index.html#hero" style="display:flex;align-items:center;flex:none"><img src="assets/alostath-logo.png" alt="مؤسسة الأستاذ" style="height:46px;width:auto"></a>
+    <nav data-mainnav="1" style="gap:2px;flex:1 1 auto;align-items:center">
+      <a class="nav-a" href="index.html#hero">الرئيسية</a>
+      <a class="nav-a" href="council.html">المجلس</a>
+      <a class="nav-a" href="awards.html">الجوائز</a>
+      <a class="nav-a" data-active="true" href="initiatives.html">المبادرات</a>
+      <a class="nav-a" href="blog.html">المدونة</a>
+      <a class="nav-a" href="about.html">من نحن</a>
+      <a class="nav-a" href="press.html">الملف الإعلامي</a>
+      <a href="contact.html" class="nav-a nav-cta">تواصل معنا</a>
+    </nav>
+    <div class="header-cta" style="margin-inline-start:auto;flex:none">
+      <a href="contact.html" class="btn btn-primary btn-sm">تواصل معنا</a>
+    </div>
+  </div>
+</header>
+
+<!-- IMMERSIVE HERO -->
+<section class="dp-hero">
+  <span class="dp-orb dp-orb-gold"></span>
+  <span class="dp-orb dp-orb-sage"></span>
+  <img src="assets/alostath-logo-inverse.png" alt="" aria-hidden="true" style="position:absolute;bottom:-70px;left:-70px;width:min(540px,50%);height:auto;opacity:0.05;pointer-events:none">
+  <div class="dp-hero-inner hero-in">
+    <div style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--inverse-muted);margin-bottom:26px">
+      <a href="initiatives.html" style="color:var(--inverse-muted);text-decoration:none">المبادرات</a>
+      <span style="opacity:.6">/</span><span style="color:var(--gold-500)">مبادرة ناصية</span>
+    </div>
+    <span style="display:inline-flex;align-items:center;gap:9px;background:rgba(191,155,47,0.16);border:1px solid rgba(191,155,47,0.4);color:var(--gold-500);font-size:13px;font-weight:600;padding:7px 16px;border-radius:999px;margin-bottom:22px"><span class="live-dot"></span>مبادرة وطنية</span>
+    <h1 style="font-size:clamp(44px,8vw,96px);font-weight:700;line-height:1.05;margin:0">ناصية</h1>
+    <div class="dp-rule" style="margin:30px 0 0"></div>
+    <p style="font-size:clamp(18px,2.2vw,24px);line-height:1.7;color:var(--inverse-muted);margin:26px 0 0;max-width:54ch">من الفصل الدراسي إلى واجهة المشهد الوطني — تمكينُ المعلّم ليقود.</p>
+    <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:36px">
+      <a href="contact.html" data-register="مبادرة ناصية" data-register-status="interest" class="btn btn-secondary btn-lg">سجّل اهتمامك</a>
+      <a href="#overview" class="btn btn-outline btn-lg" style="background:transparent;color:var(--ink-inverse);border-color:rgba(244,246,238,0.4)">اقرأ التفاصيل</a>
+    </div>
+  </div>
+</section>
+
+<!-- OVERLAPPING FACTS -->
+<div class="dp-facts" data-reveal="1">
+  <div class="dp-facts-inner">
+    <div class="dp-fact">
+      <div class="dp-fact-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg></div>
+      <div><div class="dp-fact-k">النوع</div><div class="dp-fact-v">مبادرة وطنية</div></div>
+    </div>
+    <div class="dp-fact">
+      <div class="dp-fact-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></div>
+      <div><div class="dp-fact-k">المجال</div><div class="dp-fact-v">القيادة والتمثيل</div></div>
+    </div>
+    <div class="dp-fact">
+      <div class="dp-fact-ico" style="background:var(--sage-50);color:var(--sage-700)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div><div class="dp-fact-k">الحالة</div><div class="dp-fact-v" style="color:var(--sage-700)">مبادرة قائمة</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section id="overview" data-reveal="1" style="max-width:880px;margin:0 auto;padding:72px 32px 40px">
+  <div style="font-size:13px;font-weight:600;letter-spacing:0.5px;color:var(--gold-600);text-transform:uppercase;margin-bottom:16px">نظرة عامة</div>
+  <p style="font-size:clamp(20px,2.4vw,26px);line-height:1.85;color:var(--text-body);font-weight:500;margin:0">مبادرة وطنية تهدف إلى توظيف مهارات المعلّم والمعلّمة السعوديين من خلال تمكينهم للمشاركة المؤسسية في الاستضافات الوطنية الكبرى بشكلٍ قيادي فاعل — عبر برامج تدريبية معتمدة وتجارب عملية تُسهم في بناء معلّمٍ منافسٍ عالميّاً وعضوٍ مجتمعي فاعل.</p>
+</section>
+
+<!-- GOAL STATEMENT -->
+<section data-reveal="1" style="max-width:var(--container-max);margin:0 auto;padding:24px 32px 56px">
+  <div style="position:relative;overflow:hidden;background:var(--olive-900);color:var(--ink-inverse);border-radius:20px;padding:clamp(36px,5vw,64px)">    <div style="position:relative;max-width:62ch">
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.5px;color:var(--gold-500);text-transform:uppercase;margin-bottom:14px">الهدف</div>
+      <p style="font-size:clamp(22px,2.8vw,32px);font-weight:600;line-height:1.6;margin:0">تمكين المعلّم من الانتقال بمهاراته وكفاءاته خارج حدود الفصل الدراسي، وإتاحة الفرصة له للمشاركة الفاعلة في المشهد الوطني الكبير بما يُثري تجربته المهنية ويرفع مكانته في المجتمع.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VALUE -->
+<section data-reveal="1" style="max-width:var(--container-max);margin:0 auto;padding:24px 32px 56px">
+  <h2 style="font-size:clamp(24px,3vw,34px);font-weight:700;margin:0 0 28px">القيمة المضافة للمعلّم</h2>
+  <div data-reveal-group style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px">
+    <div class="dp-vcard"><div class="dp-vcard-num">٠١</div><div style="position:relative"><div style="font-size:18px;font-weight:700;margin-bottom:10px;color:var(--ink)">أثرٌ وطني</div><div style="font-size:15px;line-height:1.75;color:var(--text-muted)">فرصٌ ذات أثرٍ اجتماعي ومهني ووطني تُبرز دور المعلّم القيادي.</div></div></div>
+    <div class="dp-vcard"><div class="dp-vcard-num">٠٢</div><div style="position:relative"><div style="font-size:18px;font-weight:700;margin-bottom:10px;color:var(--ink)">حضورٌ خارج الفصل</div><div style="font-size:15px;line-height:1.75;color:var(--text-muted)">منصّة للمشاركة في الاستضافات الوطنية الكبرى بصفةٍ قيادية.</div></div></div>
+    <div class="dp-vcard"><div class="dp-vcard-num">٠٣</div><div style="position:relative"><div style="font-size:18px;font-weight:700;margin-bottom:10px;color:var(--ink)">تأهيلٌ معتمد</div><div style="font-size:15px;line-height:1.75;color:var(--text-muted)">برامج تدريبية معتمدة تبني معلّماً منافساً عالميّاً.</div></div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section data-reveal="1" style="background:var(--surface-1);border-top:1px solid var(--hairline);border-bottom:1px solid var(--hairline)">
+  <div style="max-width:var(--container-max);margin:0 auto;padding:72px 32px">
+    <h2 style="font-size:clamp(24px,3vw,34px);font-weight:700;margin:0 0 48px;text-align:center">كيف تعمل المبادرة</h2>
+    <div class="dp-steps" data-reveal-group>
+      <div class="dp-step"><div class="dp-step-node">١</div><h3>الترشيح والاختيار</h3><p>اختيار نخبة من المعلّمين والمعلّمات وفق معايير الكفاءة.</p></div>
+      <div class="dp-step"><div class="dp-step-node">٢</div><h3>التأهيل والتدريب</h3><p>برامج معتمدة تبني المهارات القيادية والتمثيلية.</p></div>
+      <div class="dp-step"><div class="dp-step-node">٣</div><h3>المشاركة الميدانية</h3><p>انخراط قيادي فاعل في الاستضافات الوطنية الكبرى.</p></div>
+      <div class="dp-step"><div class="dp-step-node">٤</div><h3>الأثر والاستمرار</h3><p>نموذج غير ربحي يضمن الاستدامة وتوسيع النطاق.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARTNER -->
+<section data-reveal="1" style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 40px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px;align-items:center">
+    <div>
+      <div style="font-size:13px;font-weight:600;letter-spacing:0.5px;color:var(--gold-600);text-transform:uppercase;margin-bottom:14px">الشريك المختص</div>
+      <h2 style="font-size:clamp(24px,3vw,32px);font-weight:700;margin:0 0 16px">شراكةٌ تصنع الأثر</h2>
+      <p style="font-size:16px;line-height:1.85;color:var(--text-muted);margin:0">تُنفَّذ المبادرة بالتكامل مع جهاتٍ متخصصة تضمن جودة التنفيذ واستمرارية الأثر.</p>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <span style="font-size:15px;font-weight:500;background:var(--surface-1);border:1px solid var(--hairline);padding:12px 20px;border-radius:12px">جهات الاستضافة الوطنية الكبرى</span>
+      <span style="font-size:15px;font-weight:500;background:var(--surface-1);border:1px solid var(--hairline);padding:12px 20px;border-radius:12px">وزارة التعليم</span>
+      <span style="font-size:15px;font-weight:500;background:var(--surface-1);border:1px solid var(--hairline);padding:12px 20px;border-radius:12px">جهات حكومية وخاصة</span>
+    </div>
+  </div>
+</section>
+
+<!-- PREV / NEXT -->
+<section style="max-width:var(--container-max);margin:0 auto;padding:24px 32px 72px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px">
+    <a href="initiative-musheer.html" class="dp-pager is-prev"><span class="dp-pager-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></span><span class="dp-pager-text"><div class="k">المبادرة السابقة</div><div class="t">مبادرة مُشير</div></span></a>
+    <a href="initiative-wathba.html" class="dp-pager is-next"><span class="dp-pager-text"><div class="k">المبادرة التالية</div><div class="t">مبادرة وثبة</div></span><span class="dp-pager-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg></span></a>
+  </div>
+</section>
+
+<footer style="background:var(--olive-900);color:var(--inverse-muted)">
+  <div style="max-width:var(--container-max);margin:0 auto;padding:72px 32px 40px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:48px">
+    <div style="max-width:34ch">
+      <img src="assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" style="height:64px;width:auto;display:block;margin-bottom:18px">
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:14px">تابعنا على</div>
+      <div style="display:flex;gap:12px">
+        <a class="social-ico" href="https://www.instagram.com/alostathorg/" target="_blank" rel="noopener" aria-label="Instagram" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a class="social-ico" href="https://www.linkedin.com/company/alostathorg" target="_blank" rel="noopener" aria-label="LinkedIn" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></a>
+        <a class="social-ico" href="https://x.com/AlOstathOrg" target="_blank" rel="noopener" aria-label="X" style="width:42px;height:42px;border-radius:10px;border:1px solid rgba(244,246,238,0.18);display:flex;align-items:center;justify-content:center;color:var(--inverse-muted)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:16px">تواصل معنا</div>
+      <div style="font-size:14px;line-height:1.9;color:var(--inverse-subtle);margin-bottom:14px">طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض ١٢٣١٤</div>
+      <a class="footer-link" href="tel:+966550757424" dir="ltr" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px;display:block;text-align:start;margin-bottom:8px">+966 55 075 7424</a>
+      <a class="footer-link" href="mailto:contact@ostath.sa" dir="ltr" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px;display:block;text-align:start">contact@ostath.sa</a>
+    </div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:var(--ink-inverse);margin-bottom:16px">روابط سريعة</div>
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px">
+        <li><a class="footer-link" href="index.html#hero" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الرئيسية</a></li>
+        <li><a class="footer-link" href="council.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المجلس</a></li>
+        <li><a class="footer-link" href="awards.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الجوائز</a></li>
+        <li><a class="footer-link" href="initiatives.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المبادرات</a></li>
+        <li><a class="footer-link" href="blog.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">المدونة</a></li>
+        <li><a class="footer-link" href="press.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">الملف الإعلامي</a></li>
+        <li><a class="footer-link" href="about.html" style="text-decoration:none;color:var(--inverse-subtle);font-size:14px">من نحن</a></li>
+      </ul>
+    </div>
+  </div>
+  <div style="border-top:1px solid rgba(244,246,238,0.1);padding:20px 32px;font-size:13px;color:var(--inverse-subtle);text-align:center">جميع الحقوق محفوظة لمؤسسة الأستاذ ٢٠٢٦</div>
+</footer>
+
+</div>
+<script src="js/site.js" defer></script>
+</body>
+</html>

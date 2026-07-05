@@ -1,0 +1,29 @@
+/* ==========================================================================
+   Spacing & radius — 4px base grid. Radius scale is intentionally restrained:
+   no full pills on UI controls (sharp identity). Round reserved for dots,
+   avatars, status indicators only.
+   ========================================================================== */
+
+:root {
+  /* Spacing — base 4px */
+  --space-xxs: 4px;
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+  --space-xxl: 48px;
+  --space-section: 96px;
+
+  /* Radius */
+  --radius-xs:  2px;
+  --radius-sm:  4px;
+  --radius-md:  8px;   /* default control radius (buttons, inputs) */
+  --radius-lg:  12px;  /* cards */
+  --radius-xl:  16px;  /* large panels */
+  --radius-xxl: 24px;
+  --radius-round: 9999px; /* dots, avatars ONLY */
+
+  /* Container */
+  --container-max: 1200px;
+}
