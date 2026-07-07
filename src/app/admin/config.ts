@@ -8,6 +8,7 @@ export type FieldType =
   | "text"
   | "textarea"
   | "number"
+  | "date"
   | "boolean"
   | "select"
   | "tags" // text[] (comma separated)
@@ -129,7 +130,7 @@ export const COLLECTIONS: Collection[] = [
       { name: "slug", label: "المُعرّف في الرابط (slug)", type: "text", help: "بالإنجليزية بدون مسافات", group: G_BASIC, listColumn: true },
       { name: "published", label: "منشور على الموقع", type: "boolean", group: G_BASIC, listColumn: true },
       { name: "category", label: "التصنيف", type: "text", placeholder: "مثال: مقالات", group: G_BASIC, listColumn: true },
-      { name: "published_at", label: "تاريخ النشر", type: "text", help: "بصيغة سنة-شهر-يوم، مثال: 2026-05-12", placeholder: "2026-05-12", group: G_BASIC },
+      { name: "published_at", label: "تاريخ النشر", type: "date", group: G_BASIC },
       { name: "excerpt", label: "المقتطف", type: "textarea", group: G_TEXT },
       { name: "body", label: "نص المقال", type: "lines", help: "اكتب كل فقرة في سطر مستقل", group: G_TEXT },
       { name: "cover_url", label: "صورة الغلاف", type: "image", group: G_MEDIA },

@@ -96,7 +96,18 @@ function toDisplay(field: Field, value: unknown): string {
 function FieldRow({ field, value }: { field: Field; value: unknown }) {
   if (field.type === "repeater") return <Repeater field={field} value={value} />;
   if (field.type === "keyvalue") return <KeyValue field={field} value={value} />;
+  if (field.type === "tags") return <TagInput field={field} value={value} />;
   if (field.type === "image") return <ImageField field={field} initial={toDisplay(field, value)} />;
+
+  if (field.type === "date") {
+    return (
+      <div className="admin-field">
+        <label className="admin-label">{field.label}</label>
+        <input className="admin-input" type="date" name={field.name} defaultValue={String(value ?? "").slice(0, 10)} />
+        {field.help && <p className="admin-hint">{field.help}</p>}
+      </div>
+    );
+  }
 
   if (field.type === "boolean") {
     return (
@@ -226,6 +237,52 @@ function KeyValue({ field, value }: { field: Field; value: unknown }) {
         <button type="button" className="admin-btn admin-btn-ghost admin-btn-sm admin-repeater-add" onClick={addRow}>+ إضافة حقل</button>
       </div>
       {field.help && <p className="admin-hint">{field.help}</p>}
+    </div>
+  );
+}
+
+/* ── Tag / chip input → comma-joined text[] ────────────────────────────────── */
+function TagInput({ field, value }: { field: Field; value: unknown }) {
+  const initialTags = Array.isArray(value) ? (value as string[]) : [];
+  const [tags, setTags] = useState<string[]>(initialTags);
+  const [draft, setDraft] = useState("");
+
+  const add = (raw: string) => {
+    const t = raw.trim().replace(/،$/, "").trim();
+    if (t && !tags.includes(t)) setTags((ts) => [...ts, t]);
+    setDraft("");
+  };
+  const remove = (i: number) => setTags((ts) => ts.filter((_, idx) => idx !== i));
+
+  const onKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" || e.key === "," || e.key === "،") {
+      e.preventDefault();
+      add(draft);
+    } else if (e.key === "Backspace" && !draft && tags.length) {
+      remove(tags.length - 1);
+    }
+  };
+
+  return (
+    <div className="admin-field is-wide">
+      <label className="admin-label">{field.label}</label>
+      <input type="hidden" name={field.name} value={tags.join(",")} readOnly />
+      <div className="admin-tags">
+        {tags.map((t, i) => (
+          <span className="admin-tag" key={i}>
+            {t}
+            <button type="button" onClick={() => remove(i)} aria-label="حذف">✕</button>
+          </span>
+        ))}
+        <input
+          value={draft}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={onKey}
+          onBlur={() => add(draft)}
+          placeholder={tags.length ? "أضف المزيد…" : field.placeholder || "اكتب واضغط Enter"}
+        />
+      </div>
+      <p className="admin-hint">{field.help ?? "اكتب كل عنصر ثم اضغط Enter لإضافته."}</p>
     </div>
   );
 }

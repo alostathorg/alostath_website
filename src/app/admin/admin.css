@@ -807,3 +807,56 @@
 .admin-repeater-add {
   align-self: flex-start;
 }
+
+/* ── Tag / chip input ──────────────────────────────────────────────────────── */
+.admin-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  border: 1px solid var(--border-subtle, var(--hairline));
+  border-radius: var(--ad-radius-sm);
+  padding: 8px 10px;
+  background: var(--canvas);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.admin-tags:focus-within {
+  border-color: var(--olive-500);
+  box-shadow: var(--ring, 0 0 0 3px rgba(78, 91, 48, 0.15));
+}
+.admin-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--olive-50);
+  color: var(--olive-700);
+  border: 1px solid var(--olive-100);
+  border-radius: 999px;
+  padding: 4px 6px 4px 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.admin-tag button {
+  border: none;
+  background: none;
+  color: var(--olive-700);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+}
+.admin-tag button:hover {
+  opacity: 1;
+}
+.admin-tags input {
+  flex: 1 1 120px;
+  min-width: 120px;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 14.5px;
+  color: var(--ink);
+  padding: 4px 2px;
+}
