@@ -45,9 +45,15 @@ function coerce(collection: Collection, form: FormData) {
           .map((s) => s.trim())
           .filter(Boolean);
         break;
-      case "json": {
+      case "json":
+      case "repeater": {
         const s = String(raw ?? "").trim();
         row[field.name] = s === "" ? [] : JSON.parse(s);
+        break;
+      }
+      case "keyvalue": {
+        const s = String(raw ?? "").trim();
+        row[field.name] = s === "" ? {} : JSON.parse(s);
         break;
       }
       default: {
