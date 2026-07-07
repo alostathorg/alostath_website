@@ -1,8 +1,30 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { saveRecord, uploadMedia } from "./actions";
 import type { Collection, Field } from "./config";
+
+// Basic Arabic → Latin transliteration so a slug can be generated automatically
+// from the (Arabic) name/title. Editors never have to type a URL by hand.
+const AR_MAP: Record<string, string> = {
+  ا: "a", أ: "a", إ: "i", آ: "a", ٱ: "a", ب: "b", ت: "t", ث: "th", ج: "j",
+  ح: "h", خ: "kh", د: "d", ذ: "dh", ر: "r", ز: "z", س: "s", ش: "sh", ص: "s",
+  ض: "d", ط: "t", ظ: "z", ع: "a", غ: "gh", ف: "f", ق: "q", ك: "k", ل: "l",
+  م: "m", ن: "n", ه: "h", و: "w", ي: "y", ى: "a", ة: "a", ء: "", ئ: "", ؤ: "",
+  "٠": "0", "١": "1", "٢": "2", "٣": "3", "٤": "4", "٥": "5", "٦": "6", "٧": "7", "٨": "8", "٩": "9",
+};
+
+function slugify(input: string): string {
+  return input
+    .trim()
+    .toLowerCase()
+    .replace(/[ً-ْ]/g, "") // strip Arabic diacritics
+    .split("")
+    .map((ch) => (ch in AR_MAP ? AR_MAP[ch] : ch))
+    .join("")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 type Values = Record<string, unknown>;
 type Row = Record<string, unknown>;
@@ -98,6 +120,7 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
   if (field.type === "keyvalue") return <KeyValue field={field} value={value} />;
   if (field.type === "tags") return <TagInput field={field} value={value} />;
   if (field.type === "image") return <ImageField field={field} initial={toDisplay(field, value)} />;
+  if (field.name === "slug") return <SlugField field={field} value={value} />;
 
   if (field.type === "date") {
     return (
@@ -148,6 +171,47 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
         <input className={inputClass} name={field.name} type={field.type === "number" ? "number" : "text"} defaultValue={display} placeholder={field.placeholder} />
       )}
       {field.help && <p className="admin-hint">{field.help}</p>}
+    </div>
+  );
+}
+
+/* ── Slug: auto-generated from the name/title, still editable ──────────────── */
+function SlugField({ field, value }: { field: Field; value: unknown }) {
+  const [slug, setSlug] = useState(String(value ?? ""));
+  const ref = useRef<HTMLInputElement>(null);
+  // Auto-fill only while the editor hasn't taken it over. For an existing
+  // record (slug already set) we leave it alone.
+  const autoRef = useRef(!String(value ?? "").trim());
+
+  useEffect(() => {
+    const form = ref.current?.form;
+    if (!form) return;
+    const source = (form.elements.namedItem("name") ||
+      form.elements.namedItem("title")) as HTMLInputElement | null;
+    if (!source) return;
+    const onInput = () => {
+      if (autoRef.current) setSlug(slugify(source.value));
+    };
+    source.addEventListener("input", onInput);
+    return () => source.removeEventListener("input", onInput);
+  }, []);
+
+  return (
+    <div className="admin-field">
+      <label className="admin-label">{field.label}</label>
+      <input
+        ref={ref}
+        className="admin-input is-ltr"
+        name={field.name}
+        value={slug}
+        onChange={(e) => {
+          autoRef.current = false;
+          setSlug(e.target.value);
+        }}
+        placeholder="example-name"
+        dir="ltr"
+      />
+      <p className="admin-hint">يُنشأ تلقائياً من الاسم — لا حاجة لتعبئته يدوياً.</p>
     </div>
   );
 }

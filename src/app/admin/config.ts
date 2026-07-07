@@ -77,7 +77,7 @@ export const COLLECTIONS: Collection[] = [
     orderBy: { column: "sort_order", ascending: true },
     fields: [
       { name: "name", label: "الاسم", type: "text", group: G_BASIC, listColumn: true },
-      { name: "slug", label: "المُعرّف في الرابط (slug)", type: "text", help: "بالإنجليزية بدون مسافات — يظهر في رابط الصفحة", group: G_BASIC, listColumn: true },
+      { name: "slug", label: "مُعرّف الرابط", type: "text", group: G_BASIC, listColumn: true },
       { name: "status", label: "حالة التقديم", type: "select", options: ["open", "soon", "closed"], optionLabels: { open: "التقديم مفتوح", soon: "يفتح قريباً", closed: "مغلق" }, group: G_BASIC, listColumn: true },
       { name: "published", label: "منشور على الموقع", type: "boolean", group: G_BASIC, listColumn: true },
       { name: "badge_label", label: "وسم الفئة", type: "text", placeholder: "مثال: جائزة فنّية", group: G_BASIC },
@@ -103,7 +103,7 @@ export const COLLECTIONS: Collection[] = [
     orderBy: { column: "sort_order", ascending: true },
     fields: [
       { name: "name", label: "الاسم", type: "text", group: G_BASIC, listColumn: true },
-      { name: "slug", label: "المُعرّف في الرابط (slug)", type: "text", help: "بالإنجليزية بدون مسافات", group: G_BASIC, listColumn: true },
+      { name: "slug", label: "مُعرّف الرابط", type: "text", group: G_BASIC, listColumn: true },
       { name: "published", label: "منشور على الموقع", type: "boolean", group: G_BASIC, listColumn: true },
       { name: "badge", label: "الوسم", type: "text", placeholder: "مثال: مبادرة وطنية", group: G_BASIC },
       { name: "theme", label: "الطابع اللوني", type: "select", ...THEME, group: G_BASIC },
@@ -127,7 +127,7 @@ export const COLLECTIONS: Collection[] = [
     orderBy: { column: "published_at", ascending: false },
     fields: [
       { name: "title", label: "العنوان", type: "text", group: G_BASIC, listColumn: true },
-      { name: "slug", label: "المُعرّف في الرابط (slug)", type: "text", help: "بالإنجليزية بدون مسافات", group: G_BASIC, listColumn: true },
+      { name: "slug", label: "مُعرّف الرابط", type: "text", group: G_BASIC, listColumn: true },
       { name: "published", label: "منشور على الموقع", type: "boolean", group: G_BASIC, listColumn: true },
       { name: "category", label: "التصنيف", type: "text", placeholder: "مثال: مقالات", group: G_BASIC, listColumn: true },
       { name: "published_at", label: "تاريخ النشر", type: "date", group: G_BASIC },
