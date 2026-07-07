@@ -8,11 +8,11 @@ export default function DeleteButton({ slug, id }: { slug: string; id: string })
   return (
     <button
       type="button"
+      className="admin-danger"
       disabled={pending}
       onClick={() => {
         if (confirm("هل أنت متأكد من حذف هذا العنصر؟")) start(() => deleteRecord(slug, id));
       }}
-      style={{ background: "none", border: "none", color: "#b3261e", fontWeight: 600, cursor: "pointer", fontSize: 14, padding: 0 }}
     >
       {pending ? "…" : "حذف"}
     </button>

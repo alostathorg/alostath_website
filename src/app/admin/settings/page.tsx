@@ -15,22 +15,27 @@ export default async function SettingsPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 6px" }}>إعدادات الموقع</h1>
-      <p style={{ color: "var(--text-muted)", margin: "0 0 28px" }}>قيمٌ عامة تظهر عبر الموقع، تُحرَّر بصيغة JSON.</p>
+      <div className="admin-head">
+        <div>
+          <h1 className="admin-title">إعدادات الموقع</h1>
+          <p className="admin-subtitle">قيمٌ عامة تظهر عبر الموقع، تُحرَّر بصيغة JSON.</p>
+        </div>
+      </div>
 
       {SECTIONS.map((s) => (
-        <form key={s.key} action={saveSettings.bind(null, s.key)} style={{ marginBottom: 32, maxWidth: 720, background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 14, padding: 24 }}>
-          <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 4px" }}>{s.label}</h2>
-          <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 14px" }}>{s.help}</p>
-          <textarea
-            name="value"
-            defaultValue={JSON.stringify(map.get(s.key) ?? {}, null, 2)}
-            rows={10}
-            className="ct-field"
-            style={{ fontFamily: "var(--font-mono)", direction: "ltr", textAlign: "left", resize: "vertical" }}
-          />
-          <div style={{ marginTop: 14 }}>
-            <button type="submit" className="btn btn-primary btn-md">حفظ</button>
+        <form key={s.key} action={saveSettings.bind(null, s.key)} className="admin-card">
+          <h2 className="admin-card-title">{s.label}</h2>
+          <p className="admin-card-hint">{s.help}</p>
+          <div className="admin-field">
+            <textarea
+              name="value"
+              defaultValue={JSON.stringify(map.get(s.key) ?? {}, null, 2)}
+              rows={10}
+              className="admin-textarea is-code"
+            />
+          </div>
+          <div style={{ marginTop: 16 }}>
+            <button type="submit" className="admin-btn admin-btn-primary">حفظ</button>
           </div>
         </form>
       ))}

@@ -8,11 +8,11 @@ export default function RegDeleteButton({ id }: { id: string }) {
   return (
     <button
       type="button"
+      className="admin-danger"
       disabled={pending}
       onClick={() => {
         if (confirm("حذف هذا الطلب؟")) start(() => deleteRegistration(id));
       }}
-      style={{ background: "none", border: "none", color: "#b3261e", fontWeight: 600, cursor: "pointer", fontSize: 14, padding: 0 }}
     >
       {pending ? "…" : "حذف"}
     </button>

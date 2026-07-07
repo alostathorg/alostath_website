@@ -5,44 +5,85 @@ import { usePathname } from "next/navigation";
 import { COLLECTIONS } from "./config";
 import { signOut } from "./actions";
 
-const linkBase: React.CSSProperties = {
-  display: "block",
-  padding: "10px 14px",
-  borderRadius: 10,
-  fontSize: 15,
-  color: "var(--text-body)",
-  textDecoration: "none",
+const I = {
+  dashboard: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="9" rx="1" /><rect x="14" y="3" width="7" height="5" rx="1" /><rect x="14" y="12" width="7" height="9" rx="1" /><rect x="3" y="16" width="7" height="5" rx="1" /></svg>
+  ),
+  inbox: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg>
+  ),
+  awards: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></svg>
+  ),
+  initiatives: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" /></svg>
+  ),
+  posts: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
+  ),
+  partners: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+  ),
+  press: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11l18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></svg>
+  ),
+  settings: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+  ),
+  media: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
+  ),
+} as const;
+
+const COLLECTION_ICON: Record<string, keyof typeof I> = {
+  awards: "awards",
+  initiatives: "initiatives",
+  posts: "posts",
+  partners: "partners",
+  press: "press",
 };
 
 export default function AdminNav({ email }: { email: string }) {
   const pathname = usePathname();
-  const item = (href: string, label: string) => {
+
+  function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
     const active = pathname === href || pathname.startsWith(href + "/");
     return (
-      <Link href={href} style={{ ...linkBase, background: active ? "var(--olive-50)" : "transparent", color: active ? "var(--olive-700)" : "var(--text-body)", fontWeight: active ? 600 : 400 }}>
-        {label}
+      <Link href={href} className={`admin-navlink${active ? " is-active" : ""}`} title={label}>
+        {icon}
+        <span>{label}</span>
       </Link>
     );
-  };
+  }
+
+  const initial = (email.trim()[0] || "؟").toUpperCase();
 
   return (
-    <aside style={{ width: 240, flex: "none", borderInlineStart: "1px solid var(--hairline)", background: "var(--canvas)", padding: 20, display: "flex", flexDirection: "column", gap: 4, minHeight: "100vh", position: "sticky", top: 0 }}>
-      <Link href="/admin" style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18, textDecoration: "none" }}>
+    <aside className="admin-sidebar">
+      <Link href="/admin" className="admin-brand">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo.png" alt="" style={{ height: 34 }} />
+        <img src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" />
       </Link>
-      {item("/admin", "لوحة التحكم")}
-      {item("/admin/registrations", "الطلبات والاشتراكات")}
-      <div style={{ fontSize: 12, fontWeight: 600, color: "var(--ink-subtle)", padding: "14px 14px 6px", textTransform: "uppercase", letterSpacing: "0.5px" }}>المحتوى</div>
+
+      <NavLink href="/admin" icon={I.dashboard} label="لوحة التحكم" />
+      <NavLink href="/admin/registrations" icon={I.inbox} label="الطلبات والاشتراكات" />
+
+      <div className="admin-navlabel">المحتوى</div>
       {COLLECTIONS.map((c) => (
-        <span key={c.slug}>{item(`/admin/collections/${c.slug}`, c.labelPlural)}</span>
+        <NavLink key={c.slug} href={`/admin/collections/${c.slug}`} icon={I[COLLECTION_ICON[c.slug] ?? "posts"]} label={c.labelPlural} />
       ))}
-      {item("/admin/settings", "إعدادات الموقع")}
-      {item("/admin/media", "الوسائط")}
-      <div style={{ marginTop: "auto", paddingTop: 16, borderTop: "1px solid var(--hairline)" }}>
-        <div style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 10, direction: "ltr", textAlign: "start", wordBreak: "break-all" }}>{email}</div>
+
+      <div className="admin-navlabel">النظام</div>
+      <NavLink href="/admin/settings" icon={I.settings} label="إعدادات الموقع" />
+      <NavLink href="/admin/media" icon={I.media} label="الوسائط" />
+
+      <div className="admin-sidebar-foot">
+        <div className="admin-user">
+          <div className="admin-avatar">{initial}</div>
+          <div className="admin-user-mail">{email}</div>
+        </div>
         <form action={signOut}>
-          <button type="submit" className="btn btn-secondary btn-sm" style={{ width: "100%" }}>تسجيل الخروج</button>
+          <button type="submit" className="admin-btn admin-btn-ghost admin-btn-sm admin-btn-block">تسجيل الخروج</button>
         </form>
       </div>
     </aside>

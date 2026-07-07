@@ -6,6 +6,11 @@ import type { Collection, Field } from "./config";
 
 type Values = Record<string, unknown>;
 
+const WIDE_TYPES = new Set(["textarea", "lines", "json", "image", "tags"]);
+const isWide = (f: Field) => WIDE_TYPES.has(f.type);
+// Text inputs that hold latin/code values and should read left-to-right.
+const isLtrField = (f: Field) => f.name === "slug" || f.name.endsWith("_at");
+
 export default function RecordForm({
   collection,
   id,
@@ -32,14 +37,22 @@ export default function RecordForm({
   }
 
   return (
-    <form onSubmit={onSubmit} style={{ maxWidth: 720 }}>
-      {collection.fields.map((f) => (
-        <FieldRow key={f.name} field={f} value={initial[f.name]} />
-      ))}
-      {error && <div style={{ color: "#b3261e", fontSize: 14, margin: "8px 0 16px" }}>{error}</div>}
-      <div style={{ display: "flex", gap: 12, marginTop: 24, position: "sticky", bottom: 0, background: "var(--surface-1)", padding: "16px 0" }}>
-        <button type="submit" className="btn btn-primary btn-lg" disabled={pending}>{pending ? "جارٍ الحفظ…" : "حفظ"}</button>
-        <a href={`/admin/collections/${collection.slug}`} className="btn btn-secondary btn-lg">إلغاء</a>
+    <form onSubmit={onSubmit}>
+      <div className="admin-card">
+        <div className="admin-form-grid">
+          {collection.fields.map((f) => (
+            <FieldRow key={f.name} field={f} value={initial[f.name]} />
+          ))}
+        </div>
+      </div>
+
+      {error && <div className="admin-error" style={{ marginTop: 16 }}>{error}</div>}
+
+      <div className="admin-actionbar">
+        <button type="submit" className="admin-btn admin-btn-primary" disabled={pending}>
+          {pending ? "جارٍ الحفظ…" : "حفظ التغييرات"}
+        </button>
+        <a href={`/admin/collections/${collection.slug}`} className="admin-btn admin-btn-ghost">إلغاء</a>
       </div>
     </form>
   );
@@ -59,32 +72,31 @@ function toDisplay(field: Field, value: unknown): string {
   }
 }
 
-const labelStyle: React.CSSProperties = { display: "block", fontSize: 14, fontWeight: 600, marginBottom: 6 };
-const helpStyle: React.CSSProperties = { fontSize: 12, color: "var(--text-muted)", margin: "4px 0 0" };
-const wrapStyle: React.CSSProperties = { marginBottom: 20 };
-
 function FieldRow({ field, value }: { field: Field; value: unknown }) {
   const display = toDisplay(field, value);
+  const wide = isWide(field);
 
   if (field.type === "boolean") {
     return (
-      <div style={wrapStyle}>
-        <label style={{ display: "inline-flex", alignItems: "center", gap: 10, fontSize: 15, fontWeight: 600, cursor: "pointer" }}>
-          <input type="checkbox" name={field.name} defaultChecked={Boolean(value)} style={{ width: 18, height: 18 }} />
+      <div className="admin-field">
+        <label className="admin-toggle">
+          <input type="checkbox" name={field.name} defaultChecked={Boolean(value)} />
+          <span className="track" />
           {field.label}
         </label>
+        {field.help && <p className="admin-hint">{field.help}</p>}
       </div>
     );
   }
 
   if (field.type === "select") {
     return (
-      <div style={wrapStyle}>
-        <label style={labelStyle}>{field.label}</label>
-        <select className="ct-field" name={field.name} defaultValue={display || field.options?.[0]}>
+      <div className="admin-field">
+        <label className="admin-label">{field.label}</label>
+        <select className="admin-select" name={field.name} defaultValue={display || field.options?.[0]}>
           {field.options?.map((o) => <option key={o} value={o}>{o}</option>)}
         </select>
-        {field.help && <p style={helpStyle}>{field.help}</p>}
+        {field.help && <p className="admin-hint">{field.help}</p>}
       </div>
     );
   }
@@ -94,15 +106,18 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
   }
 
   const isArea = field.type === "textarea" || field.type === "lines" || field.type === "json";
+  const areaClass = field.type === "json" ? "admin-textarea is-code" : "admin-textarea";
+  const inputClass = isLtrField(field) ? "admin-input is-ltr" : "admin-input";
+
   return (
-    <div style={wrapStyle}>
-      <label style={labelStyle}>{field.label}</label>
+    <div className={`admin-field${wide ? " is-wide" : ""}`}>
+      <label className="admin-label">{field.label}</label>
       {isArea ? (
-        <textarea className="ct-field" name={field.name} defaultValue={display} rows={field.type === "json" ? 8 : 4} style={{ resize: "vertical", ...(field.type === "json" ? { fontFamily: "var(--font-mono)", direction: "ltr", textAlign: "left" } : {}) }} />
+        <textarea className={areaClass} name={field.name} defaultValue={display} rows={field.type === "json" ? 9 : 4} />
       ) : (
-        <input className="ct-field" name={field.name} type={field.type === "number" ? "number" : "text"} defaultValue={display} />
+        <input className={inputClass} name={field.name} type={field.type === "number" ? "number" : "text"} defaultValue={display} />
       )}
-      {field.help && <p style={helpStyle}>{field.help}</p>}
+      {field.help && <p className="admin-hint">{field.help}</p>}
     </div>
   );
 }
@@ -125,22 +140,31 @@ function ImageField({ field, initial }: { field: Field; initial: string }) {
     else if (res.url) setUrl(res.url);
   }
 
+  const showThumb = url && /\.(png|jpe?g|gif|webp|svg)(\?|$)/i.test(url);
+
   return (
-    <div style={wrapStyle}>
-      <label style={labelStyle}>{field.label}</label>
-      <div style={{ display: "flex", gap: 12, alignItems: "flex-start", flexWrap: "wrap" }}>
-        {url && (
+    <div className="admin-field is-wide">
+      <label className="admin-label">{field.label}</label>
+      <div className="admin-imagefield">
+        {showThumb && (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={url} alt="" style={{ width: 88, height: 88, objectFit: "cover", borderRadius: 10, border: "1px solid var(--hairline)", background: "var(--surface-1)" }} />
+          <img src={url} alt="" className="admin-thumb" />
         )}
-        <div style={{ flex: 1, minWidth: 220 }}>
-          <input className="ct-field" name={field.name} dir="ltr" value={url} onChange={(e) => setUrl(e.target.value)} placeholder="https://…" style={{ textAlign: "left", marginBottom: 8 }} />
-          <input type="file" accept="image/*,application/pdf" onChange={onFile} style={{ fontSize: 13 }} />
+        <div className="admin-imagefield-body">
+          <input
+            className="admin-input is-ltr"
+            name={field.name}
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://…"
+            style={{ marginBottom: 10 }}
+          />
+          <input className="admin-file" type="file" accept="image/*,application/pdf" onChange={onFile} />
           {busy && <span style={{ fontSize: 12, color: "var(--text-muted)", marginInlineStart: 8 }}>جارٍ الرفع…</span>}
-          {err && <p style={{ ...helpStyle, color: "#b3261e" }}>{err}</p>}
+          {err && <p className="admin-hint" style={{ color: "#b3261e" }}>{err}</p>}
         </div>
       </div>
-      {field.help && <p style={helpStyle}>{field.help}</p>}
+      {field.help && <p className="admin-hint">{field.help}</p>}
     </div>
   );
 }

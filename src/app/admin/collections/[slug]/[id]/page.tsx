@@ -33,8 +33,8 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
 
   return (
     <div>
-      <Link href={`/admin/collections/${slug}`} style={{ fontSize: 14, color: "var(--olive-700)", textDecoration: "none", fontWeight: 600 }}>→ رجوع إلى {collection.labelPlural}</Link>
-      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "12px 0 24px" }}>
+      <Link href={`/admin/collections/${slug}`} className="admin-back">→ رجوع إلى {collection.labelPlural}</Link>
+      <h1 className="admin-title" style={{ marginBottom: 24 }}>
         {isNew ? `إضافة ${collection.labelSingular}` : `تعديل: ${initial.name ?? initial.title ?? ""}`}
       </h1>
       <RecordForm collection={collection} id={isNew ? null : id} initial={initial} />
