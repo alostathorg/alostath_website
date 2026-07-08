@@ -292,7 +292,20 @@ function KeyValue({ field, value }: { field: Field; value: unknown }) {
               </div>
               <div className="admin-field">
                 <label className="admin-label sm">القيمة</label>
-                <input className="admin-input is-ltr" value={row.v} onChange={(e) => setCell(i, "v", e.target.value)} placeholder="#BF9B2F" />
+                {row.k.trim().toLowerCase() === "hex" ? (
+                  <div className="admin-color">
+                    <input
+                      type="color"
+                      className="admin-color-swatch"
+                      value={/^#[0-9a-f]{6}$/i.test(row.v.trim()) ? row.v.trim() : "#bf9b2f"}
+                      onChange={(e) => setCell(i, "v", e.target.value.toUpperCase())}
+                      aria-label="اختر اللون"
+                    />
+                    <input className="admin-input is-ltr" value={row.v} onChange={(e) => setCell(i, "v", e.target.value)} placeholder="#BF9B2F" />
+                  </div>
+                ) : (
+                  <input className="admin-input is-ltr" value={row.v} onChange={(e) => setCell(i, "v", e.target.value)} placeholder="#BF9B2F" />
+                )}
               </div>
             </div>
             <button type="button" className="admin-repeater-remove" onClick={() => removeRow(i)} title="حذف" aria-label="حذف">✕</button>

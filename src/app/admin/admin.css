@@ -860,3 +860,24 @@
   color: var(--ink);
   padding: 4px 2px;
 }
+
+/* Color picker (press "hex" meta value) */
+.admin-color {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-color-swatch {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--border-subtle, var(--hairline));
+  border-radius: var(--ad-radius-sm);
+  background: var(--canvas);
+  cursor: pointer;
+}
+.admin-color-swatch::-webkit-color-swatch-wrapper { padding: 3px; }
+.admin-color-swatch::-webkit-color-swatch { border: none; border-radius: 5px; }
+.admin-color-swatch::-moz-color-swatch { border: none; border-radius: 5px; }
+.admin-color .admin-input { flex: 1 1 auto; }
