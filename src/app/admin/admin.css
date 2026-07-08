@@ -748,6 +748,39 @@
   border: 1px solid var(--ad-line);
   border-radius: 12px;
   padding: 14px;
+  transition: box-shadow 0.14s ease, opacity 0.14s ease, border-color 0.14s ease;
+}
+.admin-repeater-row.is-dragging {
+  opacity: 0.55;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+.admin-repeater-row.is-over {
+  border-color: var(--olive-500);
+  box-shadow: 0 0 0 2px var(--olive-100) inset;
+}
+.admin-repeater-handle {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: grab;
+}
+.admin-repeater-handle:active {
+  cursor: grabbing;
+}
+.admin-repeater-grip {
+  font-size: 14px;
+  line-height: 1;
+  color: var(--text-muted);
+  letter-spacing: -2px;
+}
+.admin-repeater-handle:hover .admin-repeater-grip {
+  color: var(--olive-700);
 }
 .admin-repeater-index {
   flex: none;
@@ -761,7 +794,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 2px;
 }
 .admin-repeater-fields {
   flex: 1 1 auto;

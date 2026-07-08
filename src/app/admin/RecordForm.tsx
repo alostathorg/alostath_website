@@ -216,10 +216,12 @@ function SlugField({ field, value }: { field: Field; value: unknown }) {
   );
 }
 
-/* ── Repeater: array of objects as add/remove rows ─────────────────────────── */
+/* ── Repeater: array of objects as add/remove/reorder rows ─────────────────── */
 function Repeater({ field, value }: { field: Field; value: unknown }) {
   const initialRows: Row[] = Array.isArray(value) ? (value as Row[]).map((r) => ({ ...r })) : [];
   const [rows, setRows] = useState<Row[]>(initialRows);
+  const [dragIndex, setDragIndex] = useState<number | null>(null);
+  const [overIndex, setOverIndex] = useState<number | null>(null);
   const items = field.itemFields ?? [];
   const noun = ADD_NOUN[field.name] ?? "عنصر";
 
@@ -228,6 +230,20 @@ function Repeater({ field, value }: { field: Field; value: unknown }) {
   const addRow = () =>
     setRows((rs) => [...rs, Object.fromEntries(items.map((it) => [it.name, it.type === "select" ? it.options?.[0] ?? "" : ""]))]);
   const removeRow = (i: number) => setRows((rs) => rs.filter((_, idx) => idx !== i));
+  const move = (from: number, to: number) =>
+    setRows((rs) => {
+      if (from === to || from < 0 || to < 0 || from >= rs.length || to >= rs.length) return rs;
+      const copy = [...rs];
+      const [moved] = copy.splice(from, 1);
+      copy.splice(to, 0, moved);
+      return copy;
+    });
+
+  const onDrop = () => {
+    if (dragIndex !== null && overIndex !== null) move(dragIndex, overIndex);
+    setDragIndex(null);
+    setOverIndex(null);
+  };
 
   return (
     <div className="admin-field is-wide">
@@ -236,8 +252,26 @@ function Repeater({ field, value }: { field: Field; value: unknown }) {
       <div className="admin-repeater">
         {rows.length === 0 && <div className="admin-repeater-empty">لا توجد عناصر بعد.</div>}
         {rows.map((row, i) => (
-          <div className="admin-repeater-row" key={i}>
-            <div className="admin-repeater-index">{i + 1}</div>
+          <div
+            className={`admin-repeater-row${dragIndex === i ? " is-dragging" : ""}${overIndex === i && dragIndex !== i ? " is-over" : ""}`}
+            key={i}
+            draggable={dragIndex === i}
+            onDragStart={(e) => { e.dataTransfer.effectAllowed = "move"; }}
+            onDragOver={(e) => { if (dragIndex !== null) { e.preventDefault(); setOverIndex(i); } }}
+            onDrop={(e) => { e.preventDefault(); onDrop(); }}
+            onDragEnd={() => { setDragIndex(null); setOverIndex(null); }}
+          >
+            <button
+              type="button"
+              className="admin-repeater-handle"
+              title="اسحب لإعادة الترتيب"
+              aria-label="اسحب لإعادة الترتيب"
+              onMouseDown={() => setDragIndex(i)}
+              onTouchStart={() => setDragIndex(i)}
+            >
+              <span className="admin-repeater-index">{i + 1}</span>
+              <span className="admin-repeater-grip" aria-hidden>⠿</span>
+            </button>
             <div className="admin-repeater-fields">
               {items.map((it) => (
                 <div className={`admin-field${it.type === "textarea" ? " is-wide-item" : ""}`} key={it.name}>
