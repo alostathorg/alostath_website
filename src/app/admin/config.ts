@@ -174,8 +174,8 @@ export function getCollection(slug: string): Collection | undefined {
 // fields (slug, status, theme, order, images, published) and the steps/timeline
 // (which get a ready template on create) are intentionally excluded.
 export const AI_FIELDS: Record<string, string[]> = {
-  awards: ["name", "badge_label", "type", "beneficiaries", "tagline", "overview", "goal", "partnership_note", "categories"],
-  initiatives: ["name", "badge", "tagline", "overview", "goal", "partners", "facts", "value_cards"],
+  awards: ["name", "status", "badge_label", "type", "beneficiaries", "tagline", "overview", "goal", "partnership_note", "categories", "steps", "phases"],
+  initiatives: ["name", "badge", "tagline", "overview", "goal", "partners", "facts", "value_cards", "steps"],
 };
 
 // Ready-made starting content added to a NEW award / initiative so the steps
@@ -211,6 +211,9 @@ export function buildAiPrompt(collection: Collection): string {
     .map((n) => collection.fields.find((f) => f.name === n))
     .filter((f): f is Field => Boolean(f));
 
+  const optsText = (f: Field) =>
+    (f.options ?? []).map((o) => `"${o}"${f.optionLabels?.[o] ? ` (${f.optionLabels[o]})` : ""}`).join(" أو ");
+
   const skeleton: Record<string, unknown> = {};
   const legend: string[] = [];
   for (const f of fields) {
@@ -218,10 +221,17 @@ export function buildAiPrompt(collection: Collection): string {
       skeleton[f.name] = [];
       legend.push(`- «${f.label}» (${f.name}): قائمة نصوص. ${f.help ?? ""}`.trim());
     } else if (f.type === "repeater") {
-      const item = Object.fromEntries((f.itemFields ?? []).map((it) => [it.name, ""]));
+      const item: Record<string, string> = {};
+      const sub: string[] = [];
+      for (const it of f.itemFields ?? []) {
+        item[it.name] = "";
+        sub.push(it.type === "select" ? `"${it.name}" (${it.label}): إحدى القيم ${optsText(it)}` : `"${it.name}" (${it.label})`);
+      }
       skeleton[f.name] = [item];
-      const sub = (f.itemFields ?? []).map((it) => `"${it.name}" (${it.label})`).join("، ");
-      legend.push(`- «${f.label}» (${f.name}): قائمة عناصر، كل عنصر يحتوي: ${sub}.`);
+      legend.push(`- «${f.label}» (${f.name}): قائمة عناصر، كل عنصر يحتوي: ${sub.join("، ")}.`);
+    } else if (f.type === "select") {
+      skeleton[f.name] = "";
+      legend.push(`- «${f.label}» (${f.name}): إحدى القيم ${optsText(f)}. ${f.help ?? ""}`.trim());
     } else {
       skeleton[f.name] = "";
       legend.push(`- «${f.label}» (${f.name}): ${f.help ?? "نص"}.`);
@@ -230,7 +240,7 @@ export function buildAiPrompt(collection: Collection): string {
 
   return [
     `أنت مساعد لكتابة محتوى موقع «مؤسسة الأستاذ» الرسمي.`,
-    `سأرفق لك ملفاً يحتوي على معلومات عن ${collection.labelSingular}. اقرأه جيداً ثم اكتب المحتوى باللغة العربية الفصحى بأسلوب واضح ورسمي.`,
+    `سأزوّدك بمصدر (ملف أو صورة أو نص) يحتوي على معلومات عن ${collection.labelSingular}. ادرسه جيداً ثم اكتب المحتوى باللغة العربية الفصحى بأسلوب واضح ورسمي.`,
     ``,
     `أعِد النتيجة على هيئة JSON فقط، بنفس المفاتيح التالية تماماً، دون أي نص قبله أو بعده:`,
     ``,
@@ -241,7 +251,9 @@ export function buildAiPrompt(collection: Collection): string {
     ``,
     `قواعد مهمة:`,
     `- اكتب بالعربية الفصحى فقط.`,
-    `- لا تختلق معلومات غير موجودة في الملف؛ اترك الحقل فارغاً ("" أو []) إذا لم تجد ما يناسبه.`,
+    `- اعتمد فقط على المعلومات الواردة في المصدر المرفق. يمكنك تحسين الصياغة وتنظيم المعلومات وكتابتها بأسلوب احترافي، لكن لا تُضِف حقائق أو أسماء أو أرقاماً أو تواريخ غير موجودة في المصدر.`,
+    `- إن لم تتوفّر معلومة تخصّ حقلاً ما، اتركه فارغاً ("" أو []) ولا تخمّن.`,
+    `- املأ كل الحقول التي تجد لها معلومات في المصدر.`,
     `- حافظ على أسماء المفاتيح بالإنجليزية كما هي أعلاه.`,
     `- أعِد JSON صالحاً فقط دون أي شرح أو علامات إضافية.`,
   ].join("\n");

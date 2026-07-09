@@ -31,6 +31,8 @@ function coerceImported(collection: Collection, parsed: Record<string, unknown>)
       if (Array.isArray(v) && v.length) out[name] = v.map(String);
     } else if (field?.type === "repeater") {
       if (Array.isArray(v) && v.length) out[name] = v.filter((r) => r && typeof r === "object");
+    } else if (field?.type === "select") {
+      if (typeof v === "string" && (field.options ?? []).includes(v.trim())) out[name] = v.trim();
     } else if (typeof v === "string" && v.trim()) {
       out[name] = v.trim();
     } else if (typeof v === "number") {
