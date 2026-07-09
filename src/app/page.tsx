@@ -42,6 +42,7 @@ export default async function HomePage() {
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
   const featuredInitiatives = initiatives.slice(-3);
+  const featuredAwards = awards.slice(-2);
 
   return (
     <PageShell active="home">
@@ -170,7 +171,7 @@ export default async function HomePage() {
       <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
         <SectionHead eyebrow="تقديرٌ واحتفاء" title="جوائز الأستاذ" href="/awards" cta="كل الجوائز ←" />
         <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
-          {awards.map((a) => (
+          {featuredAwards.map((a) => (
             <Link key={a.id} href={`/awards/${a.slug}`} className="card-lift" style={cardStyle}>
               <div className="media-zoom">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
