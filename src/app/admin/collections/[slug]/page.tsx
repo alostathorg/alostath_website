@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCollection, type Field } from "../../config";
 import DeleteButton from "../../DeleteButton";
+import PublishToggle from "../../PublishToggle";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +24,7 @@ export default async function CollectionList({ params }: { params: Promise<{ slu
   const { data: rows } = await query;
 
   const cols = collection.fields.filter((f) => f.listColumn);
+  const hasPublished = collection.fields.some((f) => f.name === "published");
 
   return (
     <div>
@@ -52,6 +54,9 @@ export default async function CollectionList({ params }: { params: Promise<{ slu
                 ))}
                 <td style={{ textAlign: "end" }}>
                   <span className="admin-rowactions">
+                    {hasPublished && (
+                      <PublishToggle slug={slug} id={row.id as string} published={Boolean(row.published)} />
+                    )}
                     <Link href={`/admin/collections/${slug}/${row.id}`} className="admin-edit">تعديل</Link>
                     <DeleteButton slug={slug} id={row.id as string} />
                   </span>

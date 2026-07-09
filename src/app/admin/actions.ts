@@ -118,6 +118,18 @@ export async function deleteRecord(slug: string, id: string) {
   revalidatePath(`/admin/collections/${slug}`);
 }
 
+export async function togglePublished(slug: string, id: string, next: boolean) {
+  await requireAdmin();
+  const collection = getCollection(slug);
+  if (!collection) throw new Error("مجموعة غير معروفة");
+  if (!collection.fields.some((f) => f.name === "published")) throw new Error("لا يدعم النشر");
+  const supabase = await createClient();
+  const { error } = await supabase.from(collection.table).update({ published: next }).eq("id", id);
+  if (error) throw new Error(error.message);
+  revalidatePath("/", "layout");
+  revalidatePath(`/admin/collections/${slug}`);
+}
+
 export async function deleteRegistration(id: string) {
   await requireAdmin();
   const supabase = await createClient();
