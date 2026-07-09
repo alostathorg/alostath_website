@@ -41,6 +41,7 @@ export default async function HomePage() {
   const council = (settings.council as Record<string, string>) ?? {};
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
+  const featuredInitiatives = initiatives.slice(-3);
 
   return (
     <PageShell active="home">
@@ -190,7 +191,7 @@ export default async function HomePage() {
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
           <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
           <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
-            {initiatives.map((it) => (
+            {featuredInitiatives.map((it) => (
               <Link key={it.id} href={`/initiatives/${it.slug}`} className="card-lift" style={cardStyle}>
                 <div className="media-zoom">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
