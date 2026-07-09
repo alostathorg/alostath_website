@@ -561,6 +561,64 @@
   cursor: default;
 }
 
+/* ── Confirmation modal ────────────────────────────────────────────────────── */
+.admin-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(29, 33, 20, 0.45);
+  backdrop-filter: blur(2px);
+  animation: admin-fade 0.14s ease;
+}
+.admin-modal {
+  width: 100%;
+  max-width: 420px;
+  background: var(--canvas);
+  border: 1px solid var(--ad-line);
+  border-radius: 16px;
+  padding: 26px 24px 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+  animation: admin-pop 0.16s ease;
+}
+.admin-modal-title {
+  font-family: var(--font-serif, inherit);
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 10px;
+}
+.admin-modal-msg {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--text-body);
+  margin-bottom: 22px;
+}
+.admin-modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  flex-direction: row-reverse;
+}
+.admin-btn-danger {
+  background: var(--ad-danger);
+  color: #fff;
+}
+.admin-btn-danger:hover {
+  filter: brightness(0.93);
+}
+@keyframes admin-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes admin-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
 /* ── Badges ────────────────────────────────────────────────────────────────── */
 .admin-badge {
   display: inline-flex;
