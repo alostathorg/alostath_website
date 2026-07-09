@@ -10,7 +10,12 @@ export default function PublishToggle({ slug, id, published }: { slug: string; i
       type="button"
       className={`admin-pubtoggle ${published ? "is-on" : "is-off"}`}
       disabled={pending}
-      onClick={() => start(() => togglePublished(slug, id, !published))}
+      onClick={() => {
+        const msg = published
+          ? "هل تريد إلغاء نشر هذا العنصر وإخفاءه من الموقع؟"
+          : "هل تريد نشر هذا العنصر على الموقع؟";
+        if (confirm(msg)) start(() => togglePublished(slug, id, !published));
+      }}
       title={published ? "إخفاء من الموقع" : "نشر على الموقع"}
     >
       {pending ? "…" : published ? "إلغاء النشر" : "نشر"}
