@@ -590,18 +590,19 @@
   font-weight: 700;
   color: var(--ink);
   margin-bottom: 10px;
+  text-align: start;
 }
 .admin-modal-msg {
   font-size: 14.5px;
   line-height: 1.75;
   color: var(--text-body);
   margin-bottom: 22px;
+  text-align: start;
 }
 .admin-modal-actions {
   display: flex;
   gap: 10px;
   justify-content: flex-start;
-  flex-direction: row-reverse;
 }
 .admin-btn-danger {
   background: var(--ad-danger);
