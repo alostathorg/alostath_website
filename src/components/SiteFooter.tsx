@@ -78,8 +78,8 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>تواصل معنا</div>
           <div style={{ fontSize: 14, lineHeight: 1.9, color: "var(--inverse-subtle)", marginBottom: 14 }}>{c.address}</div>
-          <a href={`tel:${c.phone.replace(/\s/g, "")}`} dir="ltr" style={{ ...linkStyle, display: "block", textAlign: "start", marginBottom: 8 }}>{c.phone}</a>
-          <a href={`mailto:${c.email}`} dir="ltr" style={{ ...linkStyle, display: "block", textAlign: "start" }}>{c.email}</a>
+          <a href={`tel:${c.phone.replace(/\s/g, "")}`} dir="ltr" style={{ ...linkStyle, display: "block", textAlign: "right", marginBottom: 8 }}>{c.phone}</a>
+          <a href={`mailto:${c.email}`} dir="ltr" style={{ ...linkStyle, display: "block", textAlign: "right" }}>{c.email}</a>
         </div>
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>روابط سريعة</div>
