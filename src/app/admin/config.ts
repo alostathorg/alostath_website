@@ -168,3 +168,81 @@ export const COLLECTIONS: Collection[] = [
 export function getCollection(slug: string): Collection | undefined {
   return COLLECTIONS.find((c) => c.slug === slug);
 }
+
+// ── AI content helper ────────────────────────────────────────────────────────
+// The writing-heavy fields the "copy prompt → paste back" flow fills. System
+// fields (slug, status, theme, order, images, published) and the steps/timeline
+// (which get a ready template on create) are intentionally excluded.
+export const AI_FIELDS: Record<string, string[]> = {
+  awards: ["name", "badge_label", "type", "beneficiaries", "tagline", "overview", "goal", "partnership_note", "categories"],
+  initiatives: ["name", "badge", "tagline", "overview", "goal", "partners", "facts", "value_cards"],
+};
+
+// Ready-made starting content added to a NEW award / initiative so the steps
+// and timeline are never blank. Editors adjust or replace them.
+export const NEW_DEFAULTS: Record<string, Record<string, unknown>> = {
+  awards: {
+    steps: [
+      { title: "سجّل اهتمامك", body: "عبّر عن رغبتك بالمشاركة وتعرّف على الشروط." },
+      { title: "قدّم عملك", body: "ارفع أعمالك وفق المجالات والمعايير المعتمدة." },
+      { title: "التحكيم", body: "تُقيّم لجنة متخصصة الأعمال بمعايير فنية." },
+      { title: "إعلان النتائج", body: "يُعلن عن الفائزين وتُوزّع الجوائز." },
+    ],
+    phases: [
+      { label: "التسجيل وتقديم الأعمال", date_text: "", state: "now", tag_text: "مفتوح الآن" },
+      { label: "التحكيم", date_text: "", state: "next", tag_text: "" },
+      { label: "إعلان النتائج", date_text: "", state: "next", tag_text: "" },
+    ],
+  },
+  initiatives: {
+    steps: [
+      { title: "التخطيط", body: "نحدّد الأهداف والفئة المستهدفة." },
+      { title: "التنفيذ", body: "نُطلق أنشطة المبادرة على أرض الواقع." },
+      { title: "قياس الأثر", body: "نقيس النتائج ونطوّر التجربة." },
+    ],
+  },
+};
+
+// Builds the ready Arabic prompt an editor copies into any AI tool, together
+// with the source file, to get back JSON that fills the form.
+export function buildAiPrompt(collection: Collection): string {
+  const names = AI_FIELDS[collection.slug] ?? [];
+  const fields = names
+    .map((n) => collection.fields.find((f) => f.name === n))
+    .filter((f): f is Field => Boolean(f));
+
+  const skeleton: Record<string, unknown> = {};
+  const legend: string[] = [];
+  for (const f of fields) {
+    if (f.type === "tags") {
+      skeleton[f.name] = [];
+      legend.push(`- «${f.label}» (${f.name}): قائمة نصوص. ${f.help ?? ""}`.trim());
+    } else if (f.type === "repeater") {
+      const item = Object.fromEntries((f.itemFields ?? []).map((it) => [it.name, ""]));
+      skeleton[f.name] = [item];
+      const sub = (f.itemFields ?? []).map((it) => `"${it.name}" (${it.label})`).join("، ");
+      legend.push(`- «${f.label}» (${f.name}): قائمة عناصر، كل عنصر يحتوي: ${sub}.`);
+    } else {
+      skeleton[f.name] = "";
+      legend.push(`- «${f.label}» (${f.name}): ${f.help ?? "نص"}.`);
+    }
+  }
+
+  return [
+    `أنت مساعد لكتابة محتوى موقع «مؤسسة الأستاذ» الرسمي.`,
+    `سأرفق لك ملفاً يحتوي على معلومات عن ${collection.labelSingular}. اقرأه جيداً ثم اكتب المحتوى باللغة العربية الفصحى بأسلوب واضح ورسمي.`,
+    ``,
+    `أعِد النتيجة على هيئة JSON فقط، بنفس المفاتيح التالية تماماً، دون أي نص قبله أو بعده:`,
+    ``,
+    JSON.stringify(skeleton, null, 2),
+    ``,
+    `إرشادات الحقول:`,
+    ...legend,
+    ``,
+    `قواعد مهمة:`,
+    `- اكتب بالعربية الفصحى فقط.`,
+    `- لا تختلق معلومات غير موجودة في الملف؛ اترك الحقل فارغاً ("" أو []) إذا لم تجد ما يناسبه.`,
+    `- حافظ على أسماء المفاتيح بالإنجليزية كما هي أعلاه.`,
+    `- أعِد JSON صالحاً فقط دون أي شرح أو علامات إضافية.`,
+  ].join("\n");
+}

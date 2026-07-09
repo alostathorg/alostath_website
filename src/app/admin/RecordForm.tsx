@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { saveRecord, uploadMedia } from "./actions";
+import AiAssist from "./AiAssist";
 import type { Collection, Field } from "./config";
 
 // Basic Arabic → Latin transliteration so a slug can be generated automatically
@@ -53,6 +54,12 @@ export default function RecordForm({
 }) {
   const [pending, start] = useTransition();
   const [error, setError] = useState<string | null>(null);
+  // Values are held in state so the AI "paste to fill" flow can populate every
+  // field at once; a version bump remounts the fields to pick up new values.
+  const [values, setValues] = useState<Values>(initial);
+  const [version, setVersion] = useState(0);
+  const formRef = useRef<HTMLFormElement>(null);
+  const aiEnabled = collection.slug === "awards" || collection.slug === "initiatives";
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,6 +74,38 @@ export default function RecordForm({
     });
   }
 
+  // Reconstruct the current values from the live form so nothing already typed
+  // is lost when we remount to apply the imported content.
+  function readCurrentValues(): Values {
+    const form = formRef.current;
+    const out: Values = { ...values };
+    if (!form) return out;
+    const fd = new FormData(form);
+    for (const f of collection.fields) {
+      const raw = fd.get(f.name);
+      if (f.type === "repeater" || f.type === "keyvalue" || f.type === "json") {
+        try { out[f.name] = raw ? JSON.parse(String(raw)) : (f.type === "keyvalue" ? {} : []); } catch { /* keep */ }
+      } else if (f.type === "tags") {
+        out[f.name] = String(raw ?? "").split(",").map((s) => s.trim()).filter(Boolean);
+      } else if (f.type === "lines") {
+        out[f.name] = String(raw ?? "").split("\n");
+      } else if (f.type === "boolean") {
+        out[f.name] = raw === "on";
+      } else if (raw != null) {
+        out[f.name] = String(raw);
+      }
+    }
+    return out;
+  }
+
+  function handleImport(imported: Values) {
+    const merged = { ...readCurrentValues(), ...imported };
+    // Regenerate the slug from a freshly imported name if none was set yet.
+    if (imported.name && !String(merged.slug ?? "").trim()) merged.slug = slugify(String(imported.name));
+    setValues(merged);
+    setVersion((v) => v + 1);
+  }
+
   // Group fields into titled sections, preserving first-seen order.
   const groups: { name: string; fields: Field[] }[] = [];
   for (const f of collection.fields) {
@@ -77,13 +116,15 @@ export default function RecordForm({
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={onSubmit} ref={formRef}>
+      {aiEnabled && <AiAssist collection={collection} onImport={handleImport} />}
+
       {groups.map((g) => (
         <div className="admin-card" key={g.name}>
           <h2 className="admin-section-title" style={{ marginBottom: 18 }}>{g.name}</h2>
           <div className="admin-form-grid">
             {g.fields.map((f) => (
-              <FieldRow key={f.name} field={f} value={initial[f.name]} />
+              <FieldRow key={`${f.name}:${version}`} field={f} value={values[f.name]} />
             ))}
           </div>
         </div>

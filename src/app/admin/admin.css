@@ -913,3 +913,46 @@
 .admin-color-swatch::-webkit-color-swatch { border: none; border-radius: 5px; }
 .admin-color-swatch::-moz-color-swatch { border: none; border-radius: 5px; }
 .admin-color .admin-input { flex: 1 1 auto; }
+
+/* ── AI content assistant panel ────────────────────────────────────────────── */
+.admin-ai {
+  border: 1px solid var(--olive-100);
+  background: var(--olive-50);
+  border-radius: 14px;
+  margin-bottom: 22px;
+  overflow: hidden;
+}
+.admin-ai-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  text-align: start;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--olive-700);
+}
+.admin-ai-chev { font-size: 11px; opacity: 0.7; }
+.admin-ai-body {
+  padding: 0 18px 18px;
+  border-top: 1px solid var(--olive-100);
+}
+.admin-ai-steps {
+  margin: 14px 0 16px;
+  padding-inline-start: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  font-size: 13.5px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+.admin-ai-steps li { padding-inline-start: 4px; }
+.admin-ai-copy { margin-top: 2px; }
+.admin-ai-msg { margin-top: 12px; font-weight: 600; }

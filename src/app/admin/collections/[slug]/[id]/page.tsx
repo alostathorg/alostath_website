@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getCollection } from "../../../config";
+import { getCollection, NEW_DEFAULTS } from "../../../config";
 import RecordForm from "../../../RecordForm";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,8 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
   if (!collection) notFound();
 
   const isNew = id === "new";
-  let initial: Record<string, unknown> = {};
+  // New records start from the ready template (steps/timeline) when one exists.
+  let initial: Record<string, unknown> = isNew ? { ...(NEW_DEFAULTS[slug] ?? {}) } : {};
 
   if (!isNew) {
     const supabase = await createClient();
