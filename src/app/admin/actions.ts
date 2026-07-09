@@ -124,8 +124,13 @@ export async function togglePublished(slug: string, id: string, next: boolean) {
   if (!collection) throw new Error("مجموعة غير معروفة");
   if (!collection.fields.some((f) => f.name === "published")) throw new Error("لا يدعم النشر");
   const supabase = await createClient();
-  const { error } = await supabase.from(collection.table).update({ published: next }).eq("id", id);
+  const { data, error } = await supabase
+    .from(collection.table)
+    .update({ published: next })
+    .eq("id", id)
+    .select("id");
   if (error) throw new Error(error.message);
+  if (!data || data.length === 0) throw new Error("لم يتم تحديث العنصر — تحقق من الصلاحيات.");
   revalidatePath("/", "layout");
   revalidatePath(`/admin/collections/${slug}`);
 }
