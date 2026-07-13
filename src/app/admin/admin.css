@@ -494,6 +494,22 @@
   direction: ltr;
   text-align: start;
 }
+.admin-cell-num {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+.admin-table tbody tr:focus-within {
+  background: var(--olive-50);
+  outline: 2px solid var(--olive-500);
+  outline-offset: -2px;
+}
+.admin-edit:focus-visible,
+.admin-danger:focus-visible,
+.admin-pubtoggle:focus-visible {
+  outline: 2px solid var(--olive-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
 .admin-empty {
   text-align: center;
   color: var(--text-muted);
@@ -661,6 +677,13 @@
   background: var(--surface-1);
   color: var(--text-muted);
   border: 1px solid var(--ad-line);
+}
+.admin-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  flex: none;
 }
 
 /* ── Media grid ────────────────────────────────────────────────────────────── */
