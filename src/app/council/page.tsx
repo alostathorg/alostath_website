@@ -102,7 +102,7 @@ export default async function CouncilPage() {
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 14 }}>الجلسة القادمة</div>
             <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 36px" }}>مجلسنا القادم قـــــــــرب</h2>
             <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["days", "أيام"], ["hours", "ساعات"], ["mins", "دقائق"], ["secs", "ثوانٍ"]].map(([k, label]) => (
+              {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
                 <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
                   <div data-countdown={k} style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 500, color: "var(--gold-500)", lineHeight: 1 }}>--</div>
                   <div style={{ fontSize: 14, color: "var(--inverse-subtle)", marginTop: 8 }}>{label}</div>
