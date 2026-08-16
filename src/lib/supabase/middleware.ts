@@ -35,10 +35,17 @@ export async function updateSession(request: NextRequest) {
           },
         },
       });
-      const { data } = await supabase.auth.getUser();
+      // Cap the auth lookup so a slow/paused Supabase can never hang the
+      // request until Vercel's middleware limit (which surfaces as a 504
+      // MIDDLEWARE_INVOCATION_TIMEOUT). A hang here degrades to anonymous.
+      const timeout = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error("supabase auth timed out")), 2500),
+      );
+      const { data } = await Promise.race([supabase.auth.getUser(), timeout]);
       user = data.user;
     } catch (err) {
-      // Bad env or transient auth failure — degrade to anonymous, don't crash.
+      // Bad env, timeout, or transient auth failure — degrade to anonymous,
+      // don't crash.
       console.error("middleware: supabase auth failed —", (err as Error).message);
       user = null;
     }
