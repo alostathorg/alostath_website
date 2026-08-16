@@ -119,7 +119,7 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
         <section data-reveal="1" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
           <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "72px 32px" }}>
             <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 48px", textAlign: "center" }}>كيف تشارك؟</h2>
-            <div className="dp-steps" data-reveal-group>
+            <div className="dp-steps" data-reveal-group style={{ ["--step-count" as string]: award.steps.length }}>
               {award.steps.map((s, i) => (
                 <div key={i} className="dp-step"><div className="dp-step-node">{ar(i + 1)}</div><h3>{s.title}</h3><p>{s.body}</p></div>
               ))}

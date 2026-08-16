@@ -23,15 +23,15 @@ export default function MediaUploader() {
   }
 
   return (
-    <div style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 14, padding: 24, marginBottom: 28, maxWidth: 720 }}>
-      <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 4px" }}>رفع ملف</h2>
-      <p style={{ fontSize: 13, color: "var(--text-muted)", margin: "0 0 14px" }}>الصور والشعارات وملفات PDF. بعد الرفع انسخ الرابط والصقه في الحقل المناسب.</p>
-      <input type="file" accept="image/*,application/pdf,application/zip" onChange={onFile} />
+    <div className="admin-card" style={{ maxWidth: 720, marginBottom: 26 }}>
+      <h2 className="admin-card-title">رفع ملف</h2>
+      <p className="admin-card-hint">الصور والشعارات وملفات PDF. بعد الرفع انسخ الرابط والصقه في الحقل المناسب.</p>
+      <input className="admin-file" type="file" accept="image/*,application/pdf,application/zip" onChange={onFile} />
       {busy && <div style={{ fontSize: 14, color: "var(--text-muted)", marginTop: 12 }}>جارٍ الرفع…</div>}
-      {err && <div style={{ fontSize: 14, color: "#b3261e", marginTop: 12 }}>{err}</div>}
+      {err && <div className="admin-error" style={{ marginTop: 12 }}>{err}</div>}
       {url && (
-        <div style={{ marginTop: 14 }}>
-          <input readOnly value={url} dir="ltr" className="ct-field" onFocus={(e) => e.currentTarget.select()} style={{ textAlign: "left" }} />
+        <div className="admin-upload-result">
+          <input className="admin-input is-ltr" readOnly value={url} onFocus={(e) => e.currentTarget.select()} />
         </div>
       )}
     </div>

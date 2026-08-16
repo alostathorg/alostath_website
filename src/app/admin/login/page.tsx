@@ -28,18 +28,25 @@ export default function LoginPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", background: "var(--surface-1)", padding: 24 }}>
-      <form onSubmit={onSubmit} style={{ width: "100%", maxWidth: 380, background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: 36 }}>
+    <div className="admin-login">
+      <form onSubmit={onSubmit} className="admin-login-card">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" style={{ height: 44, marginBottom: 24 }} />
-        <h1 style={{ fontSize: 22, fontWeight: 700, margin: "0 0 6px" }}>لوحة التحكم</h1>
-        <p style={{ fontSize: 14, color: "var(--text-muted)", margin: "0 0 24px" }}>سجّل الدخول لإدارة محتوى الموقع.</p>
-        <label style={{ display: "block", fontSize: 14, fontWeight: 500, marginBottom: 6 }}>البريد الإلكتروني</label>
-        <input className="ct-field" type="email" dir="ltr" required value={email} onChange={(e) => setEmail(e.target.value)} style={{ marginBottom: 16, textAlign: "left" }} />
-        <label style={{ display: "block", fontSize: 14, fontWeight: 500, marginBottom: 6 }}>كلمة المرور</label>
-        <input className="ct-field" type="password" dir="ltr" required value={password} onChange={(e) => setPassword(e.target.value)} style={{ marginBottom: 20, textAlign: "left" }} />
-        {error && <div style={{ fontSize: 14, color: "#b3261e", marginBottom: 16 }}>{error}</div>}
-        <button type="submit" className="btn btn-primary btn-lg" style={{ width: "100%" }} disabled={loading}>
+        <img src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" />
+        <h1 className="admin-title" style={{ fontSize: 22 }}>لوحة التحكم</h1>
+        <p className="admin-subtitle" style={{ margin: "6px 0 24px" }}>سجّل الدخول لإدارة محتوى الموقع.</p>
+
+        <div className="admin-field" style={{ marginBottom: 16 }}>
+          <label className="admin-label">البريد الإلكتروني</label>
+          <input className="admin-input is-ltr" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="name@example.com" />
+        </div>
+        <div className="admin-field" style={{ marginBottom: 22 }}>
+          <label className="admin-label">كلمة المرور</label>
+          <input className="admin-input is-ltr" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} placeholder="••••••••" />
+        </div>
+
+        {error && <div className="admin-error">{error}</div>}
+
+        <button type="submit" className="admin-btn admin-btn-primary admin-btn-block" disabled={loading}>
           {loading ? "جارٍ الدخول…" : "دخول"}
         </button>
       </form>

@@ -45,9 +45,15 @@ function coerce(collection: Collection, form: FormData) {
           .map((s) => s.trim())
           .filter(Boolean);
         break;
-      case "json": {
+      case "json":
+      case "repeater": {
         const s = String(raw ?? "").trim();
         row[field.name] = s === "" ? [] : JSON.parse(s);
+        break;
+      }
+      case "keyvalue": {
+        const s = String(raw ?? "").trim();
+        row[field.name] = s === "" ? {} : JSON.parse(s);
         break;
       }
       default: {
@@ -108,6 +114,23 @@ export async function deleteRecord(slug: string, id: string) {
   const supabase = await createClient();
   const { error } = await supabase.from(collection.table).delete().eq("id", id);
   if (error) throw new Error(error.message);
+  revalidatePath("/", "layout");
+  revalidatePath(`/admin/collections/${slug}`);
+}
+
+export async function togglePublished(slug: string, id: string, next: boolean) {
+  await requireAdmin();
+  const collection = getCollection(slug);
+  if (!collection) throw new Error("مجموعة غير معروفة");
+  if (!collection.fields.some((f) => f.name === "published")) throw new Error("لا يدعم النشر");
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from(collection.table)
+    .update({ published: next })
+    .eq("id", id)
+    .select("id");
+  if (error) throw new Error(error.message);
+  if (!data || data.length === 0) throw new Error("لم يتم تحديث العنصر — تحقق من الصلاحيات.");
   revalidatePath("/", "layout");
   revalidatePath(`/admin/collections/${slug}`);
 }

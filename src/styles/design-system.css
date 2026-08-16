@@ -383,8 +383,8 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 .dp-vcard-num { position: absolute; top: 6px; inset-inline-start: 16px; font-family: var(--font-mono); font-size: 60px; font-weight: 500; line-height: 1; color: var(--olive-900); opacity: .06; pointer-events: none; }
 
 /* Connected horizontal stepper */
-.dp-steps { position: relative; display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
-.dp-steps::before { content: ""; position: absolute; top: 28px; inset-inline: 10%; height: 2px; background: repeating-linear-gradient(90deg, var(--hairline-strong) 0 7px, transparent 7px 15px); }
+.dp-steps { position: relative; display: grid; grid-template-columns: repeat(var(--step-count, 4), 1fr); gap: 20px; }
+.dp-steps::before { content: ""; position: absolute; top: 28px; inset-inline: calc(50% / var(--step-count, 4)); height: 2px; background: repeating-linear-gradient(90deg, var(--hairline-strong) 0 7px, transparent 7px 15px); }
 .dp-step { position: relative; z-index: 1; text-align: center; }
 .dp-step-node { width: 56px; height: 56px; border-radius: 16px; background: var(--olive-900); color: var(--gold-500); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 20px; margin: 0 auto 18px; box-shadow: 0 8px 20px -10px rgba(30,40,20,.7); transition: transform .22s cubic-bezier(.34,1.56,.64,1); }
 .dp-step:hover .dp-step-node { transform: translateY(-5px) scale(1.06); }

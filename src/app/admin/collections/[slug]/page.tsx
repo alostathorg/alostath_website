@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getCollection } from "../../config";
+import { getCollection, type Field } from "../../config";
 import DeleteButton from "../../DeleteButton";
+import PublishToggle from "../../PublishToggle";
 
 export const dynamic = "force-dynamic";
+
+const STATUS_LABEL: Record<string, { label: string; cls: string }> = {
+  open: { label: "التقديم مفتوح", cls: "is-open" },
+  soon: { label: "يفتح قريباً", cls: "is-soon" },
+  closed: { label: "مغلق", cls: "is-closed" },
+};
 
 export default async function CollectionList({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -17,38 +24,56 @@ export default async function CollectionList({ params }: { params: Promise<{ slu
   const { data: rows } = await query;
 
   const cols = collection.fields.filter((f) => f.listColumn);
+  const hasPublished = collection.fields.some((f) => f.name === "published");
 
   return (
     <div>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, marginBottom: 24 }}>
-        <h1 style={{ fontSize: 26, fontWeight: 700, margin: 0 }}>{collection.labelPlural}</h1>
-        <Link href={`/admin/collections/${slug}/new`} className="btn btn-primary btn-md">+ إضافة {collection.labelSingular}</Link>
+      <div className="admin-head">
+        <div>
+          <h1 className="admin-title">{collection.labelPlural}</h1>
+          <p className="admin-subtitle">{(rows?.length ?? 0)} عنصر</p>
+        </div>
+        <Link href={`/admin/collections/${slug}/new`} className="admin-btn admin-btn-primary">+ إضافة {collection.labelSingular}</Link>
       </div>
 
-      <div style={{ overflowX: "auto", background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 14 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+      <div className="admin-tablewrap">
+        <table className="admin-table" aria-label={collection.labelPlural}>
           <thead>
-            <tr style={{ textAlign: "start", background: "var(--surface-1)" }}>
+            <tr>
               {cols.map((c) => (
-                <th key={c.name} style={thStyle}>{c.label}</th>
+                <th key={c.name}>{c.label}</th>
               ))}
-              <th style={{ ...thStyle, textAlign: "end" }}></th>
+              <th style={{ textAlign: "end" }}>إجراءات</th>
             </tr>
           </thead>
           <tbody>
-            {(rows ?? []).map((row: Record<string, unknown>) => (
-              <tr key={row.id as string} style={{ borderTop: "1px solid var(--hairline)" }}>
-                {cols.map((c) => (
-                  <td key={c.name} style={tdStyle}>{renderCell(row[c.name], c.type)}</td>
-                ))}
-                <td style={{ ...tdStyle, textAlign: "end", whiteSpace: "nowrap" }}>
-                  <Link href={`/admin/collections/${slug}/${row.id}`} style={{ color: "var(--olive-700)", fontWeight: 600, textDecoration: "none", marginInlineEnd: 14 }}>تعديل</Link>
-                  <DeleteButton slug={slug} id={row.id as string} />
-                </td>
-              </tr>
-            ))}
+            {(rows ?? []).map((row: Record<string, unknown>) => {
+              const itemLabel = String(row.name ?? row.title ?? "") || undefined;
+              return (
+                <tr key={row.id as string}>
+                  {cols.map((c, i) => (
+                    <td key={c.name} className={cellClass(c, i)}>{renderCell(row[c.name], c, row)}</td>
+                  ))}
+                  <td style={{ textAlign: "end" }}>
+                    <span className="admin-rowactions">
+                      {hasPublished && (
+                        <PublishToggle slug={slug} id={row.id as string} published={Boolean(row.published)} label={itemLabel} />
+                      )}
+                      <Link
+                        href={`/admin/collections/${slug}/${row.id}`}
+                        className="admin-edit"
+                        aria-label={itemLabel ? `تعديل ${itemLabel}` : "تعديل"}
+                      >
+                        تعديل
+                      </Link>
+                      <DeleteButton slug={slug} id={row.id as string} label={itemLabel} />
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
             {(!rows || rows.length === 0) && (
-              <tr><td colSpan={cols.length + 1} style={{ ...tdStyle, textAlign: "center", color: "var(--text-muted)" }}>لا توجد عناصر بعد.</td></tr>
+              <tr><td colSpan={cols.length + 1} className="admin-empty">لا توجد عناصر بعد — ابدأ بإضافة عنصر جديد.</td></tr>
             )}
           </tbody>
         </table>
@@ -57,11 +82,36 @@ export default async function CollectionList({ params }: { params: Promise<{ slu
   );
 }
 
-function renderCell(value: unknown, type: string) {
-  if (type === "boolean") return value ? "✓ منشور" : "— مسودة";
-  if (value === null || value === undefined || value === "") return "—";
-  return String(value);
+function cellClass(field: Field, index: number) {
+  const parts: string[] = [];
+  if (index === 0) parts.push("col-name");
+  if (field.name === "slug") parts.push("admin-cell-ltr");
+  if (field.type === "number") parts.push("admin-cell-num");
+  return parts.join(" ");
 }
 
-const thStyle: React.CSSProperties = { padding: "12px 16px", fontWeight: 600, color: "var(--ink-subtle)", textAlign: "start" };
-const tdStyle: React.CSSProperties = { padding: "12px 16px", color: "var(--text-body)", textAlign: "start" };
+function renderCell(value: unknown, field: Field, row: Record<string, unknown>) {
+  if (field.type === "boolean") {
+    return value
+      ? <span className="admin-badge is-pub"><span className="dot" />منشور</span>
+      : <span className="admin-badge is-draft">مسودة</span>;
+  }
+  if (field.name === "status") {
+    const s = STATUS_LABEL[String(value)];
+    return s ? <span className={`admin-badge ${s.cls}`}><span className="dot" />{s.label}</span> : String(value ?? "—");
+  }
+  if (field.type === "select" && field.optionLabels) {
+    if (value === null || value === undefined || value === "") return <span style={{ color: "var(--ink-subtle)" }}>—</span>;
+    const label = field.optionLabels[String(value)] ?? String(value);
+    const meta = row.meta && typeof row.meta === "object" ? (row.meta as Record<string, unknown>) : null;
+    const hex = value === "color" && meta && typeof meta.hex === "string" ? meta.hex : null;
+    return (
+      <span className="admin-badge is-type">
+        {hex && <span className="admin-swatch" style={{ background: hex }} />}
+        {label}
+      </span>
+    );
+  }
+  if (value === null || value === undefined || value === "") return <span style={{ color: "var(--ink-subtle)" }}>—</span>;
+  return String(value);
+}

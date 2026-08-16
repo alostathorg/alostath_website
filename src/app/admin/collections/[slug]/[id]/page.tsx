@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getCollection } from "../../../config";
+import { getCollection, NEW_DEFAULTS } from "../../../config";
 import RecordForm from "../../../RecordForm";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,8 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
   if (!collection) notFound();
 
   const isNew = id === "new";
-  let initial: Record<string, unknown> = {};
+  // New records start from the ready template (steps/timeline) when one exists.
+  let initial: Record<string, unknown> = isNew ? { ...(NEW_DEFAULTS[slug] ?? {}) } : {};
 
   if (!isNew) {
     const supabase = await createClient();
@@ -33,8 +34,8 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
 
   return (
     <div>
-      <Link href={`/admin/collections/${slug}`} style={{ fontSize: 14, color: "var(--olive-700)", textDecoration: "none", fontWeight: 600 }}>→ رجوع إلى {collection.labelPlural}</Link>
-      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "12px 0 24px" }}>
+      <Link href={`/admin/collections/${slug}`} className="admin-back">→ رجوع إلى {collection.labelPlural}</Link>
+      <h1 className="admin-title" style={{ marginBottom: 24 }}>
         {isNew ? `إضافة ${collection.labelSingular}` : `تعديل: ${initial.name ?? initial.title ?? ""}`}
       </h1>
       <RecordForm collection={collection} id={isNew ? null : id} initial={initial} />

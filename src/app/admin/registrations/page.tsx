@@ -22,32 +22,36 @@ export default async function RegistrationsPage() {
 
   return (
     <div>
-      <h1 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 6px" }}>الطلبات والاشتراكات</h1>
-      <p style={{ color: "var(--text-muted)", margin: "0 0 24px" }}>كل ما يصل من نماذج التسجيل والتواصل والنشرة البريدية.</p>
+      <div className="admin-head">
+        <div>
+          <h1 className="admin-title">الطلبات والاشتراكات</h1>
+          <p className="admin-subtitle">كل ما يصل من نماذج التسجيل والتواصل والنشرة البريدية — {(rows?.length ?? 0)} إدخال.</p>
+        </div>
+      </div>
 
-      <div style={{ overflowX: "auto", background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 14 }}>
-        <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 14 }}>
+      <div className="admin-tablewrap">
+        <table className="admin-table">
           <thead>
-            <tr style={{ background: "var(--surface-1)" }}>
-              {["البرنامج", "النوع", "الاسم", "البريد", "الجوال", "التاريخ", ""].map((h) => (
-                <th key={h} style={th}>{h}</th>
+            <tr>
+              {["البرنامج", "النوع", "الاسم", "البريد", "الجوال", "التاريخ", "إجراءات"].map((h) => (
+                <th key={h} style={h === "إجراءات" ? { textAlign: "end" } : undefined}>{h}</th>
               ))}
             </tr>
           </thead>
           <tbody>
             {(rows ?? []).map((r: Record<string, unknown>) => (
-              <tr key={r.id as string} style={{ borderTop: "1px solid var(--hairline)" }}>
-                <td style={td}>{(r.program_name as string) || "—"}</td>
-                <td style={td}>{TYPE_LABEL[r.program_type as string] ?? (r.program_type as string) ?? "—"}</td>
-                <td style={td}>{(r.name as string) || "—"}</td>
-                <td style={{ ...td, direction: "ltr", textAlign: "start" }}>{(r.email as string) || "—"}</td>
-                <td style={{ ...td, direction: "ltr", textAlign: "start" }}>{(r.phone as string) || "—"}</td>
-                <td style={td}>{formatArabicDate((r.created_at as string).slice(0, 10))}</td>
-                <td style={{ ...td, textAlign: "end" }}><RegDeleteButton id={r.id as string} /></td>
+              <tr key={r.id as string}>
+                <td className="col-name">{(r.program_name as string) || "—"}</td>
+                <td><span className="admin-badge is-type">{TYPE_LABEL[r.program_type as string] ?? (r.program_type as string) ?? "—"}</span></td>
+                <td>{(r.name as string) || "—"}</td>
+                <td className="admin-cell-ltr">{(r.email as string) || "—"}</td>
+                <td className="admin-cell-ltr">{(r.phone as string) || "—"}</td>
+                <td style={{ whiteSpace: "nowrap" }}>{formatArabicDate((r.created_at as string).slice(0, 10))}</td>
+                <td style={{ textAlign: "end" }}><RegDeleteButton id={r.id as string} /></td>
               </tr>
             ))}
             {(!rows || rows.length === 0) && (
-              <tr><td colSpan={7} style={{ ...td, textAlign: "center", color: "var(--text-muted)" }}>لا توجد طلبات بعد.</td></tr>
+              <tr><td colSpan={7} className="admin-empty">لا توجد طلبات بعد.</td></tr>
             )}
           </tbody>
         </table>
@@ -55,6 +59,3 @@ export default async function RegistrationsPage() {
     </div>
   );
 }
-
-const th: React.CSSProperties = { padding: "12px 16px", fontWeight: 600, color: "var(--ink-subtle)", textAlign: "start", whiteSpace: "nowrap" };
-const td: React.CSSProperties = { padding: "12px 16px", color: "var(--text-body)", textAlign: "start" };

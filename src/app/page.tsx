@@ -41,6 +41,8 @@ export default async function HomePage() {
   const council = (settings.council as Record<string, string>) ?? {};
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
+  const featuredInitiatives = initiatives.slice(-3);
+  const featuredAwards = awards.slice(-2);
 
   return (
     <PageShell active="home">
@@ -153,7 +155,7 @@ export default async function HomePage() {
             <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 16px" }}>مجلسنا القادم قـــــــــرب</h2>
             <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", maxWidth: "62ch", margin: "0 auto 40px" }}>منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.</p>
             <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["days", "أيام"], ["hours", "ساعات"], ["mins", "دقائق"], ["secs", "ثوانٍ"]].map(([k, label]) => (
+              {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
                 <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
                   <div data-countdown={k} style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 500, color: "var(--gold-500)", lineHeight: 1 }}>--</div>
                   <div style={{ fontSize: 14, color: "var(--inverse-subtle)", marginTop: 8 }}>{label}</div>
@@ -169,7 +171,7 @@ export default async function HomePage() {
       <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
         <SectionHead eyebrow="تقديرٌ واحتفاء" title="جوائز الأستاذ" href="/awards" cta="كل الجوائز ←" />
         <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
-          {awards.map((a) => (
+          {featuredAwards.map((a) => (
             <Link key={a.id} href={`/awards/${a.slug}`} className="card-lift" style={cardStyle}>
               <div className="media-zoom">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -190,7 +192,7 @@ export default async function HomePage() {
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
           <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
           <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
-            {initiatives.map((it) => (
+            {featuredInitiatives.map((it) => (
               <Link key={it.id} href={`/initiatives/${it.slug}`} className="card-lift" style={cardStyle}>
                 <div className="media-zoom">
                   {/* eslint-disable-next-line @next/next/no-img-element */}

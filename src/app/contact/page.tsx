@@ -31,10 +31,10 @@ export default async function ContactPage() {
           {/* info */}
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             <InfoCard label="الهاتف" icon={<IconPhone />}>
-              <a href={`tel:${phone.replace(/\s/g, "")}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "start" }}>{phone}</a>
+              <a href={`tel:${phone.replace(/\s/g, "")}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "right" }}>{phone}</a>
             </InfoCard>
             <InfoCard label="البريد الإلكتروني" icon={<IconMail />}>
-              <a href={`mailto:${email}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "start" }}>{email}</a>
+              <a href={`mailto:${email}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "right" }}>{email}</a>
             </InfoCard>
             <InfoCard label="العنوان" icon={<IconPin />}>
               <div style={{ fontSize: 16, fontWeight: 500, color: "var(--text-body)", lineHeight: 1.7 }}>{address}</div>

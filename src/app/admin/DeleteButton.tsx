@@ -1,20 +1,39 @@
 "use client";
 
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { deleteRecord } from "./actions";
+import ConfirmModal from "./ConfirmModal";
 
-export default function DeleteButton({ slug, id }: { slug: string; id: string }) {
+export default function DeleteButton({ slug, id, label }: { slug: string; id: string; label?: string }) {
   const [pending, start] = useTransition();
+  const [open, setOpen] = useState(false);
+
   return (
-    <button
-      type="button"
-      disabled={pending}
-      onClick={() => {
-        if (confirm("هل أنت متأكد من حذف هذا العنصر؟")) start(() => deleteRecord(slug, id));
-      }}
-      style={{ background: "none", border: "none", color: "#b3261e", fontWeight: 600, cursor: "pointer", fontSize: 14, padding: 0 }}
-    >
-      {pending ? "…" : "حذف"}
-    </button>
+    <>
+      <button
+        type="button"
+        className="admin-danger"
+        disabled={pending}
+        onClick={() => setOpen(true)}
+        aria-label={label ? `حذف ${label}` : "حذف"}
+      >
+        {pending ? "…" : "حذف"}
+      </button>
+
+      <ConfirmModal
+        open={open}
+        title="حذف العنصر"
+        message={
+          label
+            ? `سيتم حذف «${label}» نهائياً ولا يمكن التراجع. هل تريد المتابعة؟`
+            : "سيتم حذف هذا العنصر نهائياً ولا يمكن التراجع. هل تريد المتابعة؟"
+        }
+        confirmLabel="حذف"
+        tone="danger"
+        pending={pending}
+        onConfirm={() => start(() => deleteRecord(slug, id))}
+        onCancel={() => setOpen(false)}
+      />
+    </>
   );
 }

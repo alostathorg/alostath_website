@@ -120,7 +120,7 @@ export default async function InitiativeDetail({ params }: { params: Promise<{ s
         <section data-reveal="1" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
           <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "72px 32px" }}>
             <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 48px", textAlign: "center" }}>كيف تعمل المبادرة</h2>
-            <div className="dp-steps" data-reveal-group>
+            <div className="dp-steps" data-reveal-group style={{ ["--step-count" as string]: item.steps.length }}>
               {item.steps.map((s, i) => (
                 <div key={i} className="dp-step"><div className="dp-step-node" style={stepNodeStyle}>{ar(i + 1)}</div><h3>{s.title}</h3><p>{s.body}</p></div>
               ))}
