@@ -6,8 +6,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // Run on everything except static assets and image files.
-    "/((?!_next/static|_next/image|favicon.ico|assets|.*\\.(?:svg|png|jpg|jpeg|gif|webp|pdf)$).*)",
-  ],
+  // Only run on the gated /admin area. Public pages read from Supabase via ISR
+  // and never need a per-request auth refresh — running the auth lookup on
+  // every public request risked a site-wide MIDDLEWARE_INVOCATION_TIMEOUT (504)
+  // whenever Supabase Auth was slow or paused.
+  matcher: ["/admin/:path*"],
 };
