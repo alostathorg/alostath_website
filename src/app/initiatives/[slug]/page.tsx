@@ -147,6 +147,24 @@ export default async function InitiativeDetail({ params }: { params: Promise<{ s
         </section>
       )}
 
+      {/* COMMUNITY — the concrete "help develop this initiative" path.
+          Deep-links the idea form with this initiative preselected. */}
+      <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "56px 32px 16px" }}>
+        <div style={{ background: "var(--olive-50)", border: "1px solid var(--olive-100)", borderRadius: 20, padding: "clamp(28px,4vw,44px)", display: "flex", gap: 28, flexWrap: "wrap", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ maxWidth: "58ch" }}>
+            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 12 }}>صوت الميدان</div>
+            <h2 style={{ fontSize: "clamp(22px,2.8vw,30px)", fontWeight: 700, margin: "0 0 10px" }}>لديك فكرة تطوّر «{item.name}»؟</h2>
+            <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 }}>
+              أنت الأقرب إلى الميدان. شارك أعضاء مجتمع الأستاذ رأيك في هذه المبادرة أو اقترح ما
+              يجعلها أقرب إلى حاجة المعلّم.
+            </p>
+          </div>
+          <Link href={`/community?initiative=${item.slug}#idea`} className="btn btn-primary btn-lg">
+            شارك بفكرة
+          </Link>
+        </div>
+      </section>
+
       {/* PAGER */}
       {all.length > 1 && (
         <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px 72px" }}>

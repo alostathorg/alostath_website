@@ -3,6 +3,7 @@ import Link from "next/link";
 const NAV = [
   { href: "/#hero", label: "الرئيسية", key: "home" },
   { href: "/council", label: "المجلس", key: "council" },
+  { href: "/community", label: "المجتمع", key: "community" },
   { href: "/awards", label: "الجوائز", key: "awards" },
   { href: "/initiatives", label: "المبادرات", key: "initiatives" },
   { href: "/blog", label: "المدونة", key: "blog" },

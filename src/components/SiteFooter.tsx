@@ -4,6 +4,7 @@ import type { SiteSettings } from "@/lib/types";
 const QUICK_LINKS = [
   { href: "/#hero", label: "الرئيسية" },
   { href: "/council", label: "المجلس" },
+  { href: "/community", label: "المجتمع" },
   { href: "/awards", label: "الجوائز" },
   { href: "/initiatives", label: "المبادرات" },
   { href: "/blog", label: "المدونة" },

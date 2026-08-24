@@ -57,8 +57,8 @@ export default async function HomePage() {
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>نُعزّز اليوم مــكانـــة…</h1>
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>من كــــان بالأمــس مهابا</h1>
           <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومةٌ وطنيّة شاملة تُعزّز مكانة المعلّم ودوره، تكاملاً مع وزارة التعليم وفي خدمة رؤية المملكة ٢٠٣٠.</p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", justifyContent: "flex-end", marginTop: 38, flexDirection: "row-reverse" }}>
-            <Link href="/about" className="btn btn-secondary btn-lg">تعرّف على المؤسسة</Link>
+          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginTop: 38 }}>
+            <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
             <Link href="/initiatives" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>المبادرات</Link>
           </div>
         </div>
@@ -227,6 +227,48 @@ export default async function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* COMMUNITY — the richer counterpart to the newsletter band below:
+          the newsletter takes an email, this takes a teacher. */}
+      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 96px" }}>
+        <div
+          data-reveal="1"
+          className="home-community"
+          style={{
+            background: "var(--surface-1)",
+            border: "1px solid var(--hairline)",
+            borderRadius: 24,
+            padding: "clamp(36px,5vw,60px)",
+            display: "grid",
+            gridTemplateColumns: "1.25fr 1fr",
+            gap: 40,
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <div className="eyebrow" style={{ color: "var(--gold-600)", marginBottom: 14 }}>مجتمع الأستاذ</div>
+            <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px", lineHeight: 1.3 }}>
+              كن جزءاً من صناعة القرار، لا متابعاً له فقط
+            </h2>
+            <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px", maxWidth: "58ch" }}>
+              انضمّ إلى مجتمع الأستاذ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، ولتشارك
+              بأفكارك في تطوير ما نعمل عليه. العضوية مجانية، والانسحاب بضغطةٍ واحدة.
+            </p>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <Link href="/community#join" className="btn btn-primary btn-lg">انضمّ إلى المجتمع</Link>
+              <Link href="/community#idea" className="btn btn-outline btn-lg">شارك فكرتك</Link>
+            </div>
+          </div>
+          <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
+            {["أخبار الجوائز والمبادرات أولاً", "صوتك في تطوير المبادرات", "دعوات جلسات المجلس", "فرص التطوّع والتحكيم"].map((t) => (
+              <li key={t} className="c-pill" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12, fontSize: 15.5, fontWeight: 600 }}>
+                <span className="c-dot" style={{ width: 9, height: 9, borderRadius: 9999, background: "var(--gold-500)", flex: "none" }} />
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 

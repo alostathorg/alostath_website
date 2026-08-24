@@ -75,6 +75,8 @@ export interface Registration {
   email: string | null;
   phone: string | null;
   category: string | null;
+  /** Contact-form body. Written by /api/register since day one. */
+  message: string | null;
   consent: boolean;
   created_at: string;
 }
@@ -97,3 +99,74 @@ export interface PressAsset {
 }
 
 export type SiteSettings = Record<string, unknown>;
+
+// ── مجتمع الأستاذ ─────────────────────────────────────────────────────────────
+
+export type MemberStatus = "active" | "pending" | "unsubscribed" | "blocked";
+export type IdeaStatus = "new" | "reviewing" | "accepted" | "archived";
+export type BroadcastStatus = "draft" | "sending" | "sent" | "failed";
+
+export interface CommunityMember {
+  id: string;
+  full_name: string;
+  email: string;
+  phone: string | null;
+  city: string | null;
+  region: string | null;
+  school_stage: string | null;
+  specialization: string | null;
+  years_experience: number | null;
+  workplace: string | null;
+  interests: string[];
+  contribution: string[];
+  bio: string | null;
+  consent: boolean;
+  wants_updates: boolean;
+  status: MemberStatus;
+  source: string | null;
+  token: string;
+  admin_note: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface CommunityIdea {
+  id: string;
+  member_id: string | null;
+  name: string | null;
+  email: string | null;
+  title: string;
+  body: string;
+  topic: string | null;
+  initiative_id: string | null;
+  status: IdeaStatus;
+  featured: boolean;
+  admin_note: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+/** Who a broadcast goes to. Empty arrays mean "no filter on this dimension". */
+export interface BroadcastAudience {
+  interests?: string[];
+  regions?: string[];
+  stages?: string[];
+}
+
+export interface CommunityBroadcast {
+  id: string;
+  subject: string;
+  preheader: string | null;
+  body: string[];
+  cta_label: string | null;
+  cta_url: string | null;
+  audience: BroadcastAudience;
+  status: BroadcastStatus;
+  recipient_count: number;
+  sent_count: number;
+  failed_count: number;
+  error: string | null;
+  sent_at: string | null;
+  created_at: string;
+  updated_at: string;
+}

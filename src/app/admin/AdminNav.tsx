@@ -33,6 +33,15 @@ const I = {
   media: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="9" cy="9" r="2" /><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" /></svg>
   ),
+  members: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+  ),
+  ideas: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
+  ),
+  broadcasts: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 11v2a1 1 0 0 0 1 1h3l5 4V6L7 10H4a1 1 0 0 0-1 1z" /><path d="M16.5 8.5a4 4 0 0 1 0 7" /><path d="M19.5 5.5a8 8 0 0 1 0 13" /></svg>
+  ),
 } as const;
 
 const COLLECTION_ICON: Record<string, keyof typeof I> = {
@@ -46,8 +55,25 @@ const COLLECTION_ICON: Record<string, keyof typeof I> = {
 export default function AdminNav({ email }: { email: string }) {
   const pathname = usePathname();
 
+  // Every link this nav renders, so "active" can mean the *most specific*
+  // match rather than any prefix match. A plain startsWith lit up "/admin" on
+  // every screen, and would now light both المجتمع links at once on
+  // /admin/community/ideas.
+  const hrefs = [
+    "/admin",
+    "/admin/registrations",
+    ...COLLECTIONS.map((c) => `/admin/collections/${c.slug}`),
+    "/admin/community",
+    "/admin/community/ideas",
+    "/admin/community/broadcasts",
+    "/admin/settings",
+    "/admin/media",
+  ];
+  const matches = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const best = hrefs.filter(matches).sort((a, b) => b.length - a.length)[0];
+
   function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
-    const active = pathname === href || pathname.startsWith(href + "/");
+    const active = href === best;
     return (
       <Link href={href} className={`admin-navlink${active ? " is-active" : ""}`} title={label}>
         {icon}
@@ -72,6 +98,11 @@ export default function AdminNav({ email }: { email: string }) {
       {COLLECTIONS.map((c) => (
         <NavLink key={c.slug} href={`/admin/collections/${c.slug}`} icon={I[COLLECTION_ICON[c.slug] ?? "posts"]} label={c.labelPlural} />
       ))}
+
+      <div className="admin-navlabel">المجتمع</div>
+      <NavLink href="/admin/community" icon={I.members} label="أعضاء المجتمع" />
+      <NavLink href="/admin/community/ideas" icon={I.ideas} label="أفكار المجتمع" />
+      <NavLink href="/admin/community/broadcasts" icon={I.broadcasts} label="رسائل المجتمع" />
 
       <div className="admin-navlabel">النظام</div>
       <NavLink href="/admin/settings" icon={I.settings} label="إعدادات الموقع" />
