@@ -21,18 +21,24 @@ rows to anonymous visitors.
 ```
 src/
   app/
-    (public pages)         home, about, council, contact, press,
+    (public pages)         home, about, council, community, contact, press,
                            awards[/slug], initiatives[/slug], blog[/slug]
     api/register/          public form endpoint → registrations table
+    api/community/         join / idea / unsubscribe endpoints (SQL RPC backed)
     admin/                 gated dashboard (login, CRUD engine, media, settings)
+    admin/community/       members, ideas, broadcasts
   components/              SiteHeader / SiteFooter / SiteChrome (ported site.js)
   lib/
     supabase/              server / client / admin / public / middleware clients
     queries.ts             typed public reads (ISR)
     types.ts               row types (mirror the SQL schema)
+    community.ts           shared option lists (regions, stages, interests…)
+    email.ts               Resend transport + RTL email templates
+    validate.ts            shared form validators
   styles/                  design system + tokens (unchanged) + page styles
 supabase/
   migrations/0001_init.sql schema + enums + RLS + storage bucket
+  migrations/0002_community.sql  مجتمع الأستاذ tables, RLS, public write RPCs
   seed.ts                  one‑time seed from the original hardcoded content
 ```
 
@@ -49,12 +55,32 @@ SUPABASE_SERVICE_ROLE_KEY=...        # server-only, used by the seed script
 NEXT_PUBLIC_SUPABASE_BUCKET=media
 ```
 
+Optional, and only needed to send community broadcasts:
+
+```
+RESEND_API_KEY=...                   # https://resend.com → API Keys
+COMMUNITY_FROM_EMAIL=مجتمع الأستاذ <community@ostath.sa>
+NEXT_PUBLIC_SITE_URL=https://ostath.sa
+```
+
+Without these the site behaves exactly as before — teachers still join the
+community and submit ideas — but the dashboard can't send email, so use the CSV
+export instead.
+
 ### 2. Apply the schema
 
-Run `supabase/migrations/0001_init.sql` against the project — via the Supabase
-SQL editor, or the Supabase CLI (`supabase db push`). It creates all tables, the
-`application_status` / `phase_state` enums, RLS policies, the `admins` table +
-`is_admin()` helper, and the public `media` storage bucket.
+Run the migrations in order against the project — via the Supabase SQL editor,
+or the Supabase CLI (`supabase db push`):
+
+- `supabase/migrations/0001_init.sql` — all content tables, the
+  `application_status` / `phase_state` enums, RLS policies, the `admins` table +
+  `is_admin()` helper, and the public `media` storage bucket.
+- `supabase/migrations/0002_community.sql` — مجتمع الأستاذ: members, ideas,
+  broadcasts, their RLS, and the three `SECURITY DEFINER` functions that are the
+  only way anonymous visitors may write.
+
+Both files are idempotent, so re-running them is safe. `0001` has already been
+applied to the live project — never edit it; add a numbered file instead.
 
 ### 3. Seed the current content
 
@@ -94,6 +120,10 @@ npm run dev      # http://localhost:3000  (site) and /admin (dashboard)
 - **إعدادات الموقع** — contact block, socials, footer copyright, and the council
   countdown, edited as JSON.
 - **الوسائط** — upload images/PDFs to Storage and copy their public URLs.
+- **مجتمع الأستاذ** — three screens: **أعضاء المجتمع** (search, filter by status,
+  CSV export, per‑member detail with an internal note), **أفكار المجتمع** (review
+  incoming ideas, set a status, feature one on the public page), and **رسائل
+  المجتمع** (compose a broadcast, target a segment, send).
 
 Access is gated two ways: middleware redirects unauthenticated users to
 `/admin/login`, and every write is additionally enforced by RLS (`is_admin()`),
@@ -105,6 +135,37 @@ so a signed‑in non‑admin can read nothing privileged and write nothing.
 2. Set the four env vars above in Project Settings → Environment Variables.
 3. Deploy. Content changes made in `/admin` go live via ISR; only code changes
    need a new deployment.
+
+## مجتمع الأستاذ (the teacher community)
+
+`/community` is where a teacher joins the foundation's community and where they
+send ideas back. It exists to close a loop the rest of the site can't: give the
+team an opted‑in audience to reach when something is published, and give
+teachers a channel into the initiatives.
+
+**Three tables** (`supabase/migrations/0002_community.sql`): `community_members`,
+`community_ideas`, and `community_broadcasts` + `community_broadcast_recipients`.
+
+**Public writes never touch a table directly.** Unlike `registrations` — whose
+RLS is `for insert with check (true)` — anonymous visitors get no access to the
+community tables at all. `/api/community/join` and `/api/community/idea` call
+`SECURITY DEFINER` SQL functions (`community_join`, `community_idea_submit`,
+`community_unsubscribe`) that own validation, length caps and rate limiting. The
+membership list is therefore not readable with the public anon key, and joining
+twice with the same email updates the member instead of duplicating them.
+
+**Sending is batched and resumable.** `prepareBroadcast` resolves the audience
+into one row per recipient; `sendBroadcastBatch` sends the next 100 and reports
+progress, and the dashboard loops until the queue drains. Because progress is
+persisted per recipient, a serverless timeout — or closing the tab — costs
+nothing: the next run picks up exactly where it stopped and nobody is emailed
+twice. Every broadcast carries an RFC 8058 `List-Unsubscribe` header pointing at
+a POST‑only endpoint, so link scanners can't unsubscribe people by prefetching.
+
+**Segments.** A broadcast can target interests, regions and school stages; an
+empty selection means every active member who opted into updates. The option
+lists live in `src/lib/community.ts` so the join form, the admin filters and the
+audience picker can never drift apart.
 
 ## How the form flow maps to data
 

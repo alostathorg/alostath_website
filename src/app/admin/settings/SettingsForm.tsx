@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { uploadMedia } from "../actions";
 
-type FieldDef = { name: string; label: string; type: "text" | "tel" | "email" | "url" | "datetime" | "image"; hint?: string };
+type FieldDef = { name: string; label: string; type: "text" | "textarea" | "tel" | "email" | "url" | "datetime" | "image"; hint?: string };
 
 const SCHEMAS: Record<string, { title: string; hint: string; fields: FieldDef[] }> = {
   contact: {
@@ -24,6 +24,14 @@ const SCHEMAS: Record<string, { title: string; hint: string; fields: FieldDef[] 
     hint: "يُستخدم في العدّاد التنازلي للجلسة القادمة على الصفحة الرئيسية وصفحة المجلس.",
     fields: [
       { name: "next_session", label: "موعد الجلسة القادمة", type: "datetime", hint: "اختر التاريخ والوقت (بتوقيت السعودية)." },
+      { name: "hero_image", label: "صورة الخلفية", type: "image" },
+    ],
+  },
+  community: {
+    title: "مجتمع الأستاذ",
+    hint: "تظهر في صدر صفحة المجتمع. اتركها فارغة لاستخدام النص الافتراضي.",
+    fields: [
+      { name: "intro", label: "نص التعريف", type: "textarea", hint: "الفقرة التي تظهر أسفل عنوان «مجتمع الأستاذ»." },
       { name: "hero_image", label: "صورة الخلفية", type: "image" },
     ],
   },
@@ -86,6 +94,16 @@ function FieldControl({ field, value, onChange }: { field: FieldDef; value: stri
       <div className="admin-field is-wide">
         <label className="admin-label">{field.label}</label>
         <ImageControl value={value} onChange={onChange} />
+        {field.hint && <p className="admin-hint">{field.hint}</p>}
+      </div>
+    );
+  }
+
+  if (field.type === "textarea") {
+    return (
+      <div className="admin-field is-wide">
+        <label className="admin-label">{field.label}</label>
+        <textarea className="admin-textarea" rows={4} value={value} onChange={(e) => onChange(e.target.value)} />
         {field.hint && <p className="admin-hint">{field.hint}</p>}
       </div>
     );

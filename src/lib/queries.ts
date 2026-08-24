@@ -2,6 +2,7 @@ import { publicClient } from "@/lib/supabase/public";
 import type {
   Award,
   BlogPost,
+  CommunityIdea,
   Initiative,
   Partner,
   PressAsset,
@@ -107,4 +108,22 @@ export async function getSettings(): Promise<SiteSettings> {
   const out: SiteSettings = {};
   for (const row of data ?? []) out[row.key] = row.value;
   return out;
+}
+
+/**
+ * «أصوات المجتمع» — the ideas the team chose to showcase. RLS already limits
+ * anonymous reads to `featured = true and status = 'accepted'`; the filters
+ * here are belt-and-braces so an admin session sees the same page as a visitor.
+ */
+export async function getFeaturedIdeas(limit = 6): Promise<CommunityIdea[]> {
+  const supabase = publicClient();
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from("community_ideas")
+    .select("*")
+    .eq("featured", true)
+    .eq("status", "accepted")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  return (data as CommunityIdea[] | null) ?? [];
 }

@@ -33,7 +33,7 @@ export default async function RegistrationsPage() {
         <table className="admin-table">
           <thead>
             <tr>
-              {["البرنامج", "النوع", "الاسم", "البريد", "الجوال", "التاريخ", "إجراءات"].map((h) => (
+              {["البرنامج", "النوع", "الاسم", "البريد", "الجوال", "الرسالة", "التاريخ", "إجراءات"].map((h) => (
                 <th key={h} style={h === "إجراءات" ? { textAlign: "end" } : undefined}>{h}</th>
               ))}
             </tr>
@@ -46,12 +46,19 @@ export default async function RegistrationsPage() {
                 <td>{(r.name as string) || "—"}</td>
                 <td className="admin-cell-ltr">{(r.email as string) || "—"}</td>
                 <td className="admin-cell-ltr">{(r.phone as string) || "—"}</td>
+                <td className="admin-cell-message">
+                  {(r.message as string) ? (
+                    <span title={r.message as string}>{r.message as string}</span>
+                  ) : (
+                    <span style={{ color: "var(--ink-subtle)" }}>—</span>
+                  )}
+                </td>
                 <td style={{ whiteSpace: "nowrap" }}>{formatArabicDate((r.created_at as string).slice(0, 10))}</td>
                 <td style={{ textAlign: "end" }}><RegDeleteButton id={r.id as string} /></td>
               </tr>
             ))}
             {(!rows || rows.length === 0) && (
-              <tr><td colSpan={7} className="admin-empty">لا توجد طلبات بعد.</td></tr>
+              <tr><td colSpan={8} className="admin-empty">لا توجد طلبات بعد.</td></tr>
             )}
           </tbody>
         </table>

@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { validEmail, validPhone } from "@/lib/validate";
 
 /**
  * Client-side interactions ported from the original site.js:
@@ -271,8 +272,6 @@ function initRegisterFlow(cleanups: Array<() => void>) {
 
   const tpl = (str: string, name: string) => str.replace(/\{name\}/g, name);
   const fieldEl = (key: string) => overlay.querySelector(`[data-field="${key}"]`) as HTMLElement;
-  const validEmail = (v: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
-  const validPhone = (v: string) => /^[0-9+\-\s]{7,}$/.test(v);
   const clearError = (field: Element | null) => field && field.classList.remove("has-error");
 
   form.addEventListener("input", (e) => {
