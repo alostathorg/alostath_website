@@ -99,8 +99,8 @@ export default async function CommunityPage() {
             المعلم شريكًا فاعلًا في تطوير المهنة، وصناعة المبادرات، وتعزيز أثر التعليم.
           </p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 34 }}>
-            <a href="#join" className="btn btn-primary btn-lg">انضم إلى المجتمع</a>
-            <a href="#idea" className="btn btn-secondary btn-lg">شارك فكرتك</a>
+            <a href="#join" className="btn btn-secondary btn-lg">انضم إلى المجتمع</a>
+            <a href="#idea" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>شارك فكرتك</a>
           </div>
         </div>
       </section>
