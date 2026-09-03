@@ -54,8 +54,8 @@ export default async function HomePage() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", bottom: -40, left: -60, width: "min(560px,52%)", height: "auto", opacity: 0.05, pointerEvents: "none" }} />
         <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(64px,18vw,120px) 28px clamp(56px,14vw,120px)", width: "100%", textAlign: "right", color: "var(--ink-inverse)" }}>
-          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>نُعزّز اليوم مــكانـــة…</h1>
-          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>من كــــان بالأمــس مهابا</h1>
+          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>المعلم</h1>
+          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>ناظر القيم</h1>
           <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومةٌ وطنيّة شاملة تُعزّز مكانة المعلّم ودوره، تكاملاً مع وزارة التعليم وفي خدمة رؤية المملكة ٢٠٣٠.</p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginTop: 38 }}>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
