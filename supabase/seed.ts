@@ -57,10 +57,10 @@ const awards = [
       "تُنفَّذ الجائزة في إطارٍ تكاملي مع وزارة التعليم ووزارة الثقافة وهيئاتها المتخصصة، بما يدعم استدامة أثرها الثقافي والتربوي.",
     sort_order: 1,
     phases: [
-      { label: "التسجيل وتقديم الأعمال", date_text: "حتى ٣٠ رمضان ١٤٤٧هـ", state: "now", tag_text: "مفتوح الآن" },
-      { label: "تحكيم الأعمال", date_text: "شوال ١٤٤٧هـ", state: "next" },
-      { label: "إعلان النتائج", date_text: "ذو القعدة ١٤٤٧هـ", state: "next" },
-      { label: "حفل التكريم", date_text: "ذو الحجة ١٤٤٧هـ", state: "next" },
+      { label: "التسجيل وتقديم الأعمال", date_text: "حتى 30 رمضان 1447هـ", state: "now", tag_text: "مفتوح الآن" },
+      { label: "تحكيم الأعمال", date_text: "شوال 1447هـ", state: "next" },
+      { label: "إعلان النتائج", date_text: "ذو القعدة 1447هـ", state: "next" },
+      { label: "حفل التكريم", date_text: "ذو الحجة 1447هـ", state: "next" },
     ],
   },
   {
@@ -261,13 +261,13 @@ const settings = [
   {
     key: "contact",
     value: {
-      address: "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض ١٢٣١٤",
+      address: "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض 12314",
       phone: "+966 55 075 7424",
       email: "contact@ostath.sa",
       instagram: "https://www.instagram.com/alostathorg/",
       linkedin: "https://www.linkedin.com/company/alostathorg",
       x: "https://x.com/AlOstathOrg",
-      copyright: "جميع الحقوق محفوظة لمؤسسة الأستاذ ٢٠٢٦",
+      copyright: "جميع الحقوق محفوظة لمؤسسة الأستاذ 2026",
     },
   },
   {

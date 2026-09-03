@@ -8,6 +8,7 @@
 // secrets, exactly like publicClient() in lib/supabase/public.ts. Callers get a
 // structured `{ok:false, error}` instead.
 
+import { toLatinDigits } from "@/lib/format";
 import type { CommunityBroadcast, CommunityMember } from "@/lib/types";
 
 const API = "https://api.resend.com";
@@ -157,6 +158,19 @@ function esc(s: string): string {
 }
 
 /**
+ * Escape + normalise, for copy a human reads. An inbox is as public a surface
+ * as a page, so the site's "Western digits only" rule holds there too — and a
+ * broadcast is composed in the dashboard, so it never passes through the
+ * latinDigits() pass that lib/queries.ts applies to public CMS reads.
+ *
+ * Deliberately not applied to URLs: those are addresses, not copy, and
+ * rewriting a character inside one would break the link.
+ */
+function text(s: string): string {
+  return esc(toLatinDigits(s));
+}
+
+/**
  * Shared RTL shell. Table-based and inline-styled because Outlook and most
  * Arabic webmail clients strip <style> blocks and ignore flex/grid.
  */
@@ -165,7 +179,7 @@ function shell(opts: { preheader?: string | null; body: string; footer: string }
 <html lang="ar" dir="rtl">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>مؤسسة الأستاذ</title></head>
 <body style="margin:0;padding:0;background:${C.surface};">
-${opts.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${esc(opts.preheader)}</div>` : ""}
+${opts.preheader ? `<div style="display:none;max-height:0;overflow:hidden;opacity:0;">${text(opts.preheader)}</div>` : ""}
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.surface};padding:28px 12px;">
 <tr><td align="center">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:${C.canvas};border:1px solid ${C.hairline};border-radius:16px;overflow:hidden;font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif;">
@@ -188,14 +202,14 @@ ${opts.footer}
 
 function button(label: string, url: string): string {
   return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:26px 0 6px;"><tr><td style="background:${C.olive500};border-radius:10px;">
-  <a href="${esc(url)}" style="display:inline-block;padding:13px 26px;color:${C.inkInverse};font-size:15px;font-weight:600;text-decoration:none;">${esc(label)}</a>
+  <a href="${esc(url)}" style="display:inline-block;padding:13px 26px;color:${C.inkInverse};font-size:15px;font-weight:600;text-decoration:none;">${text(label)}</a>
 </td></tr></table>`;
 }
 
 function paragraphs(lines: string[]): string {
   return lines
     .filter((l) => l.trim())
-    .map((l) => `<p style="margin:0 0 15px;font-size:15px;line-height:1.95;color:${C.inkMuted};">${esc(l)}</p>`)
+    .map((l) => `<p style="margin:0 0 15px;font-size:15px;line-height:1.95;color:${C.inkMuted};">${text(l)}</p>`)
     .join("\n");
 }
 
@@ -204,7 +218,7 @@ export function renderWelcomeEmail(member: { full_name: string; token: string })
   const html = shell({
     preheader: "شكراً لانضمامك — سنصل إليك أولاً بكل جديد.",
     body: `
-<h1 style="margin:0 0 14px;font-size:23px;font-weight:700;color:${C.ink};">أهلاً ${esc(member.full_name)} 👋</h1>
+<h1 style="margin:0 0 14px;font-size:23px;font-weight:700;color:${C.ink};">أهلاً ${text(member.full_name)} 👋</h1>
 ${paragraphs([
   "سعدنا بانضمامك إلى «مجتمع الأستاذ» — المساحة التي نجمع فيها المعلّمين والمعلّمات حول برامج المؤسسة وجوائزها ومبادراتها.",
   "من الآن فصاعداً ستصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، وستُدعى للمساهمة بأفكارك في تطوير ما نعمل عليه.",
@@ -225,8 +239,8 @@ export function renderBroadcastEmail(
   const html = shell({
     preheader: broadcast.preheader,
     body: `
-<h1 style="margin:0 0 8px;font-size:23px;font-weight:700;color:${C.ink};">${esc(broadcast.subject)}</h1>
-<p style="margin:0 0 20px;font-size:14px;color:${C.inkSubtle};">مرحباً ${esc(member.full_name)}،</p>
+<h1 style="margin:0 0 8px;font-size:23px;font-weight:700;color:${C.ink};">${text(broadcast.subject)}</h1>
+<p style="margin:0 0 20px;font-size:14px;color:${C.inkSubtle};">مرحباً ${text(member.full_name)}،</p>
 ${paragraphs(broadcast.body ?? [])}
 ${broadcast.cta_label && broadcast.cta_url ? button(broadcast.cta_label, broadcast.cta_url) : ""}`,
     footer: `تصلك هذه الرسالة لأنك عضو في مجتمع الأستاذ.<br>
@@ -234,7 +248,8 @@ ${broadcast.cta_label && broadcast.cta_url ? button(broadcast.cta_label, broadca
   });
 
   return {
-    subject: broadcast.subject,
+    // Plain text, not HTML — normalised but not escaped.
+    subject: toLatinDigits(broadcast.subject),
     html,
     // RFC 8058 — lets Gmail/Outlook render a native unsubscribe control, which
     // materially protects sender reputation.

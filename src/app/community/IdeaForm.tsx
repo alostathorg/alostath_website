@@ -112,7 +112,7 @@ export default function IdeaForm({
         </p>
       </div>
 
-      {failure && <p className="cm-alert" role="alert">{failure}</p>}
+      {failure && <p className="cm-alert txt-plain" role="alert">{failure}</p>}
 
       <form onSubmit={onSubmit} noValidate>
         <div className={`${field("title")} is-wide`}>

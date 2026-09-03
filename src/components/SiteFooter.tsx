@@ -14,13 +14,13 @@ const QUICK_LINKS = [
 
 // Defaults mirror the original static footer; site_settings overrides them.
 const DEFAULTS = {
-  address: "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض ١٢٣١٤",
+  address: "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض 12314",
   phone: "+966 55 075 7424",
   email: "contact@ostath.sa",
   instagram: "https://www.instagram.com/alostathorg/",
   linkedin: "https://www.linkedin.com/company/alostathorg",
   x: "https://x.com/AlOstathOrg",
-  copyright: "جميع الحقوق محفوظة لمؤسسة الأستاذ ٢٠٢٦",
+  copyright: "جميع الحقوق محفوظة لمؤسسة الأستاذ 2026",
 };
 
 const linkStyle = {

@@ -17,10 +17,10 @@ const VALUES = [
 ];
 
 const BOARD = [
-  { name: "م. سامي الحصيّن", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
-  { name: "د. عبدالإله الصالح", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228` },
+  { name: "د. عبدالإله الصالح", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228`, role: "رئيس مجلس الأمناء" },
   { name: "د. خالد العواد", img: `${FR}/NMoq9rbaVdr8bBZzseUNUpJIws.png?width=374&height=410` },
   { name: "د. زياد الدريس", img: `${FR}/m74hlEDKVe2RKWKLIMtvUKWhc.png?width=512&height=512` },
+  { name: "م. سامي الحصيّن", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
 ];
 
 export default function AboutPage() {
@@ -33,7 +33,7 @@ export default function AboutPage() {
         <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 80px", textAlign: "center" }}>
           <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16, textAlign: "right" }}>مؤسسة غير ربحيّة</div>
           <h1 style={{ fontSize: "clamp(38px,5.4vw,60px)", fontWeight: 700, lineHeight: 1.2, margin: 0, textAlign: "right" }}>من نحن</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "20px auto 0", textAlign: "right" }}>نُعزّز مكانة المعلّم ودوره، تكاملاً مع منظومة التعليم، وفي خدمة رؤية المملكة ٢٠٣٠.</p>
+          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "20px auto 0", textAlign: "justify" }}>نُعزّز مكانة المعلّم ودوره، تكاملاً مع منظومة التعليم، وفي خدمة رؤية المملكة 2030.</p>
         </div>
       </section>
 
@@ -43,7 +43,7 @@ export default function AboutPage() {
           <div>
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>عن المؤسسة</div>
             <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: "0 0 22px" }}>المعلّم ركيزةُ التعليم</h2>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام ٢٠٢٣ بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
+            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام 2023 بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: 0 }}>وتسعى لتكون مركز خبرةٍ في هذا المجال، وشريكاً لمنظومة التعليم والمجتمع في تحقيق أهداف الرؤية ومستهدفاتها في خدمة المعلّم والتعليم.</p>
           </div>
           <div style={{ position: "relative" }}>
@@ -118,7 +118,7 @@ export default function AboutPage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={m.img} alt={m.name} style={{ width: 150, height: 150, borderRadius: 16, objectFit: "cover", border: "3px solid var(--canvas)", boxShadow: "0 4px 12px rgba(35,39,26,0.10)" }} />
                 <div style={{ fontSize: 18, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 14, color: "var(--text-subtle)", marginTop: -10 }}>عضو مجلس الأمناء</div>
+                <div style={{ fontSize: 14, color: "var(--text-subtle)", marginTop: -10 }}>{m.role ?? "عضو مجلس الأمناء"}</div>
               </div>
             ))}
           </div>
@@ -131,7 +131,7 @@ export default function AboutPage() {
         <img src={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "96px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
           <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب.</p>
           <form data-newsletter-form>
             <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
               <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.

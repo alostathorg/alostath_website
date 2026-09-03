@@ -73,7 +73,7 @@ export default async function PressPage() {
               return (
                 <div key={c.id} className="swatch">
                   <div className="swatch-chip" style={{ background: hex, ...(light ? { borderBottom: "1px solid var(--hairline)" } : {}) }} />
-                  <div className="swatch-info"><p className="nm">{c.title}</p><p className="hx">{hex}</p></div>
+                  <div className="swatch-info"><p className="nm txt-plain">{c.title}</p><p className="hx">{hex}</p></div>
                 </div>
               );
             })}
@@ -87,7 +87,7 @@ export default async function PressPage() {
           <div style={{ border: "1px solid var(--hairline)", borderRadius: 20, padding: "clamp(28px,4vw,44px)", background: "var(--canvas)" }}>
             <div className="eyebrow" style={{ marginBottom: 14 }}>الخطوط</div>
             <div style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.1, color: "var(--ink)", marginBottom: 8 }}>الأستاذ</div>
-            <div style={{ fontSize: 18, color: "var(--text-muted)", marginBottom: 14 }}>أ ب ت ث ج ح خ &nbsp; ABCD &nbsp; ٠١٢٣٤٥٦٧٨٩</div>
+            <div style={{ fontSize: 18, color: "var(--text-muted)", marginBottom: 14 }}>أ ب ت ث ج ح خ &nbsp; ABCD &nbsp; 0123456789</div>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 600, color: "var(--olive-700)", background: "var(--olive-50)", border: "1px solid var(--olive-100)", borderRadius: 9, padding: "7px 13px", marginBottom: 20 }}>IBM Plex Sans Arabic</div>
             <p style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 }}>تعتمد هوية المؤسسة على خط <strong style={{ color: "var(--ink)" }}>IBM Plex Sans Arabic</strong> بأوزانه المختلفة، بما يضمن وضوح القراءة واتساق النبرة البصرية في العربية واللاتينية.</p>
           </div>
@@ -106,7 +106,7 @@ export default async function PressPage() {
           <div data-reveal="1" style={{ maxWidth: 620, margin: "0 auto" }}>
             <div className="eyebrow" style={{ marginBottom: 14 }}>للتواصل الإعلامي</div>
             <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 14px", color: "var(--ink)" }}>طلبات الصحافة والإعلام</h2>
-            <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>لطلبات المقابلات أو الأصول الإضافية أو الاستفسارات الإعلامية، تواصل مع الفريق مباشرة.</p>
+            <p className="txt-justify is-center" style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>لطلبات المقابلات أو الأصول الإضافية أو الاستفسارات الإعلامية، تواصل مع الفريق مباشرة.</p>
             <a href="mailto:contact@ostath.sa" className="btn btn-primary btn-md">contact@ostath.sa</a>
           </div>
         </div>

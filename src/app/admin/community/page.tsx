@@ -153,7 +153,7 @@ export default async function CommunityMembersPage({
 
       {rows.length >= 500 && (
         <p className="admin-hint" style={{ marginTop: 14 }}>
-          يعرض هذا الجدول أحدث ٥٠٠ عضو. استخدم البحث أو التصفية للوصول إلى البقية، أو صدّر الملف كاملاً.
+          يعرض هذا الجدول أحدث 500 عضو. استخدم البحث أو التصفية للوصول إلى البقية، أو صدّر الملف كاملاً.
         </p>
       )}
     </div>

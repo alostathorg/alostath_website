@@ -147,7 +147,7 @@ export default function JoinForm() {
         </p>
       </div>
 
-      {failure && <p className="cm-alert" role="alert">{failure}</p>}
+      {failure && <p className="cm-alert txt-plain" role="alert">{failure}</p>}
 
       <form onSubmit={onSubmit} noValidate>
         <div className="cm-grid">
@@ -197,7 +197,7 @@ export default function JoinForm() {
 
           <div className="reg-field">
             <label className="reg-label" htmlFor="cm-years">سنوات الخبرة</label>
-            <input className="reg-input" id="cm-years" name="years_experience" type="number" min={0} max={60} placeholder="مثال: ٨" />
+            <input className="reg-input" id="cm-years" name="years_experience" type="number" min={0} max={60} placeholder="مثال: 8" />
           </div>
 
           <div className="reg-field is-wide">

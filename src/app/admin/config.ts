@@ -63,7 +63,7 @@ const FACT_ITEM: Field[] = [
 ];
 const PHASE_ITEM: Field[] = [
   { name: "label", label: "المرحلة", type: "text", placeholder: "مثال: التسجيل وتقديم الأعمال" },
-  { name: "date_text", label: "التاريخ", type: "text", placeholder: "مثال: حتى ٣٠ رمضان ١٤٤٧هـ" },
+  { name: "date_text", label: "التاريخ", type: "text", placeholder: "مثال: حتى 30 رمضان 1447هـ" },
   { name: "state", label: "الحالة", type: "select", options: ["next", "now", "done"], optionLabels: { next: "قادمة", now: "الحالية", done: "منتهية" } },
   { name: "tag_text", label: "وسم (اختياري)", type: "text", placeholder: "مثال: مفتوح الآن" },
 ];

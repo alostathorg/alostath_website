@@ -10,7 +10,7 @@ export default async function ContactPage() {
   const c = (settings.contact as Record<string, string>) ?? {};
   const phone = c.phone ?? "+966 55 075 7424";
   const email = c.email ?? "contact@ostath.sa";
-  const address = c.address ?? "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض ١٢٣١٤";
+  const address = c.address ?? "طريق الأمير محمد بن عبدالعزيز، المعذر الشمالي، الرياض 12314";
 
   return (
     <PageShell active="contact">
@@ -21,7 +21,7 @@ export default async function ContactPage() {
         <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 80px", textAlign: "center" }}>
           <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16, textAlign: "right" }}>نسعد بتواصلك</div>
           <h1 style={{ fontSize: "clamp(38px,5.4vw,60px)", fontWeight: 700, lineHeight: 1.2, margin: 0, textAlign: "right" }}>تواصل معنا</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "20px auto 0", textAlign: "right" }}>للشراكة، أو الانضمام كمعلّم، أو الاستفسار عن المبادرات والبرامج — فريق الأستاذ في خدمتك.</p>
+          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "20px auto 0", textAlign: "justify" }}>للشراكة، أو الانضمام كمعلّم، أو الاستفسار عن المبادرات والبرامج — فريق الأستاذ في خدمتك.</p>
         </div>
       </section>
 
@@ -50,7 +50,7 @@ export default async function ContactPage() {
               <div data-ct-success-state hidden style={{ textAlign: "center", padding: "32px 0" }}>
                 <div style={{ width: 64, height: 64, borderRadius: 9999, background: "var(--sage-100)", color: "var(--sage-700)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 30, fontWeight: 700 }}>✓</div>
                 <h3 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 10px" }}>وصلتنا رسالتك</h3>
-                <p style={{ fontSize: 16, lineHeight: 1.8, color: "var(--text-muted)", margin: 0 }}>شكراً لتواصلك مع مؤسسة الأستاذ — سيردّ عليك فريقنا في أقرب وقت.</p>
+                <p className="txt-plain" style={{ fontSize: 16, lineHeight: 1.8, color: "var(--text-muted)", margin: 0 }}>شكراً لتواصلك مع مؤسسة الأستاذ — سيردّ عليك فريقنا في أقرب وقت.</p>
               </div>
               <div data-ct-form-state>
                 <h2 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px" }}>أرسل لنا رسالة</h2>
@@ -78,7 +78,7 @@ export default async function ContactPage() {
         <img src="https://framerusercontent.com/images/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "88px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
           <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
           <form data-newsletter-form>
             <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
               <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
