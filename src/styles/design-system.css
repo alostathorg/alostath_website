@@ -501,3 +501,62 @@ select.reg-input { appearance: none; -webkit-appearance: none; background-image:
 .reg-consent input { margin-top: 2px; width: 17px; height: 17px; accent-color: var(--olive-600); flex: none; }
 .reg-consent a { color: var(--olive-600); }
 .reg-submit.is-pending { opacity: .75; pointer-events: none; }
+
+/* ============================================================
+   JUSTIFIED PROSE — النص المضبوط
+   ============================================================
+   Running body copy across the site sets flush on both edges. The scope is
+   prose only: headings, buttons, labels, numbers, dates and one-line meta
+   keep whatever alignment their block gives them.
+
+   Arabic is never hyphenated, so the only thing the browser may stretch is
+   the space between words — `hyphens: none` + `text-justify: inter-word`
+   state that instead of leaning on engine defaults.
+
+   The <p> rule sits inside :where() so it carries zero specificity. Any
+   component class or inline style still beats it, which means a paragraph
+   that has to stay ragged never needs !important to get out.
+
+   Closing lines: `justify` leaves the last line ragged at the start edge —
+   correct inside a start-aligned column, wrong inside a centred one. Centred
+   editorial blocks therefore re-centre it with `.txt-justify.is-center`,
+   while centred UI feedback and captions opt out of justification entirely. */
+
+:where(p) {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: none;
+  hyphens: none;
+}
+
+/* Opt-in for prose that isn't a <p> — a <div> or <li> carrying body copy —
+   and for paragraphs a component class would otherwise pin to one edge. */
+.txt-justify {
+  text-align: justify;
+  text-justify: inter-word;
+  -webkit-hyphens: none;
+  hyphens: none;
+}
+
+/* Centred editorial block: the paragraph justifies, the closing line centres
+   so the composition still reads as centred. */
+.txt-justify.is-center {
+  text-align-last: center;
+}
+
+/* Escape hatch — hand an element back to the alignment of its block. */
+.txt-plain {
+  text-align: inherit;
+  text-align-last: auto;
+}
+
+/* Centred UI feedback and captions are not running prose: a success message
+   under a tick, or a caption under a numbered step, stays centred. */
+:where(.reg-success, .cm-done, .dp-step) :where(p) {
+  text-align: center;
+}
+
+/* The CMS keeps its own typography — justification is a public-site decision. */
+.admin :where(p) {
+  text-align: inherit;
+}

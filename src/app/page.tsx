@@ -17,10 +17,10 @@ const PARTNER_LOGOS = [
 ];
 
 const BOARD = [
-  { name: "م. سامي الحصيّن", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
-  { name: "د. عبدالإله الصالح", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228` },
+  { name: "د. عبدالإله الصالح", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228`, role: "رئيس مجلس الأمناء" },
   { name: "د. خالد العواد", img: `${FR}/NMoq9rbaVdr8bBZzseUNUpJIws.png?width=374&height=410` },
   { name: "د. زياد الدريس", img: `${FR}/m74hlEDKVe2RKWKLIMtvUKWhc.png?width=512&height=512` },
+  { name: "م. سامي الحصيّن", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
 ];
 
 const BENTO = [
@@ -56,7 +56,7 @@ export default async function HomePage() {
         <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(64px,18vw,120px) 28px clamp(56px,14vw,120px)", width: "100%", textAlign: "right", color: "var(--ink-inverse)" }}>
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>المعلم</h1>
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>ناظر القيم</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومةٌ وطنيّة شاملة تُعزّز مكانة المعلّم ودوره، تكاملاً مع وزارة التعليم وفي خدمة رؤية المملكة ٢٠٣٠.</p>
+          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومةٌ وطنيّة شاملة تُعزّز مكانة المعلّم ودوره، تكاملاً مع وزارة التعليم وفي خدمة رؤية المملكة 2030.</p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginTop: 38 }}>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
             <Link href="/initiatives" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>المبادرات</Link>
@@ -95,7 +95,7 @@ export default async function HomePage() {
           <div>
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
             <h2 className="h-accent" style={{ fontSize: "clamp(30px,4vw,46px)", fontWeight: 700, margin: "0 0 22px" }}>عن الأستاذ</h2>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام ٢٠٢٣ بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
+            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام 2023 بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى لتكون مركز خبرةٍ في هذا المجال، وشريكاً لمنظومة التعليم والمجتمع في تحقيق أهداف الرؤية ومستهدفاتها في خدمة المعلّم والتعليم.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
@@ -115,7 +115,7 @@ export default async function HomePage() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={m.img} alt={m.name} style={{ width: 132, height: 132, borderRadius: "var(--radius-round)", objectFit: "cover", border: "3px solid var(--canvas)", boxShadow: "0 4px 12px rgba(35,39,26,0.10)" }} />
                 <div style={{ fontSize: 18, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 14, color: "var(--text-subtle)", marginTop: -8 }}>عضو مجلس الأمناء</div>
+                <div style={{ fontSize: 14, color: "var(--text-subtle)", marginTop: -8 }}>{m.role ?? "عضو مجلس الأمناء"}</div>
               </div>
             ))}
           </div>
@@ -127,7 +127,7 @@ export default async function HomePage() {
         <div data-reveal="1" style={{ textAlign: "center", marginBottom: 60 }}>
           <div className="eyebrow" style={{ marginBottom: 14 }}>حلولٌ متكاملة</div>
           <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 700, margin: "0 auto 16px", display: "inline-block" }}>منظومة الأستاذ</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تحلّ التحديات التي تواجه المعلّم، وتعزّز مكانته المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته، وذلك عبر الحلول التالية:</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تحلّ التحديات التي تواجه المعلّم، وتعزّز مكانته المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته، وذلك عبر الحلول التالية:</p>
         </div>
         <div className="bento" data-reveal-group>
           {BENTO.map((b) => (
@@ -153,7 +153,7 @@ export default async function HomePage() {
           <div style={{ position: "relative", padding: "clamp(40px,6vw,72px) clamp(28px,5vw,64px)", textAlign: "center" }}>
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 14 }}>مجلس الأستاذ</div>
             <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 16px" }}>مجلسنا القادم قـــــــــرب</h2>
-            <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", maxWidth: "62ch", margin: "0 auto 40px" }}>منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.</p>
+            <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", maxWidth: "62ch", margin: "0 auto 40px" }}>منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.</p>
             <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
               {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
                 <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
@@ -278,7 +278,7 @@ export default async function HomePage() {
         <img src={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
         <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "96px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
           <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب. نشاركك كلّ جديدٍ يصنع أثراً في مستقبل التعليم.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب. نشاركك كلّ جديدٍ يصنع أثراً في مستقبل التعليم.</p>
           <form data-newsletter-form>
             <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
               <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.

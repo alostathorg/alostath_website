@@ -44,7 +44,7 @@ export default async function CouncilPage() {
       <div className="dp-facts" data-reveal="1">
         <div className="dp-facts-inner">
           <div className="dp-fact"><div className="dp-fact-ico"><IconCal /></div><div><div className="dp-fact-k">الدورية</div><div className="dp-fact-v">ديوانيّة شهريّة</div></div></div>
-          <div className="dp-fact"><div className="dp-fact-ico"><IconUsers /></div><div><div className="dp-fact-k">المشاركون</div><div className="dp-fact-v">٤ فئات حول طاولة واحدة</div></div></div>
+          <div className="dp-fact"><div className="dp-fact-ico"><IconUsers /></div><div><div className="dp-fact-k">المشاركون</div><div className="dp-fact-v">4 فئات حول طاولة واحدة</div></div></div>
           <div className="dp-fact"><div className="dp-fact-ico" style={{ background: "var(--sage-50)", color: "var(--sage-700)" }}><IconCompass /></div><div><div className="dp-fact-k">المخرجات</div><div className="dp-fact-v" style={{ color: "var(--sage-700)" }}>حلولٌ ومبادرات</div></div></div>
         </div>
       </div>
@@ -118,7 +118,7 @@ export default async function CouncilPage() {
       <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
         <div data-reveal="1" style={{ textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>صوتك جزءٌ من الحوار</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>انضمّ إلى مجلس الأستاذ، أو رشّح قضيّةً من الميدان تستحقّ النقاش في جلستنا القادمة.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>انضمّ إلى مجلس الأستاذ، أو رشّح قضيّةً من الميدان تستحقّ النقاش في جلستنا القادمة.</p>
           <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا</Link>
         </div>
       </section>

@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 const BENEFITS = [
   {
-    n: "٠١",
+    n: "01",
     k: "تصل إليك أولًا",
     t: "كن أول من يعرف",
     d: "تصلك أخبار مبادرات الأستاذ وجوائزه وفعالياته، وتبقى قريبًا من كل ما يخص مجتمع المعلمين.",
@@ -23,7 +23,7 @@ const BENEFITS = [
     Icon: IconBell,
   },
   {
-    n: "٠٢",
+    n: "02",
     k: "صوتك في المبادرات",
     t: "شارك في صناعة الأثر",
     d: "شارك برأيك وتجربتك وأفكارك، وساهم في تطوير مبادرات الأستاذ بما يلامس احتياجات المعلم.",
@@ -32,7 +32,7 @@ const BENEFITS = [
     Icon: IconChat,
   },
   {
-    n: "٠٣",
+    n: "03",
     k: "دعوات ولقاءات",
     t: "كن حاضرًا في المشهد",
     d: "أولوية المشاركة في لقاءات مجلس الأستاذ وفعاليات المؤسسة وورشها، حيث تلتقي الخبرات وتتبادل التجارب.",
@@ -41,7 +41,7 @@ const BENEFITS = [
     Icon: IconCalendar,
   },
   {
-    n: "٠٤",
+    n: "04",
     k: "فرص تليق بك",
     t: "خبرتك تستحق أن تُستثمر",
     d: "تعرّف على فرص للمشاركة والتعاون والاستفادة من خبرتك، بما يحقق لك قيمة مهنية وفرص تعزز حضورك في مجتمع الأستاذ.",
@@ -211,7 +211,7 @@ export default async function CommunityPage() {
       <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
         <div data-reveal="1" style={{ textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>لديك سؤال قبل الانضمام؟</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>
             فريق المؤسسة سعيدٌ بالإجابة عن أي استفسار يخصّ المجتمع أو برامج المؤسسة.
           </p>
           <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا</Link>

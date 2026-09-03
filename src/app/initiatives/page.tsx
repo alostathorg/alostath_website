@@ -97,7 +97,7 @@ export default async function InitiativesPage() {
       <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
         <div data-reveal="1" style={{ position: "relative", maxWidth: 820, margin: "0 auto", padding: "84px 32px", textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, lineHeight: 1.4, margin: "0 0 14px" }}>هل لديك فكرة مبادرةٍ تخدم المعلّم؟</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 32px" }}>نرحّب بالشركاء المتخصصين الراغبين في إطلاق مبادراتٍ مستدامة ضمن منظومة الأستاذ.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 32px" }}>نرحّب بالشركاء المتخصصين الراغبين في إطلاق مبادراتٍ مستدامة ضمن منظومة الأستاذ.</p>
           <Link href="/contact" className="btn btn-secondary btn-lg">تواصل معنا للشراكة</Link>
         </div>
       </section>

@@ -24,9 +24,6 @@ const HERO_STATUS = {
   closed: { cls: "is-closed", label: "أُغلق التقديم" },
 } as const;
 
-const EA = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-const ar = (n: number) => String(n).replace(/[0-9]/g, (d) => EA[+d]);
-
 const PHASE_CLS = { done: "is-done", now: "is-now", next: "is-next" } as const;
 
 export default async function AwardDetail({ params }: { params: Promise<{ slug: string }> }) {
@@ -121,7 +118,7 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
             <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 48px", textAlign: "center" }}>كيف تشارك؟</h2>
             <div className="dp-steps" data-reveal-group style={{ ["--step-count" as string]: award.steps.length }}>
               {award.steps.map((s, i) => (
-                <div key={i} className="dp-step"><div className="dp-step-node">{ar(i + 1)}</div><h3>{s.title}</h3><p>{s.body}</p></div>
+                <div key={i} className="dp-step"><div className="dp-step-node">{i + 1}</div><h3>{s.title}</h3><p>{s.body}</p></div>
               ))}
             </div>
           </div>
@@ -139,7 +136,7 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
             <div className="dp-timeline">
               {phases.map((p, i) => (
                 <div key={p.id} className={`dp-tl-item ${PHASE_CLS[p.state]}`}>
-                  <div className="dp-tl-rail"><div className="dp-tl-dot">{ar(i + 1)}</div></div>
+                  <div className="dp-tl-rail"><div className="dp-tl-dot">{i + 1}</div></div>
                   <div className="dp-tl-body">
                     <div className="dp-tl-top">
                       <span className="dp-tl-phase">{p.label}</span>
@@ -167,7 +164,7 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
       {award.partnership_note && (
         <section data-reveal="1" style={{ maxWidth: 920, margin: "0 auto", padding: "48px 32px 40px", textAlign: "center" }}>
           <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>تكاملٌ وطني</div>
-          <p style={{ fontSize: "clamp(19px,2.4vw,26px)", fontWeight: 600, lineHeight: 1.7, margin: 0, color: "var(--text-body)" }}>{award.partnership_note}</p>
+          <p className="txt-justify is-center" style={{ fontSize: "clamp(19px,2.4vw,26px)", fontWeight: 600, lineHeight: 1.7, margin: 0, color: "var(--text-body)" }}>{award.partnership_note}</p>
         </section>
       )}
 

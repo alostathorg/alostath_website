@@ -17,9 +17,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   return { title: item?.name ?? "المبادرات" };
 }
 
-const EA = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-const ar = (n: number) => String(n).replace(/[0-9]/g, (d) => EA[+d]);
-
 export default async function InitiativeDetail({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const [item, all] = await Promise.all([getInitiative(slug), getInitiatives()]);
@@ -104,10 +101,10 @@ export default async function InitiativeDetail({ params }: { params: Promise<{ s
           <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 18 }}>
             {item.value_cards.map((v, i) => (
               <div key={i} className="dp-vcard" style={vcardStyle}>
-                <div className="dp-vcard-num">{ar(i + 1).padStart(2, "٠")}</div>
+                <div className="dp-vcard-num">{String(i + 1).padStart(2, "0")}</div>
                 <div style={{ position: "relative" }}>
                   <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 10, color: "var(--ink)" }}>{v.title}</div>
-                  <div style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-muted)" }}>{v.body}</div>
+                  <div className="txt-justify" style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-muted)" }}>{v.body}</div>
                 </div>
               </div>
             ))}
@@ -122,7 +119,7 @@ export default async function InitiativeDetail({ params }: { params: Promise<{ s
             <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 48px", textAlign: "center" }}>كيف تعمل المبادرة</h2>
             <div className="dp-steps" data-reveal-group style={{ ["--step-count" as string]: item.steps.length }}>
               {item.steps.map((s, i) => (
-                <div key={i} className="dp-step"><div className="dp-step-node" style={stepNodeStyle}>{ar(i + 1)}</div><h3>{s.title}</h3><p>{s.body}</p></div>
+                <div key={i} className="dp-step"><div className="dp-step-node" style={stepNodeStyle}>{i + 1}</div><h3>{s.title}</h3><p>{s.body}</p></div>
               ))}
             </div>
           </div>

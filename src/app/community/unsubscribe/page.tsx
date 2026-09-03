@@ -48,7 +48,7 @@ export default async function UnsubscribePage({
           {invalid ? (
             <>
               <h1 style={{ fontSize: 26, fontWeight: 700, color: "var(--ink)", margin: "0 0 12px" }}>الرابط غير صالح</h1>
-              <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>
+              <p className="txt-plain" style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>
                 تعذّر التعرّف على هذا الرابط. افتح الرابط من آخر رسالةٍ وصلتك منّا، أو تواصل معنا
                 وسنتولّى الأمر.
               </p>
@@ -57,7 +57,7 @@ export default async function UnsubscribePage({
           ) : (
             <>
               <h1 style={{ fontSize: 26, fontWeight: 700, color: "var(--ink)", margin: "0 0 12px" }}>{copy.title}</h1>
-              <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>{copy.body}</p>
+              <p className="txt-plain" style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>{copy.body}</p>
               <form action={setSubscription.bind(null, t!, copy.resubscribe)}>
                 <button
                   type="submit"
@@ -66,7 +66,7 @@ export default async function UnsubscribePage({
                   {copy.action}
                 </button>
               </form>
-              <p style={{ fontSize: 13.5, color: "var(--ink-subtle)", margin: "22px 0 0" }}>
+              <p className="txt-plain" style={{ fontSize: 13.5, color: "var(--ink-subtle)", margin: "22px 0 0" }}>
                 <Link href="/community" style={{ color: "var(--olive-600)" }}>العودة إلى صفحة المجتمع</Link>
               </p>
             </>

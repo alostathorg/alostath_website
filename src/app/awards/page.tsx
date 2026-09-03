@@ -96,15 +96,15 @@ export default async function AwardsPage() {
       <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
         <div data-reveal="1" style={{ position: "relative", maxWidth: 920, margin: "0 auto", padding: "84px 32px", textAlign: "center" }}>
           <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16 }}>تكاملٌ وطني</div>
-          <p style={{ fontSize: "clamp(20px,2.6vw,28px)", fontWeight: 600, lineHeight: 1.65, margin: "0 0 18px" }}>تُنفَّذ جوائز الأستاذ في إطارٍ تكاملي مع وزارة التعليم ووزارة الثقافة وهيئاتها المتخصصة.</p>
-          <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 auto", maxWidth: "60ch" }}>بما يعزّز مواءمتها مع التوجّهات الوطنية، ويدعم استدامة أثرها الثقافي والتربوي على مكانة المعلّم.</p>
+          <p className="txt-justify is-center" style={{ fontSize: "clamp(20px,2.6vw,28px)", fontWeight: 600, lineHeight: 1.65, margin: "0 0 18px" }}>تُنفَّذ جوائز الأستاذ في إطارٍ تكاملي مع وزارة التعليم ووزارة الثقافة وهيئاتها المتخصصة.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 16, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 auto", maxWidth: "60ch" }}>بما يعزّز مواءمتها مع التوجّهات الوطنية، ويدعم استدامة أثرها الثقافي والتربوي على مكانة المعلّم.</p>
         </div>
       </section>
 
       <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
         <div data-reveal="1" style={{ textAlign: "center" }}>
           <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>معلّمٌ صانعٌ للجمال والكلمة؟</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>تابع إعلانات فتح باب الترشّح لجوائز الأستاذ عبر نشرتنا البريدية وقنواتنا الرسمية.</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>تابع إعلانات فتح باب الترشّح لجوائز الأستاذ عبر نشرتنا البريدية وقنواتنا الرسمية.</p>
           <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا</Link>
         </div>
       </section>

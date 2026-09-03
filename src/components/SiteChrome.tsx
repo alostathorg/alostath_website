@@ -19,10 +19,6 @@ export default function SiteChrome() {
     document.documentElement.classList.add("has-js");
     const cleanups: Array<() => void> = [];
 
-    const EA = ["٠", "١", "٢", "٣", "٤", "٥", "٦", "٧", "٨", "٩"];
-    const toArabic = (str: string | number) =>
-      String(str).replace(/[0-9]/g, (d) => EA[+d]);
-
     /* ---------- scroll reveal ---------- */
     (function initReveal() {
       const els = document.querySelectorAll("[data-reveal], [data-reveal-group]");
@@ -94,7 +90,7 @@ export default function SiteChrome() {
           if (start === null) start = ts;
           const p = Math.min(1, (ts - start) / dur);
           const eased = 1 - Math.pow(1 - p, 3);
-          node.textContent = prefix + toArabic(Math.round(target * eased)) + suffix;
+          node.textContent = prefix + Math.round(target * eased) + suffix;
           if (p < 1) requestAnimationFrame(frame);
         }
         requestAnimationFrame(frame);
