@@ -24,6 +24,7 @@ const BOARD = [
 ];
 
 const BENTO = [
+  { t: "مجتمع الأستاذ", d: "يجمع مجتمع الأستاذ معلّمي الوطن ومعلّماته في مساحةٍ مهنية واحدة تصلهم بالمعرفة والخبرات والفرص، وتقرّب صوتهم من كل ما يُسهم في تطوير المهنة، بما يعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع.", ico: "/assets/community-ico.svg", full: true, href: "/community", cta: "انضم إلى المجتمع", bg: "var(--olive-50)", border: "var(--olive-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
   { t: "منصة الأستاذ", d: "تعمل منصة الأستاذ كمنظومةٍ رقميّة متكاملة تجمع المعرفة والخدمات والفرص والمزايا في تجربةٍ واحدة سهلة الوصول، بما يختصر الوقت والجهد لتمكين المعلّم مهنيّاً وتهيئته في المهنة ورفع جودة حياته.", ico: `${FR}/Ik3kiue2mUdrmJNH3TwllSBDefg.png?width=596&height=596`, span2: true, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
   { t: "مجلس الأستاذ", d: "يشكّل مجلس الأستاذ منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.", ico: `${FR}/oW8wZAFatzZf7ir8MDTyUDhp3M.png?width=597&height=596`, span2: true, bg: "var(--sage-50)", border: "var(--sage-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
   { t: "جوائز الأستاذ", d: "تعمل جوائز الأستاذ على اكتشاف وإبراز مواهب المعلّمين وإنجازاتهم، ونقلها إلى واجهة المشهد الثقافي والتربوي، بما يعزّز مكانة المعلّم ويُعزّز ثقافة التقدير.", ico: `${FR}/WbdvWBZBTjJHiAqQ6PYvjlZi8.png?width=596&height=596`, span2: false, bg: "var(--gold-50)", border: "var(--gold-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
@@ -56,7 +57,7 @@ export default async function HomePage() {
         <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(64px,18vw,120px) 28px clamp(56px,14vw,120px)", width: "100%", textAlign: "right", color: "var(--ink-inverse)" }}>
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>المعلم</h1>
           <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>ناظر القيم</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومةٌ وطنيّة شاملة تُعزّز مكانة المعلّم ودوره، تكاملاً مع وزارة التعليم وفي خدمة رؤية المملكة 2030.</p>
+          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومة وطنية شاملة تُعزّز مكانة المعلّم ودوره، وتتكامل مع جهود وزارة التعليم وخدمة رؤية المملكة 2030، من خلال مبادرات خلاقة ومستدامة تُنفّذ بالشراكة مع مؤسسات متخصصة، ومجتمع مهني يجمع المعلمين بالمعرفة والخبرات والفرص، ويعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع.</p>
           <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginTop: 38 }}>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
             <Link href="/initiatives" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>المبادرات</Link>
@@ -94,7 +95,7 @@ export default async function HomePage() {
           </div>
           <div>
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
-            <h2 className="h-accent" style={{ fontSize: "clamp(30px,4vw,46px)", fontWeight: 700, margin: "0 0 22px" }}>عن الأستاذ</h2>
+            <h2 className="h-accent" style={{ fontSize: "clamp(30px,4vw,46px)", fontWeight: 700, margin: "0 0 22px", color: "var(--color-primary)" }}>عن الأستاذ</h2>
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام 2023 بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى لتكون مركز خبرةٍ في هذا المجال، وشريكاً لمنظومة التعليم والمجتمع في تحقيق أهداف الرؤية ومستهدفاتها في خدمة المعلّم والتعليم.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
@@ -131,13 +132,16 @@ export default async function HomePage() {
         </div>
         <div className="bento" data-reveal-group>
           {BENTO.map((b) => (
-            <div key={b.t} data-reveal="1" className={`bento-cell${b.span2 ? " span2" : ""}`} style={{ background: b.bg, ...(b.border ? { borderColor: b.border } : {}), ...(b.ink === "var(--ink-inverse)" ? { color: "var(--ink-inverse)" } : {}) }}>
+            <div key={b.t} data-reveal="1" className={`bento-cell${b.full ? " span-full" : b.span2 ? " span2" : ""}`} style={{ background: b.bg, ...(b.border ? { borderColor: b.border } : {}), ...(b.ink === "var(--ink-inverse)" ? { color: "var(--ink-inverse)" } : {}) }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img className="bento-ico" src={b.ico} alt={b.t} />
               <div>
                 <h3 style={{ color: b.ink }}>{b.t}</h3>
                 <p style={{ color: b.muted }}>{b.d}</p>
               </div>
+              {b.href && (
+                <Link href={b.href} className="btn btn-primary btn-md bento-cta">{b.cta}</Link>
+              )}
             </div>
           ))}
         </div>
