@@ -92,6 +92,10 @@ function cellClass(field: Field, index: number) {
 
 function renderCell(value: unknown, field: Field, row: Record<string, unknown>) {
   if (field.type === "boolean") {
+    // Only `published` means published; any other flag (e.g. featured) is a plain yes/no.
+    if (field.name !== "published") {
+      return value ? "نعم" : <span style={{ color: "var(--ink-subtle)" }}>—</span>;
+    }
     return value
       ? <span className="admin-badge is-pub"><span className="dot" />منشور</span>
       : <span className="admin-badge is-draft">مسودة</span>;

@@ -22,7 +22,8 @@ rows to anonymous visitors.
 src/
   app/
     (public pages)         home, about, council, community, contact, press,
-                           awards[/slug], initiatives[/slug], blog[/slug]
+                           awards[/slug], initiatives[/slug], blog[/slug],
+                           partners[/slug]  (الإعلامات — brand partner showcase)
     api/register/          public form endpoint → registrations table
     api/community/         join / idea / unsubscribe endpoints (SQL RPC backed)
     admin/                 gated dashboard (login, CRUD engine, media, settings)
@@ -33,12 +34,15 @@ src/
     queries.ts             typed public reads (ISR)
     types.ts               row types (mirror the SQL schema)
     community.ts           shared option lists (regions, stages, interests…)
+    brandPartners.ts       الإعلامات vocabulary (nav label, categories, pricing)
+                           + URL / CTA helpers shared by the pages and the CMS
     email.ts               Resend transport + RTL email templates
     validate.ts            shared form validators
   styles/                  design system + tokens (unchanged) + page styles
 supabase/
   migrations/0001_init.sql schema + enums + RLS + storage bucket
   migrations/0002_community.sql  مجتمع الأستاذ tables, RLS, public write RPCs
+  migrations/0003_brand_partners.sql  الإعلامات table + RLS
   seed.ts                  one‑time seed from the original hardcoded content
 ```
 
@@ -78,9 +82,13 @@ or the Supabase CLI (`supabase db push`):
 - `supabase/migrations/0002_community.sql` — مجتمع الأستاذ: members, ideas,
   broadcasts, their RLS, and the three `SECURITY DEFINER` functions that are the
   only way anonymous visitors may write.
+- `supabase/migrations/0003_brand_partners.sql` — الإعلامات: the
+  `brand_partners` table and its RLS (public read of published rows, admin
+  write).
 
-Both files are idempotent, so re-running them is safe. `0001` has already been
-applied to the live project — never edit it; add a numbered file instead.
+All three files are idempotent, so re-running them is safe. `0001` and `0002`
+have already been applied to the live project — never edit them; add a numbered
+file instead.
 
 ### 3. Seed the current content
 
@@ -90,7 +98,10 @@ npm run seed
 ```
 
 This upserts the awards, initiatives, blog posts, press assets, partners and
-site settings that used to be hardcoded.
+site settings that used to be hardcoded. It also adds four **draft** brand
+partners (fictional names, `example.com` links) as templates for الإعلامات;
+they are inserted only if missing, so re-running the seed never un-publishes a
+partner the team has since approved.
 
 ### 4. Create an admin user
 
@@ -115,8 +126,8 @@ npm run dev      # http://localhost:3000  (site) and /admin (dashboard)
 - **الطلبات والاشتراكات** — every submission from the registration modal, the
   contact form, and newsletter sign‑ups (read + delete).
 - **المحتوى** — CRUD for awards (incl. status, categories and the timeline
-  phases), initiatives, blog posts, partners, and press assets. Publish/unpublish
-  with the `منشور` toggle.
+  phases), initiatives, blog posts, الإعلامات (brand partners), partners, and
+  press assets. Publish/unpublish with the `منشور` toggle.
 - **إعدادات الموقع** — contact block, socials, footer copyright, and the council
   countdown, edited as JSON.
 - **الوسائط** — upload images/PDFs to Storage and copy their public URLs.
@@ -166,6 +177,33 @@ a POST‑only endpoint, so link scanners can't unsubscribe people by prefetching
 empty selection means every active member who opted into updates. The option
 lists live in `src/lib/community.ts` so the join form, the admin filters and the
 audience picker can never drift apart.
+
+## الإعلامات (brand partners)
+
+`/partners` showcases brands whose products, services or offers help teachers;
+each card opens `/partners/[slug]`, an introduction page whose CTA sends the
+teacher to the brand's own website. It is a different thing from the
+`partners` table (institutional partners in the home-page marquee).
+
+**One table**, `brand_partners` (`supabase/migrations/0003_brand_partners.sql`),
+edited from **المحتوى → الإعلامات**. `published` defaults to **false**: a new
+brand is a draft until the team has checked its logo, link and offer and flips
+the `منشور` toggle. Drafts are invisible to visitors (RLS) and 404 on their
+detail URL.
+
+**What a page is built from.** Only `name` and `website_url` are load-bearing.
+The tagline, category, pricing and audience feed the card and the derived facts
+strip; `teacher_offer` / `offer_code` / `offer_note` add the gold offer panel;
+`highlights` become the «ماذا يقدّم للمعلّم» cards; `featured` puts the brand in
+a full-width spotlight card at the top of the grid. Everything optional degrades
+cleanly — no logo shows a monogram, no offer hides the panel, no URL turns the
+CTA into a contact link.
+
+**Outbound links** are normalised in `src/lib/brandPartners.ts` (scheme added
+when missing, only `http(s)` accepted) and open in a new tab with
+`rel="noopener noreferrer"`; the hostname is shown to the teacher before they
+leave. The nav label lives in `PARTNERS_NAV_LABEL` in the same file, so
+renaming the tab is a one-line change.
 
 ## How the form flow maps to data
 

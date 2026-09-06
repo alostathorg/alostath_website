@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, useTransition } from "react";
 import { saveRecord, uploadMedia } from "./actions";
 import AiAssist from "./AiAssist";
-import type { Collection, Field } from "./config";
+import { AI_FIELDS, type Collection, type Field } from "./config";
 
 // Basic Arabic → Latin transliteration so a slug can be generated automatically
 // from the (Arabic) name/title. Editors never have to type a URL by hand.
@@ -32,7 +32,9 @@ type Row = Record<string, unknown>;
 
 const WIDE_TYPES = new Set(["textarea", "lines", "json", "image", "tags", "repeater", "keyvalue"]);
 const isWide = (f: Field) => WIDE_TYPES.has(f.type);
-const isLtrField = (f: Field) => f.name === "slug" || f.name.endsWith("_at");
+// Slugs, dates, URLs and promo codes are Latin text — type them LTR.
+const isLtrField = (f: Field) =>
+  f.name === "slug" || f.name.endsWith("_at") || f.name.endsWith("_url") || f.name.endsWith("_code");
 
 // Friendly "add" button labels per repeater / key-value field.
 const ADD_NOUN: Record<string, string> = {
@@ -41,6 +43,7 @@ const ADD_NOUN: Record<string, string> = {
   value_cards: "بطاقة",
   facts: "حقيقة",
   meta: "حقل",
+  highlights: "ميزة",
 };
 
 export default function RecordForm({
@@ -59,7 +62,8 @@ export default function RecordForm({
   const [values, setValues] = useState<Values>(initial);
   const [version, setVersion] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
-  const aiEnabled = collection.slug === "awards" || collection.slug === "initiatives";
+  // The copy-prompt flow works for any collection that declares its writing fields.
+  const aiEnabled = collection.slug in AI_FIELDS;
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -67,7 +71,8 @@ export default function RecordForm({
     const form = new FormData(e.currentTarget);
     start(async () => {
       try {
-        await saveRecord(collection.slug, id, form);
+        const res = await saveRecord(collection.slug, id, form);
+        if (res?.error) setError(res.error);
       } catch (err) {
         setError(err instanceof Error ? err.message : "خطأ غير متوقع");
       }

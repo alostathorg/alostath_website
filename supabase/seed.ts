@@ -256,6 +256,122 @@ const partners = [
   { name: "مؤسسة موهبة", logo_url: null, sort_order: 3 },
 ];
 
+// ── BRAND PARTNERS («الإعلامات») ─────────────────────────────────────────────
+// Sample rows so the dashboard has templates to copy from. Every one is a
+// DRAFT (published: false) with a fictional name and an example.com URL: they
+// exist to show the shape of a good entry, never to go live. Unlike the other
+// seeds these are inserted with ignoreDuplicates, so re-running the seed never
+// flips a row an editor has since published back to draft.
+const brandPartners = [
+  {
+    slug: "darris",
+    name: "منصّة درّس",
+    tagline: "تحضير الدروس وبنك أسئلة متوافق مع المناهج السعودية في دقائق.",
+    category: "edtech",
+    pricing: "freemium",
+    audience: ["معلّمو التعليم العام", "المرحلتان المتوسطة والثانوية"],
+    teacher_offer: "3 أشهر مجاناً على الخطة الكاملة للمعلّمين",
+    offer_code: "OSTATH3",
+    offer_note: "يُفعَّل العرض عند التسجيل ببريد جهة العمل. ساري حتى 30 يونيو 2027 ولا يُجمع مع عروض أخرى.",
+    overview:
+      "منصّة سعودية تساعد المعلّم على تحضير درسه وبناء اختباراته من بنك أسئلة مصنّف وفق المنهج والمخرجات، مع قوالب جاهزة للخطط الفصلية وتقارير متابعة للطلاب تُصدَّر بضغطة واحدة.",
+    highlights: [
+      { title: "تحضير في دقائق", body: "قوالب تحضير مرتبطة بأهداف المنهج تُملأ تلقائياً وتُعدَّل بحرّية." },
+      { title: "بنك أسئلة مصنّف", body: "أكثر من 40,000 سؤال مصنّف حسب الصف والوحدة ومستوى الصعوبة." },
+      { title: "تقارير جاهزة للمشاركة", body: "تقارير أداء الطلاب بصيغة PDF تُرسل لولي الأمر أو الإدارة مباشرة." },
+    ],
+    location: "الرياض، المملكة العربية السعودية",
+    website_url: "https://example.com/darris",
+    cta_url: "https://example.com/darris/teachers",
+    cta_label: "فعّل العرض الآن",
+    logo_url: null,
+    hero_image_url: null,
+    featured: true,
+    sort_order: 1,
+    published: false,
+  },
+  {
+    slug: "maharah-academy",
+    name: "أكاديمية مهارة",
+    tagline: "دورات معتمدة في التدريس الفعّال والتقويم بشهادات ساعات تطوير مهني.",
+    category: "training",
+    pricing: "paid",
+    audience: ["المعلّمون الجدد", "قادة المدارس"],
+    teacher_offer: "خصم 25% لأعضاء مجتمع الأستاذ",
+    offer_code: "OSTATH25",
+    offer_note: "يُدخل الرمز في صفحة الدفع. يشمل جميع الدورات المسجّلة ولا يشمل البرامج الحضورية.",
+    overview:
+      "أكاديمية تدريب مهني تقدّم مسارات قصيرة للمعلّم في إدارة الصف، والتقويم من أجل التعلّم، وتوظيف التقنية في التدريس، بشهادات إتمام تُحتسب ضمن ساعات التطوير المهني.",
+    highlights: [
+      { title: "مسارات قصيرة", body: "دورات من 4 إلى 8 ساعات يمكن إكمالها في أسبوع واحد." },
+      { title: "شهادات معتمدة", body: "شهادة إتمام رقمية قابلة للتحقّق لكل مسار." },
+      { title: "مدرّبون من الميدان", body: "يقدّم الدورات معلّمون وقادة مدارس ممارسون." },
+    ],
+    location: "جدة، المملكة العربية السعودية",
+    website_url: "https://example.com/maharah",
+    cta_url: null,
+    cta_label: null,
+    logo_url: null,
+    hero_image_url: null,
+    featured: false,
+    sort_order: 2,
+    published: false,
+  },
+  {
+    slug: "awraq",
+    name: "مكتبة أوراق",
+    tagline: "تجهيزات الفصل والوسائل التعليمية تصل إلى مدرستك خلال 48 ساعة.",
+    category: "supplies",
+    pricing: "paid",
+    audience: ["معلّمو المرحلة الابتدائية", "معلّمات رياض الأطفال"],
+    teacher_offer: "شحن مجاني للمعلّمين للطلبات فوق 150 ريالاً",
+    offer_code: null,
+    offer_note: "يُطبَّق تلقائياً عند اختيار «حساب معلّم» أثناء التسجيل. داخل المملكة فقط.",
+    overview:
+      "متجر متخصّص في مستلزمات الفصل الدراسي: لوحات تعليمية، بطاقات، أدوات تنظيم، ووسائل تعليمية محسوسة، مع توصيل سريع لجميع مناطق المملكة وفواتير باسم المدرسة عند الطلب.",
+    highlights: [
+      { title: "توصيل خلال 48 ساعة", body: "لجميع المدن الرئيسية، مع تتبّع للطلب." },
+      { title: "فواتير باسم المدرسة", body: "خيار الفوترة المؤسسية لتسهيل الصرف من ميزانية المدرسة." },
+      { title: "حزم جاهزة للفصل", body: "حزم مجمّعة لبداية العام حسب المرحلة الدراسية." },
+    ],
+    location: "الدمام، المملكة العربية السعودية",
+    website_url: "https://example.com/awraq",
+    cta_url: "https://example.com/awraq/teachers",
+    cta_label: "تسوّق بحساب معلّم",
+    logo_url: null,
+    hero_image_url: null,
+    featured: false,
+    sort_order: 3,
+    published: false,
+  },
+  {
+    slug: "hissati",
+    name: "تطبيق حصّتي",
+    tagline: "إدارة الحصّة والحضور والتواصل مع أولياء الأمور في تطبيقٍ واحد مجاني.",
+    category: "edtech",
+    pricing: "free",
+    audience: ["جميع المراحل"],
+    teacher_offer: null,
+    offer_code: null,
+    offer_note: null,
+    overview:
+      "تطبيق مجاني للمعلّم يجمع تسجيل الحضور، وتوزيع الواجبات، وإرسال الملاحظات لأولياء الأمور في واجهة عربية بسيطة تعمل على الجوال دون الحاجة إلى حاسب.",
+    highlights: [
+      { title: "حضور بضغطة", body: "تسجيل الحضور والتأخّر لكل حصّة في ثوانٍ." },
+      { title: "تواصل موثّق", body: "رسائل لأولياء الأمور مع سجلّ يمكن الرجوع إليه." },
+    ],
+    location: "الرياض، المملكة العربية السعودية",
+    website_url: "https://example.com/hissati",
+    cta_url: null,
+    cta_label: "حمّل التطبيق",
+    logo_url: null,
+    hero_image_url: null,
+    featured: false,
+    sort_order: 4,
+    published: false,
+  },
+];
+
 // ── SITE SETTINGS ────────────────────────────────────────────────────────────
 const settings = [
   {
@@ -310,6 +426,15 @@ async function main() {
   await upsert("press_assets", pressAssets.map((p) => ({ meta: {}, ...p })), "title");
   await upsert("partners", partners, "name");
   await upsert("site_settings", settings, "key");
+
+  // Brand partner drafts: insert-if-missing only (see the note above the array).
+  {
+    const { error } = await db
+      .from("brand_partners")
+      .upsert(brandPartners as never, { onConflict: "slug", ignoreDuplicates: true });
+    if (error) throw new Error(`brand_partners: ${error.message}`);
+    console.log(`✓ brand_partners (${brandPartners.length} drafts, existing rows untouched)`);
+  }
 
   console.log("\nSeed complete.");
 }

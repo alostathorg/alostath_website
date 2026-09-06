@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { PARTNERS_NAV_LABEL } from "@/lib/brandPartners";
 import { COLLECTIONS } from "./config";
 
 export const dynamic = "force-dynamic";
@@ -37,15 +38,19 @@ const UsersIcon = (
 const BulbIcon = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
 );
+const StoreIcon = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" /><path d="M4 12v8h16v-8" /><path d="M9 20v-5h6v5" /></svg>
+);
 const Chevron = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
 );
 
 export default async function AdminDashboard() {
-  const [awards, initiatives, posts, registrations, members, newIdeas] = await Promise.all([
+  const [awards, initiatives, posts, brands, registrations, members, newIdeas] = await Promise.all([
     count("awards"),
     count("initiatives"),
     count("blog_posts"),
+    count("brand_partners"),
     count("registrations"),
     count("community_members"),
     countWhere("community_ideas", "status", "new"),
@@ -55,6 +60,7 @@ export default async function AdminDashboard() {
     { label: "الجوائز", value: awards, href: "/admin/collections/awards", icon: TrophyIcon },
     { label: "المبادرات", value: initiatives, href: "/admin/collections/initiatives", icon: FlagIcon },
     { label: "المقالات", value: posts, href: "/admin/collections/posts", icon: PenIcon },
+    { label: PARTNERS_NAV_LABEL, value: brands, href: "/admin/collections/brands", icon: StoreIcon },
     { label: "الطلبات والاشتراكات", value: registrations, href: "/admin/registrations", icon: InboxIcon },
     { label: "أعضاء المجتمع", value: members, href: "/admin/community", icon: UsersIcon },
     { label: "أفكار جديدة", value: newIdeas, href: "/admin/community/ideas?status=new", icon: BulbIcon },

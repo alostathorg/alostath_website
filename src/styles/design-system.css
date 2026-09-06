@@ -97,9 +97,15 @@
 .nav-toggle svg { display: block; }
 nav[data-mainnav] { display: flex; }
 .nav-cta { display: none; }
-/* Collapse the main nav into the hamburger below 980px. At 17px the eight tabs
-   plus the logo and CTA need ~955px of header to share one row, so the header
-   folds earlier than the 880px page-layout breakpoint used elsewhere. */
+/* Collapse the main nav into the hamburger below 980px. At 17px the nine tabs
+   plus the logo and CTA need ~1045px of header to share one row, so between
+   981px and 1120px the tabs drop to 15px with tighter padding (~915px) and the
+   header still folds at 980px — earlier than the 880px page-layout breakpoint
+   used elsewhere, but late enough that a 1024px tablet keeps the full nav. */
+@media (min-width: 981px) and (max-width: 1120px) {
+  .nav-a { font-size: 15px; padding: 9px 10px; }
+  header > div { gap: 16px !important; }
+}
 @media (max-width: 980px) {
   .nav-toggle { display: flex; margin-inline-start: auto; }
   .header-cta { display: none; }

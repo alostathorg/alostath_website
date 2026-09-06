@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PARTNERS_NAV_LABEL, PARTNERS_PATH } from "@/lib/brandPartners";
 
 const NAV = [
   { href: "/#hero", label: "الرئيسية", key: "home" },
@@ -6,6 +7,7 @@ const NAV = [
   { href: "/community", label: "المجتمع", key: "community" },
   { href: "/awards", label: "الجوائز", key: "awards" },
   { href: "/initiatives", label: "المبادرات", key: "initiatives" },
+  { href: PARTNERS_PATH, label: PARTNERS_NAV_LABEL, key: "partners" },
   { href: "/blog", label: "المدونة", key: "blog" },
   { href: "/about", label: "من نحن", key: "about" },
   { href: "/press", label: "الملف الإعلامي", key: "press" },

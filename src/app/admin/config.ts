@@ -1,3 +1,11 @@
+import {
+  BRAND_CATEGORIES,
+  BRAND_CATEGORY_LABELS,
+  BRAND_PRICINGS,
+  BRAND_PRICING_LABELS,
+  PARTNERS_NAV_LABEL,
+} from "@/lib/brandPartners";
+
 // Declarative schema that drives the generic admin CRUD engine.
 // Each collection maps 1:1 to a Supabase table; fields describe how to render
 // and coerce each column. Fields are grouped into titled sections and complex
@@ -47,6 +55,8 @@ const G_TEXT = "النصوص";
 const G_CONTENT = "المحتوى";
 const G_MEDIA = "الصور والملفات";
 const G_TIMELINE = "الجدول الزمني";
+const G_OFFER = "عرض المعلّم";
+const G_LINKS = "الروابط";
 
 // Reusable row schemas for the repeater editors.
 const STEP_ITEM: Field[] = [
@@ -137,6 +147,37 @@ export const COLLECTIONS: Collection[] = [
     ],
   },
   {
+    // «الإعلامات» — brands whose products / services / offers help teachers.
+    // Not the same thing as `partners` below (institutional partners, marquee).
+    table: "brand_partners",
+    slug: "brands",
+    labelSingular: "علامة شريكة",
+    labelPlural: PARTNERS_NAV_LABEL,
+    orderBy: { column: "sort_order", ascending: true },
+    fields: [
+      { name: "name", label: "اسم العلامة", type: "text", placeholder: "مثال: منصّة درّس", group: G_BASIC, listColumn: true },
+      { name: "slug", label: "مُعرّف الرابط", type: "text", group: G_BASIC, listColumn: true },
+      { name: "published", label: "منشور على الموقع", type: "boolean", help: "تبقى العلامة مسودة حتى تُراجَع وتُعتمد", group: G_BASIC, listColumn: true },
+      { name: "featured", label: "شريك مميّز", type: "boolean", help: "يظهر أولاً في بطاقة عريضة مع وسم ذهبي", group: G_BASIC },
+      { name: "category", label: "الفئة", type: "select", options: BRAND_CATEGORIES, optionLabels: BRAND_CATEGORY_LABELS, group: G_BASIC, listColumn: true },
+      { name: "pricing", label: "التكلفة", type: "select", options: BRAND_PRICINGS, optionLabels: BRAND_PRICING_LABELS, group: G_BASIC },
+      { name: "sort_order", label: "الترتيب", type: "number", help: "الأصغر يظهر أولاً", group: G_BASIC },
+      { name: "tagline", label: "ماذا تقدّم للمعلّم؟ (سطر واحد)", type: "textarea", help: "يظهر على البطاقة — حتى 90 حرفاً، يبدأ بالفائدة لا باسم الشركة", placeholder: "مثال: تحضير الدروس وبنك أسئلة متوافق مع المناهج في دقائق.", group: G_TEXT },
+      { name: "overview", label: "نبذة عن العلامة", type: "textarea", group: G_TEXT },
+      { name: "audience", label: "لمن؟ (الفئات المستهدفة)", type: "tags", help: "اكتب كل فئة واضغط Enter", placeholder: "معلّمو المرحلة الابتدائية", group: G_TEXT },
+      { name: "location", label: "المقر", type: "text", placeholder: "الرياض، المملكة العربية السعودية", group: G_TEXT },
+      { name: "teacher_offer", label: "عرض المعلّم (عنوان)", type: "text", help: "اتركه فارغاً إن لم يوجد عرض خاص", placeholder: "خصم 25% لأعضاء مجتمع الأستاذ", group: G_OFFER },
+      { name: "offer_code", label: "رمز العرض", type: "text", placeholder: "OSTATH25", group: G_OFFER },
+      { name: "offer_note", label: "شروط العرض", type: "textarea", help: "الصلاحية، كيفية التفعيل، من يستحقه", placeholder: "ساري حتى 30 يونيو 2027 عند التسجيل ببريد جهة العمل.", group: G_OFFER },
+      { name: "highlights", label: "ماذا يقدّم للمعلّم (أبرز الميزات)", type: "repeater", itemFields: CARD_ITEM, help: "3 إلى 4 ميزات", group: G_CONTENT },
+      { name: "website_url", label: "الموقع الرسمي", type: "text", help: "يظهر اسم النطاق للمعلّم قبل الانتقال", placeholder: "https://…", group: G_LINKS },
+      { name: "cta_url", label: "رابط الزر (صفحة العرض)", type: "text", help: "اختياري — إن تُرك فارغاً يُستخدم الموقع الرسمي", placeholder: "https://…/teachers", group: G_LINKS },
+      { name: "cta_label", label: "نص الزر", type: "text", help: "اختياري — الافتراضي: انتقل إلى موقع الشريك", placeholder: "فعّل العرض الآن", group: G_LINKS },
+      { name: "logo_url", label: "الشعار", type: "image", help: "PNG شفاف أو SVG بأي نسبة أبعاد، بعرض 600 بكسل على الأقل — نسخة مناسبة للخلفيات الفاتحة", group: G_MEDIA },
+      { name: "hero_image_url", label: "صورة المنتج (اختياري)", type: "image", group: G_MEDIA },
+    ],
+  },
+  {
     table: "partners",
     slug: "partners",
     labelSingular: "شريك",
@@ -176,6 +217,7 @@ export function getCollection(slug: string): Collection | undefined {
 export const AI_FIELDS: Record<string, string[]> = {
   awards: ["name", "status", "badge_label", "type", "beneficiaries", "tagline", "overview", "goal", "partnership_note", "categories", "steps", "phases"],
   initiatives: ["name", "badge", "tagline", "overview", "goal", "partners", "facts", "value_cards", "steps"],
+  brands: ["name", "tagline", "category", "pricing", "audience", "location", "teacher_offer", "offer_code", "offer_note", "overview", "highlights"],
 };
 
 // Ready-made starting content added to a NEW award / initiative so the steps
