@@ -88,6 +88,37 @@ export interface Partner {
   sort_order: number;
 }
 
+/**
+ * «الإعلامات» — a brand whose products, services or offers help teachers.
+ * Distinct from `Partner` (institutional partners in the home-page marquee).
+ * Mirrors supabase/migrations/0003_brand_partners.sql.
+ */
+export interface BrandPartner {
+  id: string;
+  slug: string;
+  name: string;
+  tagline: string | null;
+  category: string;
+  pricing: string;
+  audience: string[];
+  teacher_offer: string | null;
+  offer_code: string | null;
+  offer_note: string | null;
+  overview: string | null;
+  highlights: { title: string; body: string }[];
+  location: string | null;
+  website_url: string | null;
+  cta_url: string | null;
+  cta_label: string | null;
+  logo_url: string | null;
+  hero_image_url: string | null;
+  featured: boolean;
+  sort_order: number;
+  published: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface PressAsset {
   id: string;
   title: string;

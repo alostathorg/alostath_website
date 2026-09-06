@@ -30,7 +30,12 @@ function coerceImported(collection: Collection, parsed: Record<string, unknown>)
       if (typeof v === "string") v = v.split(/[،,]/).map((s) => s.trim()).filter(Boolean);
       if (Array.isArray(v) && v.length) out[name] = v.map(String);
     } else if (field?.type === "repeater") {
-      if (Array.isArray(v) && v.length) out[name] = v.filter((r) => r && typeof r === "object");
+      // Cells are stored as strings; an unquoted number from the AI must not reach jsonb as-is.
+      if (Array.isArray(v) && v.length) {
+        out[name] = v
+          .filter((r) => r && typeof r === "object")
+          .map((r) => Object.fromEntries(Object.entries(r as Record<string, unknown>).map(([k, x]) => [k, x == null ? "" : String(x)])));
+      }
     } else if (field?.type === "select") {
       if (typeof v === "string" && (field.options ?? []).includes(v.trim())) out[name] = v.trim();
     } else if (typeof v === "string" && v.trim()) {

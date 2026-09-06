@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
+import { PARTNERS_NAV_LABEL, PARTNERS_PATH } from "@/lib/brandPartners";
 
 const QUICK_LINKS = [
   { href: "/#hero", label: "الرئيسية" },
@@ -7,6 +8,7 @@ const QUICK_LINKS = [
   { href: "/community", label: "المجتمع" },
   { href: "/awards", label: "الجوائز" },
   { href: "/initiatives", label: "المبادرات" },
+  { href: PARTNERS_PATH, label: PARTNERS_NAV_LABEL },
   { href: "/blog", label: "المدونة" },
   { href: "/press", label: "الملف الإعلامي" },
   { href: "/about", label: "من نحن" },

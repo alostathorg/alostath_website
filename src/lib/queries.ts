@@ -3,6 +3,7 @@ import { toLatinDigits } from "@/lib/format";
 import type {
   Award,
   BlogPost,
+  BrandPartner,
   CommunityIdea,
   Initiative,
   Partner,
@@ -30,8 +31,10 @@ function latinDigits<T>(value: T): T {
   // key would hit the inherited setter, silently dropping the key and swapping
   // the rebuilt object's prototype.
   if (value !== null && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype) {
+    // Identifiers are left alone: a slug rewritten here would build links and
+    // static params that no longer match the row they came from.
     return Object.fromEntries(
-      Object.entries(value).map(([k, v]) => [k, latinDigits(v)]),
+      Object.entries(value).map(([k, v]) => [k, k === "slug" || k === "id" ? v : latinDigits(v)]),
     ) as T;
   }
   return value;
@@ -116,6 +119,36 @@ export async function getPartners(): Promise<Partner[]> {
   if (!supabase) return [];
   const { data } = await supabase.from("partners").select("*").order("sort_order");
   return latinDigits(data ?? []);
+}
+
+/**
+ * «الإعلامات» — published brand partners, spotlighted ones first. RLS already
+ * hides drafts from the anon client; the filter here keeps an admin session on
+ * the same page a visitor sees.
+ */
+export async function getBrandPartners(): Promise<BrandPartner[]> {
+  const supabase = publicClient();
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from("brand_partners")
+    .select("*")
+    .eq("published", true)
+    .order("featured", { ascending: false })
+    .order("sort_order")
+    .order("name");
+  return latinDigits((data as BrandPartner[] | null) ?? []);
+}
+
+export async function getBrandPartner(slug: string): Promise<BrandPartner | null> {
+  const supabase = publicClient();
+  if (!supabase) return null;
+  const { data } = await supabase
+    .from("brand_partners")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .maybeSingle();
+  return latinDigits((data as BrandPartner | null) ?? null);
 }
 
 export async function getPressAssets(): Promise<PressAsset[]> {

@@ -68,7 +68,35 @@ function coerce(collection: Collection, form: FormData) {
   return { row, phases };
 }
 
-export async function saveRecord(slug: string, id: string | null, form: FormData) {
+/**
+ * Postgres speaks English to the editor otherwise. The one error editors hit
+ * in practice is a unique-key collision — two names that transliterate to the
+ * same slug, or a partner/press asset saved twice — so that one names the
+ * field to change. Postgres reports the column as `Key (slug)=(x) already
+ * exists.`; when that is missing, the collection's slug (or its first field)
+ * is the unique column by construction.
+ */
+function friendlyDbError(
+  collection: Collection,
+  error: { code?: string; message: string; details?: string | null },
+): string {
+  if (error.code === "23505") {
+    const col = /Key \(([^)]+)\)/.exec(error.details ?? "")?.[1]?.split(",")[0]?.trim();
+    const field =
+      collection.fields.find((f) => f.name === col) ??
+      collection.fields.find((f) => f.name === "slug") ??
+      collection.fields[0];
+    return `«${field.label}» مستخدم من قبل في سجل آخر — غيّره ثم احفظ مجدداً.`;
+  }
+  return error.message;
+}
+
+/**
+ * Returns `{ error }` for a database rejection instead of throwing: Next.js
+ * masks thrown Server Action errors in production, so a thrown message would
+ * reach the editor as a generic English notice.
+ */
+export async function saveRecord(slug: string, id: string | null, form: FormData): Promise<{ error: string } | undefined> {
   await requireAdmin();
   const collection = getCollection(slug);
   if (!collection) throw new Error("مجموعة غير معروفة");
@@ -79,10 +107,10 @@ export async function saveRecord(slug: string, id: string | null, form: FormData
   let recordId = id;
   if (id) {
     const { error } = await supabase.from(collection.table).update(row).eq("id", id);
-    if (error) throw new Error(error.message);
+    if (error) return { error: friendlyDbError(collection, error) };
   } else {
     const { data, error } = await supabase.from(collection.table).insert(row).select("id").single();
-    if (error) throw new Error(error.message);
+    if (error) return { error: friendlyDbError(collection, error) };
     recordId = data.id;
   }
 
