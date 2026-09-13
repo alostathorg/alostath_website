@@ -167,9 +167,58 @@ section[id] {
 .blog-card-date { font-size: 13px; color: var(--ink-subtle); }
 @media (max-width: 980px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 620px) { .blog-grid { grid-template-columns: 1fr; } }
+/* «اقرأ أيضاً» shows whatever else is published — one, two or three cards. A
+   fixed three-column track would leave a hole; this fills the row at any count. */
+.blog-grid.is-fit { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
-/* Article body */
+/* ── Article — /blog/[slug] ────────────────────────────────────────────────
+   The page used to be a hero, three paragraphs and a text link. What was
+   missing was everything around the prose: who wrote when, how long the read
+   is, a way to pass it on, and somewhere to go next. */
+.post-wrap { max-width: 760px; margin: 0 auto; padding: clamp(44px,5.6vw,64px) clamp(20px,4vw,32px) clamp(56px,7vw,80px); }
+
+.post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.post-meta-chip { font-size: 13px; font-weight: 600; color: var(--olive-700); background: var(--olive-50); border: 1px solid var(--olive-100); border-radius: var(--radius-round); padding: 6px 14px; }
+.post-meta-item { font-size: 14px; color: var(--ink-subtle); }
+.post-meta-dot { width: 4px; height: 4px; border-radius: var(--radius-round); background: var(--hairline-strong); flex: none; }
+.post-meta-share { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
+.post-share-btn {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: var(--radius-round);
+  border: 1px solid var(--hairline);
+  background: var(--canvas);
+  color: var(--ink-subtle);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
+}
+.post-share-btn:hover { color: var(--olive-700); background: var(--surface-1); border-color: var(--hairline-strong); transform: translateY(-2px); }
+
+/* A gold tick between the meta rail and the first line — the article opens on
+   a mark rather than simply starting. */
+.post-rule { width: 64px; height: 3px; border-radius: 3px; background: var(--gold-500); margin: 30px 0 32px; }
+
+/* Article body. The opening paragraph is set larger and darker so the piece has
+   a lede; Arabic sets no versal, so the emphasis is the block's, never a
+   drop-capped letter's. */
 .post-body p { font-size: 18px; line-height: 1.95; color: var(--text-body); margin: 0 0 24px; }
+.post-body > p:first-child { font-size: clamp(19px,2.1vw,22px); line-height: 1.9; font-weight: 500; color: var(--ink); }
+.post-body p:last-child { margin-bottom: 0; }
+
+.post-end { margin-top: clamp(36px,4.6vw,52px); padding-top: 26px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+.post-end .post-meta-share { margin-inline-start: 0; }
+
+/* Reading progress. Sits on the very top edge, above the sticky header, and is
+   driven from SiteChrome — scroll-driven CSS animations are still Chromium-only.
+   The site is RTL, so the line grows from the right. */
+.read-bar { position: fixed; z-index: 60; top: 0; inset-inline: 0; height: 3px; pointer-events: none; background: rgba(35,39,26,.05); }
+.read-bar > span { display: block; height: 100%; transform: scaleX(var(--read, 0)); transform-origin: right center; background: linear-gradient(to left, var(--gold-500), var(--olive-500)); }
+
+@media (prefers-reduced-motion: reduce) { .post-share-btn { transition: none; } }
 
 /* Press page */
 .press-section { max-width: var(--container-max); margin: 0 auto; padding: clamp(56px, 9vw, 88px) 32px; }
@@ -288,14 +337,13 @@ a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
 @media (max-width: 900px) { .bp-code { font-size: 16px; letter-spacing: .5px; } }
 @media (max-width: 760px) { .bp-offer-panel { grid-template-columns: 1fr; } }
 
-/* Detail meta row, product image, closing band */
+/* Detail meta row + the logo plate the closing monument opens on.
+   The product shot and the closing band moved to the shared detail kit
+   (.dp-figure / .dp-monument), so what's left here is the partner-specific bit. */
 .bp-meta-row { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; font-size: 14px; color: var(--text-muted); }
-.bp-shot { border-radius: 20px; border: 1px solid var(--hairline); overflow: hidden; background: var(--surface-1); }
-.bp-shot img { width: 100%; height: auto; display: block; }
-.bp-plate-sm { width: 96px; height: 96px; border-radius: 20px; background: var(--canvas); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; padding: 14px; }
+.bp-plate-sm { position: relative; z-index: 1; width: 96px; height: 96px; border-radius: 20px; background: var(--canvas); display: flex; align-items: center; justify-content: center; margin: 0 auto 22px; padding: 14px; }
 .bp-plate-sm img { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; }
 .bp-plate-sm .bp-monogram { width: 56px; height: 56px; border-radius: 14px; font-size: 26px; }
-.bp-band p { text-align: center; text-align-last: center; }
 @media (prefers-reduced-motion: reduce) { .bp-logo-well img { transition: none; } }
 
 /* Home page: partner marquee + system bento */

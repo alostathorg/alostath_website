@@ -1,10 +1,9 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
+import { DetailFigure, DetailPager, Monument, SectionHead } from "@/components/DetailKit";
 import { getAward, getAwards } from "@/lib/queries";
-import type { Award } from "@/lib/types";
 
 export const revalidate = 60;
 
@@ -33,13 +32,14 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
   if (!award) notFound();
 
   const sage = award.theme === "sage";
+  const tone = sage ? "sage" : "gold";
   const status = HERO_STATUS[award.status];
   const cats = award.categories.join(",");
   const phases = award.award_timeline_phases ?? [];
 
   const idx = all.findIndex((a) => a.slug === award.slug);
-  const other = all[(idx + 1) % all.length];
-  const showPager = other && other.slug !== award.slug;
+  const prevAward = idx > 0 ? all[idx - 1] : null;
+  const nextAward = idx !== -1 && idx < all.length - 1 ? all[idx + 1] : null;
 
   const regProps = {
     "data-register": award.name,
@@ -47,11 +47,16 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
     "data-register-categories": cats,
   };
 
+  // The chapters are numbered in the order they appear, and a chapter that has
+  // no content for this award (no categories, no phases) never takes a number.
+  let chapter = 0;
+  const next = () => (chapter += 1);
+
   return (
     <PageShell active="awards">
       <PageHero
         size="lg"
-        tone={sage ? "sage" : "gold"}
+        tone={tone}
         crumbs={[{ label: "الجوائز", href: "/awards" }, { label: award.name }]}
         badge={
           <span className={`ph-badge${sage ? " is-sage" : ""}`}>
@@ -73,35 +78,51 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
       {/* FACTS */}
       <div className="dp-facts" data-reveal="1">
         <div className="dp-facts-inner">
-          <Fact k="النوع" v={award.type ?? ""} />
-          <Fact k="المجالات" v={award.categories.join(" · ")} />
-          <Fact k="المستفيدون" v={award.beneficiaries ?? ""} />
+          <Fact k="النوع" v={award.type ?? ""} icon={<IconAward />} />
+          <Fact k="المجالات" v={award.categories.join(" · ")} icon={<IconTag />} />
+          <Fact k="المستفيدون" v={award.beneficiaries ?? ""} icon={<IconPeople />} tone="sage" />
         </div>
       </div>
 
       {/* OVERVIEW */}
-      <section id="overview" data-reveal="1" style={{ maxWidth: 880, margin: "0 auto", padding: "72px 32px 40px" }}>
-        <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 16 }}>عن الجائزة</div>
-        <p style={{ fontSize: "clamp(20px,2.4vw,26px)", lineHeight: 1.9, color: "var(--text-body)", fontWeight: 500, margin: 0 }}>{award.overview}</p>
+      <section id="overview" className="dp-sec is-narrow" data-reveal="1">
+        <SectionHead index={next()} eyebrow="عن الجائزة" tone={tone} />
+        <p className="dp-prose">{award.overview}</p>
       </section>
 
+      {/* PLATE — the photograph the listing row shows and this page never did */}
+      {award.hero_image_url && (
+        <section className="dp-sec is-tight" data-reveal="1">
+          <DetailFigure src={award.hero_image_url} alt={award.name} tone={tone} />
+        </section>
+      )}
+
       {/* GOAL */}
-      <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px 56px" }}>
-        <div style={{ position: "relative", overflow: "hidden", background: sage ? "var(--olive-50)" : "var(--gold-50)", border: `1px solid ${sage ? "var(--olive-100)" : "var(--gold-100)"}`, borderRadius: 20, padding: "clamp(36px,5vw,60px)" }}>
-          <div style={{ maxWidth: "64ch" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: sage ? "var(--olive-700)" : "var(--gold-700)", textTransform: "uppercase", marginBottom: 14 }}>الهدف</div>
-            <p style={{ fontSize: "clamp(22px,2.8vw,32px)", fontWeight: 600, lineHeight: 1.6, margin: 0, color: "var(--ink)" }}>{award.goal}</p>
-          </div>
-        </div>
-      </section>
+      {award.goal && (
+        <section className="dp-sec" data-reveal="1">
+          <Monument
+            tone={tone}
+            head={<SectionHead index={next()} eyebrow="الهدف" onDark />}
+            quote={award.goal}
+          />
+        </section>
+      )}
 
       {/* CATEGORIES */}
       {award.categories.length > 0 && (
-        <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px 56px" }}>
-          <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 24px" }}>مجالات الجائزة</h2>
-          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 18 }}>
-            {award.categories.map((c) => (
-              <div key={c} className="dp-cat"><div className="dp-cat-ico"><IconTag /></div><h3>{c}</h3></div>
+        <section className="dp-sec" data-reveal="1">
+          <SectionHead
+            index={next()}
+            eyebrow="مجالات المشاركة"
+            title="مجالات الجائزة"
+            tone={tone}
+          />
+          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 18 }}>
+            {award.categories.map((c, i) => (
+              <div key={c} className="dp-cat">
+                <span className="dp-cat-num">{String(i + 1).padStart(2, "0")}</span>
+                <h3>{c}</h3>
+              </div>
             ))}
           </div>
         </section>
@@ -109,9 +130,15 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
 
       {/* STEPS */}
       {award.steps.length > 0 && (
-        <section data-reveal="1" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-          <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "72px 32px" }}>
-            <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 48px", textAlign: "center" }}>كيف تشارك؟</h2>
+        <section className="dp-shade" data-reveal="1">
+          <div className="dp-sec">
+            <SectionHead
+              index={next()}
+              eyebrow="خطوة بخطوة"
+              title="كيف تشارك؟"
+              tone={tone}
+              center
+            />
             <div className="dp-steps" data-reveal-group style={{ ["--step-count" as string]: award.steps.length }}>
               {award.steps.map((s, i) => (
                 <div key={i} className="dp-step"><div className="dp-step-node">{i + 1}</div><h3>{s.title}</h3><p>{s.body}</p></div>
@@ -121,14 +148,16 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
         </section>
       )}
 
-      {/* TIMELINE */}
+      {/* TIMELINE — prose and sequence stay narrow; only grids take the full width */}
       {phases.length > 0 && (
-        <section data-reveal="1" style={{ maxWidth: 820, margin: "0 auto", padding: "64px 32px 24px" }}>
+        <section className="dp-sec is-narrow" data-reveal="1">
+          <SectionHead
+            index={next()}
+            eyebrow="مسار التقديم"
+            title="الجدول الزمني للجائزة"
+            tone={tone}
+          />
           <div className="dp-flow">
-            <div className="dp-flow-head">
-              <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 12 }}>مسار التقديم</div>
-              <h2 style={{ fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 700, margin: 0 }}>الجدول الزمني للجائزة</h2>
-            </div>
             <div className="dp-timeline">
               {phases.map((p, i) => (
                 <div key={p.id} className={`dp-tl-item ${PHASE_CLS[p.state]}`}>
@@ -156,40 +185,71 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
         </section>
       )}
 
-      {/* PARTNERSHIP */}
+      {/* PARTNERSHIP — the closing statement, not a chapter */}
       {award.partnership_note && (
-        <section data-reveal="1" style={{ maxWidth: 920, margin: "0 auto", padding: "48px 32px 40px", textAlign: "center" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>تكاملٌ وطني</div>
-          <p className="txt-justify is-center" style={{ fontSize: "clamp(19px,2.4vw,26px)", fontWeight: 600, lineHeight: 1.7, margin: 0, color: "var(--text-body)" }}>{award.partnership_note}</p>
+        <section className="dp-sec" data-reveal="1">
+          <Monument
+            tone={tone}
+            center
+            head={<SectionHead eyebrow="تكاملٌ وطني" onDark center />}
+            quote={award.partnership_note}
+          />
         </section>
       )}
 
-      {/* PAGER */}
-      {showPager && (
-        <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px 72px" }}>
-          <Link href={`/awards/${other.slug}`} className="dp-pager is-next">
-            <span className="dp-pager-text"><div className="k">الجائزة التالية</div><div className="t">{other.name}</div></span>
-            <span className="dp-pager-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg></span>
-          </Link>
-        </section>
-      )}
+      {/* RAIL */}
+      <section className="dp-sec is-tight" style={{ paddingBottom: "clamp(56px,7vw,84px)" }}>
+        <DetailPager
+          all={{ href: "/awards", label: "كل الجوائز" }}
+          prev={prevAward ? { href: `/awards/${prevAward.slug}`, label: "الجائزة السابقة", title: prevAward.name } : null}
+          next={nextAward ? { href: `/awards/${nextAward.slug}`, label: "الجائزة التالية", title: nextAward.name } : null}
+        />
+      </section>
     </PageShell>
   );
 }
 
-function Fact({ k, v }: { k: string; v: string }) {
+function Fact({ k, v, icon, tone }: { k: string; v: string; icon: React.ReactNode; tone?: "sage" }) {
+  const tinted = tone === "sage";
   return (
     <div className="dp-fact">
-      <div className="dp-fact-ico"><IconTag /></div>
-      <div><div className="dp-fact-k">{k}</div><div className="dp-fact-v">{v}</div></div>
+      <div className="dp-fact-ico" style={tinted ? { background: "var(--sage-50)", color: "var(--sage-700)" } : undefined}>
+        {icon}
+      </div>
+      <div>
+        <div className="dp-fact-k">{k}</div>
+        <div className="dp-fact-v" style={tinted ? { color: "var(--sage-700)" } : undefined}>{v}</div>
+      </div>
     </div>
+  );
+}
+
+const ico = {
+  width: 22,
+  height: 22,
+  viewBox: "0 0 24 24",
+  fill: "none",
+  stroke: "currentColor",
+  strokeWidth: 2,
+  strokeLinecap: "round",
+  strokeLinejoin: "round",
+  "aria-hidden": true,
+} as const;
+
+function IconAward() {
+  return (
+    <svg {...ico}><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11" /></svg>
   );
 }
 
 function IconTag() {
   return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 19l7-7 3 3-7 7-3-3z" /><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z" /><circle cx="11" cy="11" r="2" />
-    </svg>
+    <svg {...ico}><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z" /><line x1="7" y1="7" x2="7.01" y2="7" /></svg>
+  );
+}
+
+function IconPeople() {
+  return (
+    <svg {...ico}><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
   );
 }
