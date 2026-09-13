@@ -50,6 +50,13 @@
 .btn-outline:hover:not([disabled]) { background: var(--olive-50); transform: translateY(-2px); box-shadow: var(--shadow-md); }
 .btn-outline:active:not([disabled]) { background: var(--olive-100); transform: translateY(0); }
 
+/* Outline button on a dark stage. Was an inline style repeated on six pages,
+   where it also killed the hover state — an inline background always beats
+   .btn-outline:hover. As a class it can hover properly. */
+.btn-outline.btn-on-dark { background: transparent; color: var(--ink-inverse); border-color: rgba(244,246,238,0.40); }
+.btn-outline.btn-on-dark:hover:not([disabled]) { background: rgba(244,246,238,0.10); border-color: rgba(244,246,238,0.72); box-shadow: none; }
+.btn-outline.btn-on-dark:active:not([disabled]) { background: rgba(244,246,238,0.16); }
+
 /* ghost */
 .btn-ghost { background: transparent; color: var(--text-body); }
 .btn-ghost:hover:not([disabled]) { background: var(--surface-2); }
@@ -376,17 +383,191 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 }
 
 /* ============================================================
-   Detail pages (initiatives / awards / council) — rich shared kit
+   Page hero — the one stage every page opens with
+   (component: src/components/PageHero.tsx)
+
+   Three densities on one shell: md = index pages, lg = detail pages,
+   xl = the home page. A page supplies content, never chrome — the
+   gradient, the orbs, the watermark, the gold rule and the horizon
+   hairline all live here so no two heroes can drift apart again.
    ============================================================ */
 
-/* Hero shell: layered gradient + slow floating colour orbs */
-.dp-hero { position: relative; overflow: hidden; background: linear-gradient(155deg,#243016 0%,var(--olive-900) 54%,#141d0b 100%); color: var(--ink-inverse); }
-.dp-orb { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; }
-.dp-orb-gold { width: 460px; height: 460px; background: radial-gradient(circle, rgba(191,155,47,.42), transparent 70%); top: -170px; inset-inline-end: -90px; opacity: .9; animation: dpFloat 17s ease-in-out infinite; }
-.dp-orb-sage { width: 380px; height: 380px; background: radial-gradient(circle, rgba(120,161,131,.30), transparent 70%); bottom: -180px; inset-inline-start: -90px; opacity: .8; animation: dpFloat 22s ease-in-out infinite reverse; }
-@keyframes dpFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(26px,-30px) scale(1.06); } }
-.dp-hero-inner { position: relative; z-index: 2; max-width: var(--container-max); margin: 0 auto; width: 100%; padding: clamp(60px,9vh,96px) 32px clamp(76px,11vh,116px); }
-.dp-rule { width: 64px; height: 4px; border-radius: 4px; background: var(--gold-500); }
+.ph {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--ink-inverse);
+  background:
+    radial-gradient(86% 74% at 96% 104%, rgba(120,161,131,.16), transparent 62%),
+    linear-gradient(155deg, #26321A 0%, var(--olive-900) 52%, #141C0A 100%);
+}
+.ph-full { min-height: 88vh; display: flex; align-items: center; }
+
+/* Horizon: the dark stage ends on a line rather than just stopping. On detail
+   pages the facts card straddles it. */
+.ph::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 1px;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(191,155,47,.40) 16%, rgba(191,155,47,.40) 84%, transparent);
+}
+
+/* Slow floating light. Same two orbs on every page, so the stage reads as one
+   place seen from slightly different angles. */
+.ph-orb { position: absolute; z-index: 0; border-radius: 50%; filter: blur(70px); pointer-events: none; }
+.ph-orb-gold { width: 460px; height: 460px; background: radial-gradient(circle, rgba(191,155,47,.38), transparent 70%); top: -180px; inset-inline-end: -100px; opacity: .9; animation: phFloat 19s ease-in-out infinite; }
+.ph-orb-sage { width: 380px; height: 380px; background: radial-gradient(circle, rgba(120,161,131,.26), transparent 70%); bottom: -190px; inset-inline-start: -90px; opacity: .8; animation: phFloat 24s ease-in-out infinite reverse; }
+@keyframes phFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(26px,-30px) scale(1.06); } }
+
+/* Brand watermark. A radial mask dissolves every edge, so the mark can sit
+   half off-stage without the hard crop the old per-page <img>s all had. */
+.ph-mark {
+  position: absolute;
+  z-index: 0;
+  bottom: 5%;
+  inset-inline-end: -1%;
+  width: min(470px, 38%);
+  aspect-ratio: 5405 / 3338;
+  background: url("/assets/alostath-logo-inverse.png") center / contain no-repeat;
+  opacity: .075;
+  pointer-events: none;
+  -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
+  mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
+}
+.ph[data-size="xl"] .ph-mark { width: min(520px, 42%); }
+
+/* Photograph + its scrim. The gradient runs dark→clear toward the inline-end
+   (the site is RTL, so: dark under the text column at the right, photograph
+   left to breathe on the left). */
+.ph-photo { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+.ph[data-photo] .ph-mark { display: none; }
+.ph[data-photo] .ph-orb { opacity: .34; }
+.ph[data-photo]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to left, rgba(20,27,13,.80) 0%, rgba(20,27,13,.52) 38%, rgba(20,27,13,.20) 72%, rgba(20,27,13,.06) 100%),
+    linear-gradient(to top, rgba(20,27,13,.58), rgba(20,27,13,0) 52%);
+}
+
+/* ── Column ───────────────────────────────────────────────────────── */
+
+.ph-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding: clamp(56px,8vh,88px) clamp(20px,4vw,32px) clamp(64px,9vh,100px);
+}
+.ph[data-size="lg"] .ph-inner { padding-block: clamp(60px,9vh,96px) clamp(76px,11vh,116px); }
+.ph[data-size="xl"] .ph-inner { padding-block: clamp(72px,12vh,124px); }
+
+.ph-inner.ph-has-aside { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px,5vw,64px); align-items: center; }
+
+.ph-crumbs { display: flex; align-items: center; flex-wrap: wrap; font-size: 14px; color: var(--inverse-muted); margin-bottom: 26px; }
+.ph-crumbs a { color: var(--inverse-muted); text-decoration: none; transition: color .15s ease; }
+.ph-crumbs a:hover { color: var(--ink-inverse); }
+.ph-crumbs [aria-current] { display: inline-block; max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; color: var(--gold-500); }
+.ph[data-tone="sage"] .ph-crumbs [aria-current] { color: var(--sage-500); }
+.ph-crumb-sep { opacity: .5; margin-inline: 10px; }
+
+.ph-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: var(--tracking-eyebrow);
+  color: var(--gold-500);
+  margin-bottom: 18px;
+}
+.ph[data-tone="sage"] .ph-eyebrow { color: var(--sage-500); }
+
+.ph-title {
+  font-size: clamp(40px,6vw,70px);
+  font-weight: var(--weight-bold);
+  line-height: 1.16;
+  margin: 0;
+  max-width: 20ch;
+  text-wrap: balance;
+  /* a long unbroken name (a Latin brand, say) breaks rather than overflows */
+  overflow-wrap: break-word;
+}
+.ph[data-size="lg"] .ph-title { font-size: clamp(42px,6.8vw,82px); line-height: 1.08; max-width: 17ch; }
+.ph[data-size="xl"] .ph-title { font-size: clamp(42px,7vw,86px); line-height: 1.12; max-width: 14ch; }
+.ph-accent { display: block; color: var(--gold-500); }
+.ph[data-tone="sage"] .ph-accent { color: var(--sage-500); }
+
+.ph-rule { width: 72px; height: 3px; border-radius: 3px; background: var(--gold-500); margin-top: clamp(22px,3vh,30px); }
+.ph[data-tone="sage"] .ph-rule { background: var(--sage-500); }
+
+/* Hero prose is set flush, never justified: at this measure and size the gaps
+   justification opens up are wider than the leading. Body prose deeper in a
+   page still justifies. */
+.ph-lede {
+  font-size: clamp(17px,2vw,21px);
+  line-height: 1.85;
+  color: var(--inverse-muted);
+  margin: clamp(20px,3vh,26px) 0 0;
+  max-width: 62ch;
+  text-align: start;
+  text-wrap: pretty;
+}
+.ph[data-size="lg"] .ph-lede { font-size: clamp(18px,2.2vw,24px); line-height: 1.7; max-width: 54ch; }
+.ph-note { font-size: clamp(15px,1.6vw,17px); line-height: 1.9; color: var(--inverse-subtle); margin: 16px 0 0; max-width: 66ch; text-align: start; }
+.ph-meta { margin-top: clamp(22px,3vh,30px); }
+.ph-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: clamp(26px,4vh,36px); }
+.ph-below { display: flex; gap: 12px; flex-wrap: wrap; margin-top: clamp(26px,4vh,36px); }
+
+/* Status pill in the eyebrow's place (detail pages) */
+.ph-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 22px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--gold-500);
+  background: rgba(191,155,47,.16);
+  border: 1px solid rgba(191,155,47,.40);
+}
+.ph-badge.is-sage { color: #cfe3d5; background: rgba(120,161,131,.22); border-color: rgba(120,161,131,.50); }
+.ph-date { font-size: 14px; color: var(--inverse-subtle); }
+
+@media (max-width: 880px) {
+  .ph-inner.ph-has-aside { grid-template-columns: 1fr; }
+  .ph-aside { order: -1; }
+}
+/* Below this the watermark would sit behind the text instead of beside it,
+   and the text column spans the full width — so the photo scrim stops being
+   directional and becomes an even floor. */
+@media (max-width: 700px) {
+  .ph-mark { display: none; }
+  .ph-full { min-height: 0; }
+  .ph[data-photo]::before {
+    background:
+      linear-gradient(to left, rgba(20,27,13,.76) 0%, rgba(20,27,13,.62) 60%, rgba(20,27,13,.56) 100%),
+      linear-gradient(to top, rgba(20,27,13,.50), rgba(20,27,13,0) 62%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ph-orb { animation: none; }
+}
+
+/* ============================================================
+   Detail-page body kit (initiatives / awards / council / partners).
+   The hero these pages open with lives in the .ph-* block above.
+   ============================================================ */
 
 /* Elevated facts card straddling hero → body */
 .dp-facts { position: relative; z-index: 5; max-width: var(--container-max); margin: -52px auto 0; padding: 0 32px; }
@@ -484,7 +665,6 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 .dp-flow-cta .msg svg { flex: none; color: var(--gold-600); }
 
 @media (prefers-reduced-motion: reduce) {
-  .dp-orb { animation: none; }
   .dp-status.is-open .dot { animation: none; }
   .dp-vcard, .dp-cat, .dp-cat-ico, .dp-step-node, .dp-pager, .dp-pager-arrow, .dp-fact, .dp-vcard::after { transition: none; }
 }

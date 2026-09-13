@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "من نحن" };
@@ -26,16 +27,11 @@ const BOARD = [
 export default function AboutPage() {
   return (
     <PageShell active="about">
-      {/* HERO */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" style={{ position: "absolute", top: "50%", left: -60, transform: "translateY(-50%)", width: "min(760px,70%)", height: "auto", opacity: 0.06, pointerEvents: "none" }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 80px", textAlign: "center" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16, textAlign: "right" }}>مؤسسة غير ربحيّة</div>
-          <h1 style={{ fontSize: "clamp(38px,5.4vw,60px)", fontWeight: 700, lineHeight: 1.2, margin: 0, textAlign: "right" }}>من نحن</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "20px auto 0", textAlign: "justify" }}>نُعزّز مكانة المعلّم ودوره، تكاملاً مع منظومة التعليم، وفي خدمة رؤية المملكة 2030.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="مؤسسة غير ربحيّة"
+        title="من نحن"
+        lede="نُعزّز مكانة المعلّم ودوره، تكاملاً مع منظومة التعليم، وفي خدمة رؤية المملكة 2030."
+      />
 
       {/* عن المؤسسة */}
       <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 56px" }}>

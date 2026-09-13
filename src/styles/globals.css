@@ -98,9 +98,27 @@ section[id] {
   .initiative-row.is-rev .initiative-row-body { order: 2; }
 }
 
-/* Hero pill (initiatives + generic) */
-.idx-pill { transition: all 0.15s; }
-.idx-pill:hover { transform: translateY(-2px); }
+/* Hero jump pill (initiatives index) */
+.idx-pill {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 9px 18px;
+  border-radius: 9999px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--inverse-muted);
+  background: rgba(244, 246, 238, 0.06);
+  border: 1px solid rgba(244, 246, 238, 0.18);
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.idx-pill:hover {
+  transform: translateY(-2px);
+  background: rgba(244, 246, 238, 0.12);
+  border-color: rgba(244, 246, 238, 0.34);
+  color: var(--ink-inverse);
+}
 
 /* Council feature cards + participant pills */
 .c-card { position: relative; overflow: hidden; }
@@ -244,8 +262,7 @@ a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
 .bp-empty p { font-size: 15.5px; line-height: 1.85; color: var(--text-muted); margin: 0 auto 24px; max-width: 52ch; text-align: center; text-align-last: center; }
 .bp-empty-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 
-/* Detail hero: text column + white logo plate on the dark stage */
-.bp-hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px, 5vw, 64px); align-items: center; }
+/* The white logo plate in the partner hero's aside slot */
 .bp-hero-plate { position: relative; width: 100%; max-width: 380px; aspect-ratio: 4 / 3; margin-inline-start: auto; background: var(--canvas); border-radius: 24px; box-shadow: var(--shadow-lg), 0 0 0 1px rgba(244,246,238,0.08); display: flex; align-items: center; justify-content: center; padding: clamp(28px, 4vw, 44px); }
 .bp-hero-plate img { max-width: 82%; max-height: 72%; width: auto; height: auto; object-fit: contain; }
 .bp-hero-plate .bp-monogram { width: 112px; height: 112px; border-radius: 28px; font-size: 48px; }
@@ -258,8 +275,7 @@ a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
 .bp-domain-line { margin-top: 14px; font-size: 14px; color: var(--inverse-subtle); }
 .bp-domain-line .bp-domain { color: var(--inverse-muted); font-size: 14px; }
 @media (max-width: 880px) {
-  .bp-hero-grid { grid-template-columns: 1fr; }
-  .bp-hero-plate { order: -1; margin-inline-start: 0; max-width: 300px; aspect-ratio: 16 / 10; }
+  .bp-hero-plate { margin-inline-start: 0; max-width: 300px; aspect-ratio: 16 / 10; }
 }
 
 /* Teacher offer panel */

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getPressAssets } from "@/lib/queries";
 
 export const revalidate = 60;
@@ -17,20 +18,17 @@ export default async function PressPage() {
 
   return (
     <PageShell active="press">
-      {/* HERO */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", top: "50%", left: -60, transform: "translateY(-50%)", width: "min(820px,72%)", height: "auto", opacity: 0.06, pointerEvents: "none" }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "104px 32px 64px" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16 }}>الهوية والمصادر الإعلامية</div>
-          <h1 style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.15, margin: 0, maxWidth: "18ch" }}>الملف الإعلامي</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "24px 0 0", maxWidth: "64ch" }}>شعار مؤسسة الأستاذ وهويتها البصرية وألوانها الرسمية، جاهزةٌ للتحميل والاستخدام في المواد الإعلامية والشراكات وفق إرشادات الاستخدام.</p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 36 }}>
+      <PageHero
+        eyebrow="الهوية والمصادر الإعلامية"
+        title="الملف الإعلامي"
+        lede="شعار مؤسسة الأستاذ وهويتها البصرية وألوانها الرسمية، جاهزةٌ للتحميل والاستخدام في المواد الإعلامية والشراكات وفق إرشادات الاستخدام."
+        actions={
+          <>
             <a href={zip?.file_url ?? "#"} className="btn btn-secondary btn-lg" download>تحميل الحزمة الكاملة (ZIP)</a>
-            <a href="#colors" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>استعراض الألوان</a>
-          </div>
-        </div>
-      </section>
+            <a href="#colors" className="btn btn-outline btn-lg btn-on-dark">استعراض الألوان</a>
+          </>
+        }
+      />
 
       {/* LOGOS */}
       <section id="logos" className="press-section">

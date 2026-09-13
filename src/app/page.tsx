@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getAwards, getInitiatives, getPosts, getSettings } from "@/lib/queries";
 import { formatArabicDate } from "@/lib/format";
 
@@ -47,27 +48,24 @@ export default async function HomePage() {
 
   return (
     <PageShell active="home">
-      {/* HERO */}
-      <section id="hero" style={{ position: "relative", minHeight: "88vh", display: "flex", alignItems: "center", overflow: "hidden", background: "var(--olive-900)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.3 }} />
-        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(125% 120% at 85% 0%, rgba(30,40,20,0) 35%, rgba(20,27,13,0.72) 100%)" }} />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", bottom: -40, left: -60, width: "min(560px,52%)", height: "auto", opacity: 0.05, pointerEvents: "none" }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(64px,18vw,120px) 28px clamp(56px,14vw,120px)", width: "100%", textAlign: "right", color: "var(--ink-inverse)" }}>
-          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: 0, textAlign: "right" }}>المعلم</h1>
-          <h1 style={{ fontSize: "clamp(40px,7vw,82px)", fontWeight: 700, lineHeight: 1.18, margin: "10px 0 0", color: "var(--gold-500)", textAlign: "right" }}>ناظر القيم</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "30px 0 0", maxWidth: "60ch" }}>منظومة وطنية شاملة تُعزّز مكانة المعلّم ودوره، وتتكامل مع جهود وزارة التعليم وخدمة رؤية المملكة 2030، من خلال مبادرات خلاقة ومستدامة تُنفّذ بالشراكة مع مؤسسات متخصصة، ومجتمع مهني يجمع المعلمين بالمعرفة والخبرات والفرص، ويعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع.</p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", alignItems: "center", marginTop: 38 }}>
+      <PageHero
+        id="hero"
+        size="xl"
+        full
+        image={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`}
+        imageOpacity={0.5}
+        eyebrow="مؤسسة الأستاذ"
+        title="المعلم"
+        accent="ناظر القيم"
+        lede="منظومة وطنية شاملة تُعزّز مكانة المعلّم ودوره، وتتكامل مع جهود وزارة التعليم وخدمة رؤية المملكة 2030، من خلال مبادرات خلاقة ومستدامة تُنفّذ بالشراكة مع مؤسسات متخصصة، ومجتمع مهني يجمع المعلمين بالمعرفة والخبرات والفرص، ويعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع."
+        actions={
+          <>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
-            <Link href="/initiatives" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>المبادرات</Link>
-          </div>
-        </div>
-        <a href="#about" className="scroll-cue" aria-label="تصفّح للأسفل">
-          <span>تصفّح</span>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14" /><path d="M19 12l-7 7-7-7" /></svg>
-        </a>
-      </section>
+            <Link href="/initiatives" className="btn btn-outline btn-on-dark btn-lg">المبادرات</Link>
+          </>
+        }
+        scrollCue="#about"
+      />
 
       {/* PARTNERS */}
       <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)", padding: "44px 0", overflow: "hidden" }}>

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getBrandPartner, getBrandPartners } from "@/lib/queries";
 import {
   PARTNERS_DISCLAIMER,
@@ -67,51 +68,41 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
     { k: "لمن", v: audience.length ? audience.join("، ") : "المعلّمون والمعلّمات" },
   ];
 
-  const outlineOnDark = { background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" } as const;
   const eyebrow = { fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: 14 } as const;
 
   return (
     <PageShell active="partners">
-      {/* HERO */}
-      <section className="dp-hero">
-        <span className="dp-orb dp-orb-gold" />
-        <span className="dp-orb dp-orb-sage" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", bottom: -70, left: -70, width: "min(540px,50%)", height: "auto", opacity: 0.05, pointerEvents: "none" }} />
-        <div className="dp-hero-inner hero-in">
-          <div className="bp-hero-grid">
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "var(--inverse-muted)", marginBottom: 26 }}>
-                <Link href={PARTNERS_PATH} style={{ color: "var(--inverse-muted)", textDecoration: "none" }}>{PARTNERS_NAV_LABEL}</Link>
-                <span style={{ opacity: 0.6 }}>/</span>
-                <span style={{ color: "var(--gold-500)" }}>{p.name}</span>
-              </div>
-              <div className="bp-pills">
-                {p.featured && (
-                  <span className="bp-pill is-gold"><span className="live-dot" />شريك مميّز</span>
-                )}
-                <span className="bp-pill">{categoryLabel(p.category)}</span>
-                <span className="bp-pill">{pricingLabel(p.pricing)}</span>
-              </div>
-              <h1 style={{ fontSize: "clamp(40px,6.4vw,76px)", fontWeight: 700, lineHeight: 1.1, margin: 0, overflowWrap: "anywhere" }}>{p.name}</h1>
-              <div className="dp-rule" style={{ margin: "30px 0 0" }} />
-              {tagline && (
-                <p style={{ fontSize: "clamp(18px,2.2vw,24px)", lineHeight: 1.7, color: "var(--inverse-muted)", margin: "26px 0 0", maxWidth: "54ch" }}>{tagline}</p>
-              )}
-              <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 36 }}>
-                <PartnerCta partner={p} className="btn btn-secondary btn-lg" fallback="disabled" />
-                <a href="#overview" className="btn btn-outline btn-lg" style={outlineOnDark}>اقرأ عن الشريك</a>
-              </div>
-              {cta.hostname && (
-                <div className="bp-domain-line">الموقع: <span className="bp-domain" dir="ltr">{cta.hostname}</span></div>
-              )}
-            </div>
-            <div className="bp-hero-plate">
-              <PartnerLogo partner={p} eager />
-            </div>
+      <PageHero
+        size="lg"
+        crumbs={[{ label: PARTNERS_NAV_LABEL, href: PARTNERS_PATH }, { label: p.name }]}
+        badge={
+          <div className="bp-pills">
+            {p.featured && (
+              <span className="bp-pill is-gold"><span className="live-dot" />شريك مميّز</span>
+            )}
+            <span className="bp-pill">{categoryLabel(p.category)}</span>
+            <span className="bp-pill">{pricingLabel(p.pricing)}</span>
           </div>
-        </div>
-      </section>
+        }
+        title={p.name}
+        lede={tagline || undefined}
+        actions={
+          <>
+            <PartnerCta partner={p} className="btn btn-secondary btn-lg" fallback="disabled" />
+            <a href="#overview" className="btn btn-outline btn-on-dark btn-lg">اقرأ عن الشريك</a>
+          </>
+        }
+        below={
+          cta.hostname ? (
+            <div className="bp-domain-line">الموقع: <span className="bp-domain" dir="ltr">{cta.hostname}</span></div>
+          ) : undefined
+        }
+        aside={
+          <div className="bp-hero-plate">
+            <PartnerLogo partner={p} eager />
+          </div>
+        }
+      />
 
       {/* FACTS — derived, always three */}
       <div className="dp-facts" data-reveal="1">
