@@ -8,6 +8,7 @@ import type { CommunityBroadcast } from "@/lib/types";
 import { deleteBroadcast } from "../../actions";
 import BroadcastForm, { type ContentSource } from "../BroadcastForm";
 import SendPanel from "../SendPanel";
+import { latinDigitsDeep } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -57,7 +58,7 @@ export default async function BroadcastEditor({ params }: { params: Promise<{ id
 
   const { data } = await supabase.from("community_broadcasts").select("*").eq("id", id).maybeSingle();
   if (!data) notFound();
-  const b = data as CommunityBroadcast;
+  const b = latinDigitsDeep(data as CommunityBroadcast);
 
   const locked = b.status === "sent";
   const sources = locked ? [] : await contentSources();

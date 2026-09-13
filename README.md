@@ -32,6 +32,7 @@ src/
   lib/
     supabase/              server / client / admin / public / middleware clients
     queries.ts             typed public reads (ISR)
+    format.ts              the Western‑digits rule + Arabic date formatting
     types.ts               row types (mirror the SQL schema)
     community.ts           shared option lists (regions, stages, interests…)
     brandPartners.ts       الإعلامات vocabulary (nav label, categories, pricing)
@@ -204,6 +205,29 @@ when missing, only `http(s)` accepted) and open in a new tab with
 `rel="noopener noreferrer"`; the hostname is shown to the teacher before they
 leave. The nav label lives in `PARTNERS_NAV_LABEL` in the same file, so
 renaming the tab is a one-line change.
+
+## Numbers
+
+The site writes Arabic with **Western digits only** — `0‑9`, never `٠‑٩` or
+`۰‑۹`, and `%` `.` `,` rather than `٪` `٫` `٬`. `src/lib/format.ts` holds the
+rule and every surface goes through it:
+
+- **Typing** — one delegated listener in `SiteChrome.tsx` rewrites a field as
+  it is filled, so a teacher on an Arabic keyboard sees `050…` in the box, and
+  the validators (a phone number, سنوات الخبرة) accept what they typed.
+- **Writing** — the dashboard actions and the three public endpoints normalise
+  a row before it is stored, so the database holds one representation.
+- **Reading** — `lib/queries.ts` (public pages) and the dashboard's own reads
+  normalise on the way out, which covers rows stored before the rule existed.
+- **Leaving** — `lib/email.ts` (welcome + broadcasts) and the members CSV.
+
+Identifiers and addresses are the exception everywhere: an `id`, a `slug`, an
+email, a token or a `*_url` is looked up or dialled rather than read, so it is
+passed through untouched.
+
+Dates are formatted with `formatArabicDate`, which pins Intl's numbering system
+(`ar-u-nu-latn`) so a browser whose ICU defaults `ar` to `arab` still renders
+`13 سبتمبر 2026`.
 
 ## How the form flow maps to data
 

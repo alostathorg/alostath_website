@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { emailConfigured, renderWelcomeEmail, sendEmail } from "@/lib/email";
+import { latinDigitsDeep } from "@/lib/format";
 
 // Public endpoint: joins (or updates) a مجتمع الأستاذ membership.
 //
@@ -16,8 +17,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid json" }, { status: 400 });
   }
 
+  // Western digits before the RPC sees the payload: سنوات الخبرة is only kept
+  // when it matches ^[0-9]{1,2}$, so ٨ would otherwise be dropped on the floor,
+  // and the phone number is read by a human later.
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("community_join", { payload: body });
+  const { data, error } = await supabase.rpc("community_join", { payload: latinDigitsDeep(body) });
 
   if (error) {
     console.error("community_join failed —", error.message);

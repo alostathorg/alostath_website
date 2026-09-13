@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/supabase/auth";
+import { latinDigitsDeep, toLatinDigits } from "@/lib/format";
 import { getCollection, type Collection } from "./config";
 
 const BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BUCKET ?? "media";
@@ -29,8 +30,11 @@ function coerce(collection: Collection, form: FormData) {
         row[field.name] = form.get(field.name) === "on";
         break;
       case "number": {
-        const s = String(raw ?? "").trim();
-        row[field.name] = s === "" ? 0 : Number(s);
+        // toLatinDigits first: an editor may have typed ٥, which Number() reads
+        // as NaN — and JSON.stringify sends NaN to Postgres as null.
+        const s = toLatinDigits(String(raw ?? "").trim());
+        const n = Number(s);
+        row[field.name] = s === "" || !Number.isFinite(n) ? 0 : n;
         break;
       }
       case "tags":
@@ -65,7 +69,10 @@ function coerce(collection: Collection, form: FormData) {
       }
     }
   }
-  return { row, phases };
+  // The dashboard is where the site's copy is written, so it is where the
+  // "Western digits only" rule is applied — every row leaves here normalised,
+  // and the public read pass in lib/queries.ts is left covering older rows.
+  return { row: latinDigitsDeep(row), phases: latinDigitsDeep(phases) };
 }
 
 /**
@@ -174,7 +181,7 @@ export async function saveSettings(key: string, form: FormData) {
   await requireAdmin();
   const supabase = await createClient();
   const raw = String(form.get("value") ?? "").trim();
-  const value = raw ? JSON.parse(raw) : {};
+  const value = raw ? latinDigitsDeep(JSON.parse(raw)) : {};
   const { error } = await supabase.from("site_settings").upsert({ key, value }, { onConflict: "key" });
   if (error) throw new Error(error.message);
   revalidatePath("/", "layout");

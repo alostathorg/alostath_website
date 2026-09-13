@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/supabase/auth";
 import { emailConfigured, renderBroadcastEmail, sendBatch } from "@/lib/email";
+import { latinDigitsDeep, toLatinDigits } from "@/lib/format";
 import type { BroadcastAudience, CommunityBroadcast, IdeaStatus, MemberStatus } from "@/lib/types";
 
 // Same guard as admin/actions.ts. Kept local rather than imported: exporting it
@@ -36,7 +37,7 @@ export async function setMemberStatus(id: string, status: MemberStatus) {
 export async function saveMemberNote(id: string, form: FormData) {
   await requireAdmin();
   const supabase = await createClient();
-  const note = String(form.get("admin_note") ?? "").trim();
+  const note = toLatinDigits(String(form.get("admin_note") ?? "").trim());
   const { error } = await supabase
     .from("community_members")
     .update({ admin_note: note || null })
@@ -84,7 +85,7 @@ export async function toggleIdeaFeatured(id: string, next: boolean) {
 export async function saveIdeaNote(id: string, form: FormData) {
   await requireAdmin();
   const supabase = await createClient();
-  const note = String(form.get("admin_note") ?? "").trim();
+  const note = toLatinDigits(String(form.get("admin_note") ?? "").trim());
   const { error } = await supabase.from("community_ideas").update({ admin_note: note || null }).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath(IDEAS);
@@ -139,7 +140,7 @@ export async function saveBroadcast(id: string, form: FormData) {
     audience: parseAudience(form),
   };
 
-  const { error } = await supabase.from("community_broadcasts").update(row).eq("id", id);
+  const { error } = await supabase.from("community_broadcasts").update(latinDigitsDeep(row)).eq("id", id);
   if (error) throw new Error(error.message);
   revalidatePath(`${BROADCASTS}/${id}`);
   revalidatePath(BROADCASTS);

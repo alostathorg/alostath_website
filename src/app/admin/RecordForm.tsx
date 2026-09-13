@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { saveRecord, uploadMedia } from "./actions";
 import AiAssist from "./AiAssist";
 import { AI_FIELDS, type Collection, type Field } from "./config";
+import { latinDigitsDeep } from "@/lib/format";
 
 // Basic Arabic → Latin transliteration so a slug can be generated automatically
 // from the (Arabic) name/title. Editors never have to type a URL by hand.
@@ -104,7 +105,10 @@ export default function RecordForm({
   }
 
   function handleImport(imported: Values) {
-    const merged = { ...readCurrentValues(), ...imported };
+    // saveRecord normalises the digits anyway; doing it here too means the
+    // editor reviews the text that will actually be stored, whatever the model
+    // wrote.
+    const merged = { ...readCurrentValues(), ...latinDigitsDeep(imported) };
     // Regenerate the slug from a freshly imported name if none was set yet.
     if (imported.name && !String(merged.slug ?? "").trim()) merged.slug = slugify(String(imported.name));
     setValues(merged);

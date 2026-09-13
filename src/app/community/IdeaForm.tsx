@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { rpcErrorMessage } from "@/lib/community";
 import { validEmail } from "@/lib/validate";
+import { toLatinDigits } from "@/lib/format";
 
 /**
  * «شارك فكرتك» — a teacher proposes an idea, optionally against a specific
@@ -43,15 +44,19 @@ export default function IdeaForm({
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const get = (n: string) => String(fd.get(n) ?? "").trim();
+    // An accepted idea is showcased on /community, so it is written in the
+    // site's digits from the moment it is submitted.
+    const get = (n: string) => toLatinDigits(String(fd.get(n) ?? "").trim());
 
     const payload = {
       name: get("name"),
-      email: get("email"),
+      // An address, not copy — the RPC counts its hourly cap per address.
+      email: String(fd.get("email") ?? "").trim(),
       title: get("title"),
       body: get("body"),
       topic: get("topic"),
-      initiative_slug: get("initiative_slug"),
+      // An identifier, not copy — it is matched against a row, never read.
+      initiative_slug: String(fd.get("initiative_slug") ?? "").trim(),
     };
 
     const next: Errors = {};

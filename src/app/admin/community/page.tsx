@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { MEMBER_STATUS_LABEL, safeSearchTerm } from "@/lib/community";
 import type { CommunityMember, MemberStatus } from "@/lib/types";
 import MemberStatusSelect from "./MemberStatusSelect";
@@ -48,7 +48,7 @@ export default async function CommunityMembersPage({
   }
 
   const { data, count } = await query;
-  const rows = (data ?? []) as CommunityMember[];
+  const rows = latinDigitsDeep((data ?? []) as CommunityMember[]);
 
   const exportHref = `/api/admin/community/export?${new URLSearchParams({ ...(q ? { q } : {}), ...(status ? { status } : {}) })}`;
   const tabHref = (key: string) =>

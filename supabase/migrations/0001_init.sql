@@ -101,7 +101,7 @@ create table if not exists award_timeline_phases (
   id         uuid primary key default gen_random_uuid(),
   award_id   uuid not null references awards (id) on delete cascade,
   label      text not null,
-  date_text  text,                 -- Hijri/free text, e.g. "حتى ٣٠ رمضان ١٤٤٧هـ"
+  date_text  text,                 -- Hijri/free text, e.g. "حتى 30 رمضان 1447هـ"
   state      phase_state not null default 'next',
   tag_text   text,                 -- optional chip, e.g. "مفتوح الآن"
   sort_order int not null default 0

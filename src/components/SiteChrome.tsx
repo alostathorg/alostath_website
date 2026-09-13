@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { validEmail, validPhone } from "@/lib/validate";
+import { latinDigitsField } from "@/lib/format";
 
 /**
  * Client-side interactions ported from the original site.js:
@@ -212,6 +213,18 @@ export default function SiteChrome() {
 
     /* ---------- interest registration modal ---------- */
     initRegisterFlow(cleanups);
+
+    /* ---------- Western digits in every field ---------- */
+    (function initLatinDigitInputs() {
+      // One delegated listener rather than per-form wiring: this component is
+      // mounted by the root layout, so it covers the registration modal, the
+      // contact and newsletter forms, مجتمع الأستاذ, and the dashboard's own
+      // editors. A teacher or an editor typing ٠٥٠ sees 050 as they type, which
+      // is both the rule the site renders by and what the validators expect.
+      const onInput = (e: Event) => latinDigitsField(e.target);
+      document.addEventListener("input", onInput, true);
+      cleanups.push(() => document.removeEventListener("input", onInput, true));
+    })();
 
     /* ---------- newsletter + contact forms ---------- */
     initNewsletterForms(cleanups);

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { CONTRIBUTIONS, INTERESTS, REGIONS, SCHOOL_STAGES, rpcErrorMessage } from "@/lib/community";
 import { validEmail, validPhone } from "@/lib/validate";
+import { toLatinDigits } from "@/lib/format";
 
 /**
  * The join form for مجتمع الأستاذ.
@@ -17,7 +18,7 @@ import { validEmail, validPhone } from "@/lib/validate";
  * the visitor and the team — here a failed join says so.
  */
 
-type Errors = Partial<Record<"full_name" | "email" | "phone" | "consent", string>>;
+type Errors = Partial<Record<"full_name" | "email" | "phone" | "years_experience" | "consent", string>>;
 
 function Chips({
   options,
@@ -62,11 +63,15 @@ export default function JoinForm() {
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
-    const get = (n: string) => String(fd.get(n) ?? "").trim();
+    // Western digits before anything reads the value: what the teacher typed
+    // with an Arabic keyboard is the same number, and both this form's rules
+    // and the RPC's (سنوات الخبرة must match ^[0-9]{1,2}$) are written in 0-9.
+    const get = (n: string) => toLatinDigits(String(fd.get(n) ?? "").trim());
 
     const payload = {
       full_name: get("full_name"),
-      email: get("email"),
+      // An address, not copy — the row is keyed on it.
+      email: String(fd.get("email") ?? "").trim(),
       phone: get("phone"),
       city: get("city"),
       region: get("region"),
@@ -86,6 +91,11 @@ export default function JoinForm() {
     if (!payload.full_name) next.full_name = "الرجاء إدخال الاسم الكامل.";
     if (!validEmail(payload.email)) next.email = "الرجاء إدخال بريد إلكتروني صحيح.";
     if (payload.phone && !validPhone(payload.phone)) next.phone = "الرجاء إدخال رقم جوال صحيح.";
+    // `type="number"` used to enforce this, but it also refused ٨ outright —
+    // the field takes text now so an Arabic keyboard works, and the range the
+    // RPC accepts is checked here instead.
+    if (payload.years_experience && !/^(?:[0-9]|[1-5][0-9]|60)$/.test(payload.years_experience))
+      next.years_experience = "الرجاء إدخال عدد سنوات بين 0 و 60.";
     if (!payload.consent) next.consent = "يجب الموافقة على الشروط للمتابعة.";
     setErrors(next);
     if (Object.keys(next).length) {
@@ -195,9 +205,10 @@ export default function JoinForm() {
             <input className="reg-input" id="cm-spec" name="specialization" type="text" placeholder="مثال: اللغة العربية" />
           </div>
 
-          <div className="reg-field">
+          <div className={field("years_experience")}>
             <label className="reg-label" htmlFor="cm-years">سنوات الخبرة</label>
-            <input className="reg-input" id="cm-years" name="years_experience" type="number" min={0} max={60} placeholder="مثال: 8" />
+            <input className="reg-input" id="cm-years" name="years_experience" type="text" inputMode="numeric" maxLength={2} placeholder="مثال: 8" />
+            <div className="reg-error">{errors.years_experience}</div>
           </div>
 
           <div className="reg-field is-wide">

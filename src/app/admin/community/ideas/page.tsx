@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { IDEA_STATUS_LABEL } from "@/lib/community";
 import type { CommunityIdea, IdeaStatus } from "@/lib/types";
 import { saveIdeaNote } from "../actions";
@@ -33,7 +33,7 @@ export default async function IdeasPage({
   if (status) query = query.eq("status", status);
 
   const { data, count } = await query;
-  const ideas = (data ?? []) as (CommunityIdea & { initiatives: { name: string } | null })[];
+  const ideas = latinDigitsDeep((data ?? []) as (CommunityIdea & { initiatives: { name: string } | null })[]);
 
   return (
     <div>
