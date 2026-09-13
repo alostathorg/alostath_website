@@ -1,18 +1,6 @@
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
-import { PARTNERS_NAV_LABEL, PARTNERS_PATH } from "@/lib/brandPartners";
-
-const QUICK_LINKS = [
-  { href: "/#hero", label: "الرئيسية" },
-  { href: "/council", label: "المجلس" },
-  { href: "/community", label: "المجتمع" },
-  { href: "/awards", label: "الجوائز" },
-  { href: "/initiatives", label: "المبادرات" },
-  { href: PARTNERS_PATH, label: PARTNERS_NAV_LABEL },
-  { href: "/blog", label: "المدونة" },
-  { href: "/press", label: "الملف الإعلامي" },
-  { href: "/about", label: "من نحن" },
-];
+import { FOOTER_ORG, NAV_PROGRAMS, type NavItem } from "@/lib/nav";
 
 // Defaults mirror the original static footer; site_settings overrides them.
 const DEFAULTS = {
@@ -56,16 +44,10 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
           gap: 48,
         }}
       >
-        <div>
-          <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>روابط سريعة</div>
-          <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 11 }}>
-            {QUICK_LINKS.map((l) => (
-              <li key={l.href}>
-                <Link className="footer-link" href={l.href} style={linkStyle}>{l.label}</Link>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Two audience-shaped columns. «المدونة» and «الملف الإعلامي» left the
+            header bar, so this is now their primary home in the chrome. */}
+        <LinkColumn title="للمعلّم" items={NAV_PROGRAMS} />
+        <LinkColumn title="المؤسسة" items={FOOTER_ORG} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>تواصل معنا</div>
           <div style={{ fontSize: 14, lineHeight: 1.9, color: "var(--inverse-subtle)", marginBottom: 14 }}>{c.address}</div>
@@ -99,5 +81,20 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
         {c.copyright}
       </div>
     </footer>
+  );
+}
+
+function LinkColumn({ title, items }: { title: string; items: NavItem[] }) {
+  return (
+    <div>
+      <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>{title}</div>
+      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 11 }}>
+        {items.map((l) => (
+          <li key={l.key}>
+            <Link className="footer-link" href={l.href} style={linkStyle}>{l.label}</Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

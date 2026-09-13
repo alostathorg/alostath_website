@@ -169,6 +169,10 @@ export default async function PartnersPage() {
               نمنح الشريك صفحةً تعريفية وظهوراً أمام مجتمع المعلّمين، مقابل عرضٍ واضح يخدمهم. تخضع الطلبات للمراجعة وفق معايير المؤسسة قبل النشر.
             </p>
             <Link href="/contact" className="btn btn-secondary btn-lg">قدّم طلب شراكة</Link>
+            <p style={{ fontSize: 15, lineHeight: 1.85, color: "var(--inverse-subtle)", margin: "24px 0 0" }}>
+              للمواد التعريفية والشعار، اطّلع على{" "}
+              <Link href="/press" style={{ color: "var(--gold-500)", textDecoration: "none", fontWeight: 500 }}>الملف الإعلامي</Link>.
+            </p>
           </div>
         </section>
       )}

@@ -81,11 +81,14 @@ export default function AboutPage() {
               <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, lineHeight: 1.4, margin: "0 0 10px" }}>تعرّف على المؤسسة عن قرب</h2>
               <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--inverse-muted)", margin: 0, maxWidth: "54ch" }}>حمّل الملف التعريفي لمؤسسة الأستاذ للاطّلاع على رؤيتنا ورسالتنا وبرامجنا ومبادراتنا في وثيقةٍ واحدة.</p>
             </div>
-            <div style={{ flex: "none" }}>
+            <div style={{ flex: "none", display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 14 }}>
               <a href="/assets/alostath-profile.pdf" download className="btn btn-secondary btn-lg" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
                 <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
                 تحميل الملف التعريفي (PDF)
               </a>
+              <Link href="/press" style={{ fontSize: 15, fontWeight: 500, color: "var(--gold-500)", textDecoration: "none" }}>
+                الشعار والألوان والهوية البصرية: الملف الإعلامي ←
+              </Link>
             </div>
           </div>
         </div>

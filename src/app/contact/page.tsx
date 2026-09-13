@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import { getSettings } from "@/lib/queries";
@@ -38,6 +39,10 @@ export default async function ContactPage() {
             </InfoCard>
             <InfoCard label="العنوان" icon={<IconPin />}>
               <div style={{ fontSize: 16, fontWeight: 500, color: "var(--text-body)", lineHeight: 1.7 }}>{address}</div>
+            </InfoCard>
+            <InfoCard label="للاستفسارات الإعلامية" icon={<IconFile />}>
+              <Link href="/press" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block" }}>الملف الإعلامي</Link>
+              <div style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginTop: 4 }}>الشعار والألوان والهوية البصرية للتحميل.</div>
             </InfoCard>
             <div style={{ borderRadius: 14, overflow: "hidden", border: "1px solid var(--hairline)", height: 240 }}>
               <iframe title="الموقع على الخريطة" src="https://www.google.com/maps?q=Prince+Mohammed+Bin+Abdulaziz+Road,+Al+Maather,+Riyadh+12314&output=embed" style={{ width: "100%", height: "100%", border: 0, display: "block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
@@ -123,4 +128,7 @@ function IconMail() {
 }
 function IconPin() {
   return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>;
+}
+function IconFile() {
+  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>;
 }
