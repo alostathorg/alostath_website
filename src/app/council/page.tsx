@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getSettings } from "@/lib/queries";
 
 export const revalidate = 60;
@@ -27,18 +28,12 @@ export default async function CouncilPage() {
 
   return (
     <PageShell active="council">
-      {/* HERO */}
-      <section className="dp-hero">
-        <span className="dp-orb dp-orb-gold" />
-        <span className="dp-orb dp-orb-sage" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", bottom: -70, left: -70, width: "min(540px,50%)", height: "auto", opacity: 0.05, pointerEvents: "none" }} />
-        <div data-reveal="1" style={{ position: "relative", zIndex: 2, maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(60px,9vh,96px) 32px clamp(76px,11vh,116px)" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 18 }}><span className="live-dot" />الركيزة الثانية · ديوانيّة شهريّة</div>
-          <h1 style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.15, margin: 0, maxWidth: "16ch" }}>مجلس الأستاذ</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "24px 0 0", maxWidth: "64ch" }}>منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.</p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow="الركيزة الثانية · ديوانيّة شهريّة"
+        live
+        title="مجلس الأستاذ"
+        lede="منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر."
+      />
 
       {/* FACTS */}
       <div className="dp-facts" data-reveal="1">

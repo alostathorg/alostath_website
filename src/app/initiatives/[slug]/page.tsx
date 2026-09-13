@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getInitiative, getInitiatives } from "@/lib/queries";
 
 export const revalidate = 60;
@@ -35,30 +36,25 @@ export default async function InitiativeDetail({ params }: { params: Promise<{ s
 
   return (
     <PageShell active="initiatives">
-      {/* HERO */}
-      <section className="dp-hero">
-        <span className="dp-orb dp-orb-gold" />
-        <span className="dp-orb dp-orb-sage" />
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", bottom: -70, left: -70, width: "min(540px,50%)", height: "auto", opacity: 0.05, pointerEvents: "none" }} />
-        <div className="dp-hero-inner hero-in">
-          <div style={{ display: "flex", alignItems: "center", gap: 10, fontSize: 14, color: "var(--inverse-muted)", marginBottom: 26 }}>
-            <Link href="/initiatives" style={{ color: "var(--inverse-muted)", textDecoration: "none" }}>المبادرات</Link>
-            <span style={{ opacity: 0.6 }}>/</span>
-            <span style={{ color: "var(--gold-500)" }}>{item.name}</span>
-          </div>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 9, background: "rgba(191,155,47,0.16)", border: "1px solid rgba(191,155,47,0.4)", color: "var(--gold-500)", fontSize: 13, fontWeight: 600, padding: "7px 16px", borderRadius: 999, marginBottom: 22 }}>
-            <span className="live-dot" />{item.badge}
+      <PageHero
+        size="lg"
+        tone={sage ? "sage" : "gold"}
+        crumbs={[{ label: "المبادرات", href: "/initiatives" }, { label: item.name }]}
+        badge={
+          <span className={`ph-badge${sage ? " is-sage" : ""}`}>
+            <span className="live-dot" />
+            {item.badge}
           </span>
-          <h1 style={{ fontSize: "clamp(44px,8vw,96px)", fontWeight: 700, lineHeight: 1.05, margin: 0 }}>{item.name.replace(/^مبادرة\s/, "")}</h1>
-          <div className="dp-rule" style={{ margin: "30px 0 0", ...(sage ? { background: "var(--sage-500)" } : {}) }} />
-          <p style={{ fontSize: "clamp(18px,2.2vw,24px)", lineHeight: 1.7, color: "var(--inverse-muted)", margin: "26px 0 0", maxWidth: "54ch" }}>{item.tagline}</p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 36 }}>
+        }
+        title={item.name.replace(/^مبادرة\s/, "")}
+        lede={item.tagline}
+        actions={
+          <>
             <button type="button" {...regProps} className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
-            <a href="#overview" className="btn btn-outline btn-lg" style={{ background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" }}>اقرأ التفاصيل</a>
-          </div>
-        </div>
-      </section>
+            <a href="#overview" className="btn btn-outline btn-on-dark btn-lg">اقرأ التفاصيل</a>
+          </>
+        }
+      />
 
       {/* FACTS */}
       {item.facts.length > 0 && (

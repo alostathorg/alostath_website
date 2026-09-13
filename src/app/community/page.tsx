@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getFeaturedIdeas, getInitiatives, getSettings } from "@/lib/queries";
 import JoinForm from "./JoinForm";
 import IdeaForm from "./IdeaForm";
@@ -63,47 +64,24 @@ export default async function CommunityPage() {
 
   return (
     <PageShell active="community">
-      {/* HERO */}
-      <section className="dp-hero">
-        <span className="dp-orb dp-orb-gold" />
-        <span className="dp-orb dp-orb-sage" />
-        {community.hero_image && (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={community.hero_image}
-            alt=""
-            aria-hidden
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }}
-          />
-        )}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/assets/alostath-logo-inverse.png"
-          alt=""
-          aria-hidden
-          style={{ position: "absolute", bottom: -70, left: -70, width: "min(540px,50%)", height: "auto", opacity: 0.05, pointerEvents: "none" }}
-        />
-        <div data-reveal="1" style={{ position: "relative", zIndex: 2, maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(60px,9vh,96px) 32px clamp(76px,11vh,116px)" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 18 }}>
-            <span className="live-dot" />العضوية مفتوحة · مجانية
-          </div>
-          <h1 style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.15, margin: 0, maxWidth: "16ch" }}>
-            مجتمع الأستاذ
-          </h1>
-          <p style={{ fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "24px 0 0", maxWidth: "60ch" }}>
-            {community.intro ??
-              "مساحة تجمع معلمي الوطن، وتقرّب صوتهم من كل ما يُسهم في تطوير المهنة وتعزيز مكانة المعلم."}
-          </p>
-          <p style={{ fontSize: "clamp(15px,1.6vw,17px)", lineHeight: 1.9, color: "var(--inverse-subtle)", margin: "18px 0 0", maxWidth: "66ch" }}>
-            «مجتمع الأستاذ» هو المساحة التي تلتقي فيها خبرات المعلمين، وأفكارهم، واحتياجاتهم؛ ليكون
-            المعلم شريكًا فاعلًا في تطوير المهنة، وصناعة المبادرات، وتعزيز أثر التعليم.
-          </p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 34 }}>
+      <PageHero
+        image={community.hero_image}
+        imageOpacity={0.3}
+        eyebrow="العضوية مفتوحة · مجانية"
+        live
+        title="مجتمع الأستاذ"
+        lede={
+          community.intro ??
+          "مساحة تجمع معلمي الوطن، وتقرّب صوتهم من كل ما يُسهم في تطوير المهنة وتعزيز مكانة المعلم."
+        }
+        note="«مجتمع الأستاذ» هو المساحة التي تلتقي فيها خبرات المعلمين، وأفكارهم، واحتياجاتهم؛ ليكون المعلم شريكًا فاعلًا في تطوير المهنة، وصناعة المبادرات، وتعزيز أثر التعليم."
+        actions={
+          <>
             <a href="#join" className="btn btn-primary btn-lg">انضم إلى المجتمع</a>
             <a href="#idea" className="btn btn-secondary btn-lg">شارك فكرتك</a>
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
       {/* FACTS */}
       <div className="dp-facts" data-reveal="1">

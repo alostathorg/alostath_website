@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
+import PageHero from "@/components/PageHero";
 import { getBrandPartners } from "@/lib/queries";
 import type { BrandPartner } from "@/lib/types";
 import {
@@ -30,7 +31,6 @@ const CRITERIA = [
   { t: "جهةٌ موثوقة", d: "نتحقّق من العلامة قبل إدراجها" },
 ];
 
-const outlineOnDark = { background: "transparent", color: "var(--ink-inverse)", borderColor: "rgba(244,246,238,0.4)" } as const;
 
 function TagIcon() {
   return (
@@ -104,24 +104,19 @@ export default async function PartnersPage() {
 
   return (
     <PageShell active="partners">
-      {/* HERO */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ position: "absolute", top: "50%", left: -60, transform: "translateY(-50%)", width: "min(820px,72%)", height: "auto", opacity: 0.06, pointerEvents: "none" }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: "var(--container-max)", margin: "0 auto", padding: "104px 32px 64px" }}>
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 16 }}>{PARTNERS_NAV_LABEL} — شركاء المعلّم</div>
-          <h1 style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.15, margin: 0, maxWidth: "18ch" }}>علاماتٌ تجارية تدعم المعلّم</h1>
-          <p style={{ fontSize: "clamp(17px,2vw,21px)", lineHeight: 1.85, color: "var(--inverse-muted)", margin: "24px 0 0", maxWidth: "64ch" }}>
-            أدواتٌ وخدماتٌ وحلولٌ تعليمية اختارتها مؤسسة الأستاذ لأنها تخدم المعلّم فعلاً. كل بطاقة تخبرك بما تقدّمه العلامة، ولمن، وبأي كلفة، وهل لديها عرضٌ خاص للمعلّم — ثم تنتقل إلى موقعها مباشرة.
-          </p>
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 36 }}>
+      <PageHero
+        eyebrow={`${PARTNERS_NAV_LABEL} — شركاء المعلّم`}
+        title="علاماتٌ تجارية تدعم المعلّم"
+        lede="أدواتٌ وخدماتٌ وحلولٌ تعليمية اختارتها مؤسسة الأستاذ لأنها تخدم المعلّم فعلاً. كل بطاقة تخبرك بما تقدّمه العلامة، ولمن، وبأي كلفة، وهل لديها عرضٌ خاص للمعلّم — ثم تنتقل إلى موقعها مباشرة."
+        actions={
+          <>
             {!empty && <a href="#grid" className="btn btn-secondary btn-lg">تصفّح الشركاء</a>}
-            <Link href="/contact" className={`btn ${empty ? "btn-secondary" : "btn-outline"} btn-lg`} style={empty ? undefined : outlineOnDark}>
+            <Link href="/contact" className={`btn btn-lg ${empty ? "btn-secondary" : "btn-outline btn-on-dark"}`}>
               كن شريكاً للمعلّم
             </Link>
-          </div>
-        </div>
-      </section>
+          </>
+        }
+      />
 
       {/* SELECTION CRITERIA */}
       <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)" }}>
