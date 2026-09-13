@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { BROADCAST_STATUS_LABEL } from "@/lib/community";
 import type { CommunityBroadcast } from "@/lib/types";
 import { createBroadcast } from "../actions";
@@ -21,7 +21,7 @@ export default async function BroadcastsPage() {
     .select("*")
     .order("created_at", { ascending: false })
     .limit(200);
-  const rows = (data ?? []) as CommunityBroadcast[];
+  const rows = latinDigitsDeep((data ?? []) as CommunityBroadcast[]);
 
   return (
     <div>

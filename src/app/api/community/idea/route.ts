@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { latinDigitsDeep } from "@/lib/format";
 
 // Public endpoint: a teacher submits an idea, optionally attached to a specific
 // initiative. Validation, the per-address hourly cap, and resolving the
@@ -13,7 +14,9 @@ export async function POST(request: Request) {
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase.rpc("community_idea_submit", { payload: body });
+  // An accepted idea is showcased on /community, so it arrives in the site's
+  // digits — `initiative_slug` is an identifier and passes through untouched.
+  const { data, error } = await supabase.rpc("community_idea_submit", { payload: latinDigitsDeep(body) });
 
   if (error) {
     console.error("community_idea_submit failed —", error.message);

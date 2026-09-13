@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { latinDigitsDeep } from "@/lib/format";
 import { getCollection, type Field } from "../../config";
 import DeleteButton from "../../DeleteButton";
 import PublishToggle from "../../PublishToggle";
@@ -21,7 +22,11 @@ export default async function CollectionList({ params }: { params: Promise<{ slu
   const supabase = await createClient();
   let query = supabase.from(collection.table).select("*");
   if (collection.orderBy) query = query.order(collection.orderBy.column, { ascending: collection.orderBy.ascending ?? true });
-  const { data: rows } = await query;
+  // The dashboard reads in the same digits the site renders in, so a row saved
+  // before that rule existed does not look different from a row saved today —
+  // and re-saving it in the editor is what finally normalises it in the table.
+  const { data } = await query;
+  const rows = latinDigitsDeep(data);
 
   const cols = collection.fields.filter((f) => f.listColumn);
   const hasPublished = collection.fields.some((f) => f.name === "published");

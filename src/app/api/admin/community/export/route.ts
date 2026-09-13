@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/supabase/auth";
 import { MEMBER_STATUS_LABEL, safeSearchTerm } from "@/lib/community";
+import { latinDigitsDeep } from "@/lib/format";
 import type { CommunityMember } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -57,7 +58,10 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "server_error" }, { status: 500 });
   }
 
-  const rows = (data ?? []) as CommunityMember[];
+  // A spreadsheet is one more place the team reads this list, so it gets the
+  // site's digits — a member who joined before the forms normalised their input
+  // may still carry ٠٥٠… in the row.
+  const rows = latinDigitsDeep((data ?? []) as CommunityMember[]);
   const csv = [
     COLUMNS.map((c) => cell(c.header)).join(","),
     ...rows.map((m) => COLUMNS.map((c) => cell(c.get(m))).join(",")),

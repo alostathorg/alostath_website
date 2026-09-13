@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { latinDigitsDeep } from "@/lib/format";
 import { getCollection, NEW_DEFAULTS } from "../../../config";
 import RecordForm from "../../../RecordForm";
 
@@ -19,7 +20,7 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
     const supabase = await createClient();
     const { data } = await supabase.from(collection.table).select("*").eq("id", id).maybeSingle();
     if (!data) notFound();
-    initial = data;
+    initial = latinDigitsDeep(data);
 
     // Awards: load timeline phases into the `phases` pseudo-field.
     if (collection.table === "awards") {
@@ -28,7 +29,9 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
         .select("label, date_text, state, tag_text, sort_order")
         .eq("award_id", id)
         .order("sort_order");
-      initial.phases = (phases ?? []).map(({ label, date_text, state, tag_text }) => ({ label, date_text, state, tag_text }));
+      initial.phases = latinDigitsDeep(
+        (phases ?? []).map(({ label, date_text, state, tag_text }) => ({ label, date_text, state, tag_text })),
+      );
     }
   }
 

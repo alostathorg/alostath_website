@@ -1,5 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import RegDeleteButton from "./RegDeleteButton";
 
 export const dynamic = "force-dynamic";
@@ -14,11 +14,12 @@ const TYPE_LABEL: Record<string, string> = {
 
 export default async function RegistrationsPage() {
   const supabase = await createClient();
-  const { data: rows } = await supabase
+  const { data } = await supabase
     .from("registrations")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(500);
+  const rows = latinDigitsDeep(data);
 
   return (
     <div>

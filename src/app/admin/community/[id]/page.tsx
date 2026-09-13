@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { IDEA_STATUS_LABEL, MEMBER_STATUS_LABEL } from "@/lib/community";
 import type { CommunityIdea, CommunityMember, MemberStatus } from "@/lib/types";
 import { saveMemberNote } from "../actions";
@@ -25,14 +25,14 @@ export default async function MemberDetail({ params }: { params: Promise<{ id: s
 
   const { data } = await supabase.from("community_members").select("*").eq("id", id).maybeSingle();
   if (!data) notFound();
-  const m = data as CommunityMember;
+  const m = latinDigitsDeep(data as CommunityMember);
 
   const { data: ideaRows } = await supabase
     .from("community_ideas")
     .select("*")
     .eq("member_id", id)
     .order("created_at", { ascending: false });
-  const ideas = (ideaRows ?? []) as CommunityIdea[];
+  const ideas = latinDigitsDeep((ideaRows ?? []) as CommunityIdea[]);
 
   return (
     <div>
