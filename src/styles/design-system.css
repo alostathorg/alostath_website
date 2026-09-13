@@ -72,7 +72,7 @@
 .badge-neutral { background: var(--surface-2); color: var(--text-muted); }
 
 /* ============ NAV LINK (centralized) ============ */
-.nav-a { text-decoration: none; color: var(--text-muted); font-size: 17px; font-weight: 500; padding: 9px 13px; border-radius: 8px; white-space: nowrap; transition: color .15s, background .15s; }
+.nav-a { text-decoration: none; color: var(--text-muted); font-size: 17px; font-weight: 500; padding: 9px 16px; border-radius: 8px; white-space: nowrap; transition: color .15s, background .15s; }
 .nav-a:hover, .nav-a[data-active="true"] { color: var(--olive-700); background: var(--olive-50); }
 
 /* ============ SEGMENTED TABS (initiatives filter) ============ */
@@ -95,17 +95,17 @@
   flex: none;
 }
 .nav-toggle svg { display: block; }
-nav[data-mainnav] { display: flex; }
-.nav-cta { display: none; }
-/* Collapse the main nav into the hamburger below 980px. At 17px the nine tabs
-   plus the logo and CTA need ~1045px of header to share one row, so between
-   981px and 1120px the tabs drop to 15px with tighter padding (~915px) and the
-   header still folds at 980px — earlier than the 880px page-layout breakpoint
-   used elsewhere, but late enough that a 1024px tablet keeps the full nav. */
-@media (min-width: 981px) and (max-width: 1120px) {
-  .nav-a { font-size: 15px; padding: 9px 10px; }
-  header > div { gap: 16px !important; }
-}
+nav[data-mainnav] { display: flex; align-items: center; gap: 4px; }
+/* Tiers that exist only inside the hamburger: the spelled-out «الرئيسية» (the
+   logo carries it on desktop), the footer-tier links, and the CTA. */
+.nav-cta, .nav-home-m, .nav-sec { display: none; }
+/* Collapse the main nav into the hamburger below 980px. At 17px the six tabs
+   plus the logo and CTA need ~805px of header to share one row — at the 981px
+   fold the content box is 925px, so there is ~176px of slack and the tabs never
+   have to shrink. (The nine-tab bar needed ~1045px, which is why this used to
+   carry a 981-1120px font-size hack; six tabs retired it.) 980px stays the fold
+   — earlier than the 880px page-layout breakpoint used elsewhere, but late
+   enough that a 1024px tablet keeps the full nav. */
 @media (max-width: 980px) {
   .nav-toggle { display: flex; margin-inline-start: auto; }
   .header-cta { display: none; }
@@ -122,8 +122,21 @@ nav[data-mainnav] { display: flex; }
     padding: 10px 16px 16px;
     gap: 2px;
     box-shadow: var(--shadow-md);
+    max-height: calc(100dvh - 74px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
   nav[data-mainnav].is-open { display: flex; }
+  .nav-home-m, .nav-sec { display: block; }
+  .nav-sec .nav-a { display: block; }
+  .nav-sec-label {
+    margin: 10px 16px 4px;
+    padding-top: 12px;
+    border-top: 1px solid var(--hairline);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-subtle);
+  }
   .nav-cta {
     display: block;
     text-align: center;

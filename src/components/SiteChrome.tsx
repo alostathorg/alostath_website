@@ -116,25 +116,45 @@ export default function SiteChrome() {
 
     /* ---------- mobile nav ---------- */
     (function initMobileNav() {
-      document.querySelectorAll("nav[data-mainnav]").forEach((nav) => {
+      document.querySelectorAll("nav[data-mainnav]").forEach((nav, i) => {
         const el = nav as HTMLElement;
         if (el.dataset.navInit === "1") return;
         el.dataset.navInit = "1";
         const bar = el.parentElement;
         if (bar) bar.style.position = bar.style.position || "relative";
+        if (!el.id) el.id = `mainnav-${i}`;
         const toggle = document.createElement("button");
         toggle.type = "button";
         toggle.className = "nav-toggle";
         toggle.setAttribute("aria-label", "فتح القائمة");
         toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-controls", el.id);
         toggle.innerHTML =
           '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
-        toggle.addEventListener("click", () => {
-          const open = el.classList.toggle("is-open");
+        const setOpen = (open: boolean) => {
+          el.classList.toggle("is-open", open);
           toggle.setAttribute("aria-expanded", open ? "true" : "false");
+        };
+        toggle.addEventListener("click", () => setOpen(!el.classList.contains("is-open")));
+        const onKey = (e: KeyboardEvent) => {
+          if (e.key === "Escape" && el.classList.contains("is-open")) {
+            setOpen(false);
+            toggle.focus();
+          }
+        };
+        document.addEventListener("keydown", onKey);
+        // Before the nav, not after: below 980px the panel is absolutely
+        // positioned so it leaves the flow and margin-inline-start:auto still
+        // pins the toggle to the inline-end — identical visually, but Tab now
+        // enters the open panel instead of skipping past it into the page.
+        el.insertAdjacentElement("beforebegin", toggle);
+        cleanups.push(() => {
+          document.removeEventListener("keydown", onKey);
+          toggle.remove();
+          // Clear the guard too, or a re-run finds navInit still set and the
+          // header is left with no toggle at all (React StrictMode in dev).
+          delete el.dataset.navInit;
         });
-        el.insertAdjacentElement("afterend", toggle);
-        cleanups.push(() => toggle.remove());
       });
     })();
 
