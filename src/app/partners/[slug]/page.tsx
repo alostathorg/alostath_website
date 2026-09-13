@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
+import { DetailFigure, DetailPager, Monument, SectionHead } from "@/components/DetailKit";
 import { getBrandPartner, getBrandPartners } from "@/lib/queries";
 import {
   PARTNERS_DISCLAIMER,
@@ -57,9 +57,8 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
   const highlights = (p.highlights ?? []).filter((h) => h && (text(h.title) || text(h.body)));
 
   const idx = all.findIndex((i) => i.slug === p.slug);
-  const hasPager = idx !== -1 && all.length > 1;
-  const prev = all[(idx - 1 + all.length) % all.length];
-  const next = all[(idx + 1) % all.length];
+  const prev = idx > 0 ? all[idx - 1] : null;
+  const next = idx !== -1 && idx < all.length - 1 ? all[idx + 1] : null;
 
   // Derived, never blank: the three answers a teacher wants before clicking through.
   const facts = [
@@ -68,7 +67,8 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
     { k: "لمن", v: audience.length ? audience.join("، ") : "المعلّمون والمعلّمات" },
   ];
 
-  const eyebrow = { fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", textTransform: "uppercase", marginBottom: 14 } as const;
+  let chapter = 0;
+  const chapterNo = () => (chapter += 1);
 
   return (
     <PageShell active="partners">
@@ -123,10 +123,10 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
 
       {/* TEACHER OFFER — the deal is the teacher's first question, so it sits right under the facts */}
       {offer && (
-        <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "72px 32px 24px" }}>
+        <section className="dp-sec" data-reveal="1">
+          <SectionHead index={chapterNo()} eyebrow="عرض خاص للمعلّم" />
           <div className="bp-offer-panel">
             <div>
-              <div className="eyebrow" style={{ marginBottom: 12 }}>عرض خاص للمعلّم</div>
               <h2>{offer}</h2>
               {note && <p>{note}</p>}
             </div>
@@ -144,9 +144,9 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
       )}
 
       {/* OVERVIEW */}
-      <section id="overview" data-reveal="1" style={{ maxWidth: 880, margin: "0 auto", padding: offer ? "48px 32px 32px" : "72px 32px 32px" }}>
-        <div className="eyebrow" style={eyebrow}>عن {p.name}</div>
-        <p style={{ fontSize: "clamp(20px,2.4vw,26px)", lineHeight: 1.85, color: "var(--text-body)", fontWeight: 500, margin: 0 }}>{overview}</p>
+      <section id="overview" className="dp-sec is-narrow" data-reveal="1">
+        <SectionHead index={chapterNo()} eyebrow={`عن ${p.name}`} />
+        <p className="dp-prose">{overview}</p>
         {(location || (website && cta.hostname)) && (
           <div className="bp-meta-row">
             {location && <span>المقر: {location}</span>}
@@ -162,18 +162,20 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
 
       {/* PRODUCT IMAGE */}
       {heroImage && (
-        <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px" }}>
-          <div className="bp-shot media-zoom">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroImage} alt={`${p.name} — لقطة من المنتج`} />
-          </div>
+        <section className="dp-sec is-tight" data-reveal="1">
+          <DetailFigure
+            src={heroImage}
+            alt={`${p.name} — لقطة من المنتج`}
+            caption={`لقطة من ${p.name}`}
+            ratio="16 / 9"
+          />
         </section>
       )}
 
       {/* HIGHLIGHTS */}
       {highlights.length > 0 && (
-        <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "32px 32px 56px" }}>
-          <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 28px" }}>ماذا يقدّم للمعلّم</h2>
+        <section className="dp-sec" data-reveal="1">
+          <SectionHead index={chapterNo()} eyebrow="الفائدة العملية" title="ماذا يقدّم للمعلّم" />
           <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(250px,1fr))", gap: 18 }}>
             {highlights.map((h, i) => (
               <div key={i} className="dp-vcard" style={{ background: "var(--gold-50)", borderColor: "var(--gold-100)" }}>
@@ -189,38 +191,30 @@ export default async function PartnerDetail({ params }: { params: Promise<{ slug
       )}
 
       {/* OUTBOUND — after the teacher has read everything */}
-      <section data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "24px 32px 56px" }}>
-        <div className="bp-band" style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)", borderRadius: 20, padding: "clamp(36px,5vw,64px)", textAlign: "center" }}>
-          <div className="bp-plate-sm">
-            <PartnerLogo partner={p} />
-          </div>
-          <div style={{ ...eyebrow, color: "var(--gold-500)" }}>الخطوة التالية</div>
-          <h2 style={{ fontSize: "clamp(22px,2.8vw,32px)", fontWeight: 700, margin: "0 0 12px" }}>
-            {cta.href ? `انتقل إلى ${p.name}` : `اسأل عن ${p.name}`}
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 auto 28px", maxWidth: "52ch" }}>
-            {cta.href ? "يفتح الرابط في نافذة جديدة على موقع الشريك." : "سيُضاف رابط الشريك قريباً — وحتى ذلك الحين يسعدنا الإجابة عن استفسارك."}
-          </p>
-          <PartnerCta partner={p} className="btn btn-secondary btn-lg" fallback="contact" />
-          <p style={{ fontSize: 13, lineHeight: 1.7, color: "var(--inverse-subtle)", margin: "24px auto 0", maxWidth: "60ch" }}>{PARTNERS_DISCLAIMER}</p>
-        </div>
+      <section className="dp-sec" data-reveal="1">
+        <Monument
+          center
+          media={<div className="bp-plate-sm"><PartnerLogo partner={p} /></div>}
+          head={<SectionHead eyebrow="الخطوة التالية" onDark center />}
+          quote={cta.href ? `انتقل إلى ${p.name}` : `اسأل عن ${p.name}`}
+          note={
+            cta.href
+              ? "يفتح الرابط في نافذة جديدة على موقع الشريك."
+              : "سيُضاف رابط الشريك قريباً — وحتى ذلك الحين يسعدنا الإجابة عن استفسارك."
+          }
+          actions={<PartnerCta partner={p} className="btn btn-secondary btn-lg" fallback="contact" />}
+          fine={PARTNERS_DISCLAIMER}
+        />
       </section>
 
-      {/* PAGER */}
-      {hasPager && (
-        <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 72px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 18 }}>
-            <Link href={`${PARTNERS_PATH}/${prev.slug}`} className="dp-pager is-prev">
-              <span className="dp-pager-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6" /></svg></span>
-              <span className="dp-pager-text"><div className="k">الشريك السابق</div><div className="t">{prev.name}</div></span>
-            </Link>
-            <Link href={`${PARTNERS_PATH}/${next.slug}`} className="dp-pager is-next">
-              <span className="dp-pager-text"><div className="k">الشريك التالي</div><div className="t">{next.name}</div></span>
-              <span className="dp-pager-arrow"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg></span>
-            </Link>
-          </div>
-        </section>
-      )}
+      {/* RAIL */}
+      <section className="dp-sec is-tight" style={{ paddingBottom: "clamp(56px,7vw,84px)" }}>
+        <DetailPager
+          all={{ href: PARTNERS_PATH, label: `كل ${PARTNERS_NAV_LABEL}` }}
+          prev={prev ? { href: `${PARTNERS_PATH}/${prev.slug}`, label: "الشريك السابق", title: prev.name } : null}
+          next={next ? { href: `${PARTNERS_PATH}/${next.slug}`, label: "الشريك التالي", title: next.name } : null}
+        />
+      </section>
     </PageShell>
   );
 }

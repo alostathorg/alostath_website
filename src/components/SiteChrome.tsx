@@ -64,6 +64,41 @@ export default function SiteChrome() {
       });
     })();
 
+    /* ---------- reading progress (article pages) ---------- */
+    (function initReadProgress() {
+      const bar = document.querySelector("[data-read-progress]") as HTMLElement | null;
+      const target = document.querySelector("[data-read-target]") as HTMLElement | null;
+      if (!bar || !target) return;
+      const fill = bar.firstElementChild as HTMLElement | null;
+      if (!fill) return;
+      let frame = 0;
+      // An arrow assigned after the guards above, so `bar`/`fill`/`target` stay
+      // narrowed to non-null inside it.
+      const measure = () => {
+        frame = 0;
+        // Full when the article's last line reaches the bottom of the fold —
+        // the related posts and the footer under it are not part of the read.
+        const from = target.getBoundingClientRect().top + window.scrollY;
+        const to = from + target.offsetHeight - window.innerHeight;
+        // An article shorter than one screen has no progress to report.
+        bar.hidden = to <= from;
+        if (bar.hidden) return;
+        const done = (window.scrollY - from) / (to - from);
+        fill.style.setProperty("--read", String(Math.min(1, Math.max(0, done))));
+      };
+      const onScroll = () => {
+        if (!frame) frame = requestAnimationFrame(measure);
+      };
+      measure();
+      window.addEventListener("scroll", onScroll, { passive: true });
+      window.addEventListener("resize", onScroll);
+      cleanups.push(() => {
+        if (frame) cancelAnimationFrame(frame);
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      });
+    })();
+
     /* ---------- header elevation ---------- */
     (function initHeaderScroll() {
       const header = document.querySelector("header");
