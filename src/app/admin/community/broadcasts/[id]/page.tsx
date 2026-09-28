@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { getAwards, getInitiatives, getPosts } from "@/lib/queries";
+import { getInitiatives, getPosts } from "@/lib/queries";
+import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { emailConfigured, siteUrl } from "@/lib/email";
 import { BROADCAST_STATUS_LABEL } from "@/lib/community";
 import type { CommunityBroadcast } from "@/lib/types";
@@ -19,18 +20,18 @@ export const dynamic = "force-dynamic";
  */
 async function contentSources(): Promise<ContentSource[]> {
   const site = siteUrl();
-  const [awards, initiatives, posts] = await Promise.all([getAwards(), getInitiatives(), getPosts()]);
+  const [initiatives, posts] = await Promise.all([getInitiatives(), getPosts()]);
 
   return [
-    ...awards.map((a) => ({
-      id: `award-${a.slug}`,
-      group: "الجوائز",
-      label: a.name,
-      subject: a.name,
-      body: [a.tagline, a.overview, a.goal].filter((x): x is string => Boolean(x)),
+    {
+      id: "award-national",
+      group: "الجائزة",
+      label: NATIONAL_AWARD.name,
+      subject: NATIONAL_AWARD.name,
+      body: [NATIONAL_AWARD.tagline, NATIONAL_AWARD.overview, NATIONAL_AWARD.goal],
       ctaLabel: "تعرّف على الجائزة",
-      ctaUrl: `${site}/awards/${a.slug}`,
-    })),
+      ctaUrl: `${site}${AWARD_PATH}`,
+    },
     ...initiatives.map((i) => ({
       id: `initiative-${i.slug}`,
       group: "المبادرات",

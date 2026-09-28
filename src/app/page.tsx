@@ -2,7 +2,8 @@ import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { getAwards, getInitiatives, getPosts, getSettings } from "@/lib/queries";
+import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
+import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
 import { BOARD, PARTNERS, SCALE } from "@/lib/org";
 
@@ -22,8 +23,7 @@ const BENTO = [
 ];
 
 export default async function HomePage() {
-  const [awards, initiatives, posts, settings] = await Promise.all([
-    getAwards(),
+  const [initiatives, posts, settings] = await Promise.all([
     getInitiatives(),
     getPosts(),
     getSettings(),
@@ -32,7 +32,6 @@ export default async function HomePage() {
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
   const featuredInitiatives = initiatives.slice(0, 3);
-  const featuredAwards = awards.slice(0, 2);
 
   return (
     <PageShell active="home">
@@ -174,21 +173,19 @@ export default async function HomePage() {
 
       {/* AWARDS */}
       <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title="الجائزة الوطنية للمعلّم" href="/awards" cta="عن الجائزة ←" />
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
-          {featuredAwards.map((a) => (
-            <Link key={a.id} href={`/awards/${a.slug}`} className="card-lift" style={cardStyle}>
-              <div className="media-zoom">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.hero_image_url ?? "/assets/alostath-logo.png"} alt={a.name} style={{ width: "100%", height: 248, objectFit: "cover", display: "block" }} />
-              </div>
-              <div style={{ padding: 32, display: "flex", flexDirection: "column", flex: 1 }}>
-                <h3 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 14px" }}>{a.name}</h3>
-                <p style={{ fontSize: 16, lineHeight: 1.9, color: "var(--text-muted)", margin: 0 }}>{a.overview ?? a.tagline}</p>
-                <span className="arrow-link" style={{ marginTop: 18, fontSize: 15 }}>التفاصيل <span className="arrow-link__a">←</span></span>
-              </div>
-            </Link>
-          ))}
+        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title={NATIONAL_AWARD.name} href={AWARD_PATH} cta="عن الجائزة ←" />
+        <div data-reveal="1">
+          <Link href={AWARD_PATH} className="card-lift" style={{ ...cardStyle, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))" }}>
+            <div className="media-zoom">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} style={{ width: "100%", height: "100%", minHeight: 260, objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ padding: "clamp(28px,4vw,44px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <span className="badge badge-gold" style={{ alignSelf: "flex-start", marginBottom: 16 }}>{NATIONAL_AWARD.statusLabel}</span>
+              <p style={{ fontSize: 17, lineHeight: 1.95, color: "var(--text-muted)", margin: 0 }}>{NATIONAL_AWARD.overview}</p>
+              <span className="arrow-link" style={{ marginTop: 20, fontSize: 15 }}>التفاصيل <span className="arrow-link__a">←</span></span>
+            </div>
+          </Link>
         </div>
       </section>
 

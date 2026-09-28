@@ -31,37 +31,14 @@ const db = createClient(url, key, { auth: { persistSession: false } });
 const FRAMER = "https://framerusercontent.com/images";
 
 // ── AWARDS ───────────────────────────────────────────────────────────────────
-// From the 2026 detailed profile (القسم الثالث · الجائزة الوطنية للمعلم). The
-// profile's benchmarking, reward structure, governance and funding sections are
-// set on /awards itself; this row is what the CMS edits.
-const awards = [
-  {
-    slug: "national-teacher-award",
-    name: "الجائزة الوطنية للمعلّم",
-    tagline: "تقديرٌ يتحوّل إلى تمكين — جائزةٌ وطنية مستدامة تحتفي بالمعلّمين الممارسين للتدريس وتنقل أثرهم إلى الميدان.",
-    type: "جائزة وطنية",
-    badge_label: "جائزة وطنية",
-    beneficiaries: "المعلّمون والمعلّمات الممارسون للتدريس",
-    status: "soon",
-    theme: "gold",
-    overview:
-      "تُمثّل الجائزة الوطنية للمعلّم أداةً استراتيجية لتعزيز مكانة مهنة التدريس في المجتمع، تتجاوز الاحتفاء السنوي بالمتميّزين، ويُقاس نجاحها بحجم الأثر الذي تُحدثه في المهنة ومكانتها لا بعدد المكرَّمين. تستهدف المعلّمين والمعلّمات الممارسين للتدريس حصراً في التعليم العام عبر إدارات التعليم، وتعتمد التحقّق الميداني من ممارسة المعلّم وأثرها، وتتبنّاها مؤسسة الأستاذ في مرحلتها الحالية.",
-    goal:
-      "التعرّف على المعلّمين المتميّزين الذين يُحدثون أثراً ملموساً في تعلّم طلابهم، وتحويل تميّزهم إلى فرصٍ مهنية مستدامة، ونقل ممارساتهم إلى الميدان التعليمي للاستفادة والتطبيق.",
-    categories: [],
-    steps: [],
-    hero_image_url: `${FRAMER}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`,
-    partnership_note:
-      "أعدّت شركة تام للتطوير الدراسة المعيارية والإطار المرجعي للجائزة، بالتنسيق مع المعهد الوطني للتطوير المهني التعليمي ومؤسسة الأستاذ.",
-    sort_order: 1,
-    phases: [] as { label: string; date_text: string; state: string; tag_text?: string }[],
-  },
-];
+// The foundation has one award, الجائزة الوطنية للمعلم, and it lives in code
+// (src/lib/award.ts, page /awards) — not in this table. The rows left over from
+// the old site are unpublished below.
 
 // Programmes the 2026 profile no longer lists. They are unpublished, never
 // deleted, so the team can restore one from the dashboard with the منشور toggle.
 const retiredAwards = ["resha", "qissa"];
-const retiredInitiatives = ["wathba", "musheer"];
+const retiredInitiatives = ["wathba", "musheer"]; // wathba: already removed on live
 
 // ── INITIATIVES ──────────────────────────────────────────────────────────────
 // القسم الرابع (مبادرات الأستاذ) plus the two content platforms of القسم الثاني
@@ -98,8 +75,10 @@ const initiatives = [
     sort_order: 1,
   },
   {
-    slug: "itahadak-madaris",
-    name: "مبادرة اتحداك مدارس",
+    // The live row is `atahadak` (created from the dashboard) — keep that slug
+    // so the seed updates it instead of adding a duplicate.
+    slug: "atahadak",
+    name: "مبادرة أتحداك مدارس",
     tagline: "صحّة الطالب تبدأ من معلّم التربية البدنية — تحدّياتٌ رقمية تبني عاداتٍ يومية قابلة للقياس.",
     badge: "منصة رقمية مدرسية",
     theme: "sage",
@@ -124,7 +103,7 @@ const initiatives = [
       { title: "قياس الأثر", body: "مقارنة مؤشرات اللياقة والنشاط قبل التطبيق وبعده، وتقرير أثر للمدرسة والإدارة، وتحديد المتفوّقين والمواهب لتكريمهم وتوجيههم." },
     ],
     partners: ["منصة أتحداك"],
-    hero_image_url: `${FRAMER}/GQFfJ4TINOZjZebXiIyGjLKlaI.jpg?width=1600&height=720`,
+    hero_image_url: "https://vrfsxddcegaoykntjkil.supabase.co/storage/v1/object/public/media/1784040207088-k3e2k9.jpg",
     logo_url: null,
     sort_order: 2,
   },
@@ -436,23 +415,6 @@ async function upsert(
 }
 
 async function main() {
-  // Awards + their timeline phases (replace phases per award for idempotency).
-  for (const { phases, ...a } of awards) {
-    const { data, error } = await db
-      .from("awards")
-      .upsert(a, { onConflict: "slug" })
-      .select("id")
-      .single();
-    if (error) throw new Error(`awards ${a.slug}: ${error.message}`);
-    await db.from("award_timeline_phases").delete().eq("award_id", data.id);
-    if (phases.length) {
-      await db.from("award_timeline_phases").insert(
-        phases.map((p, i) => ({ ...p, award_id: data.id, sort_order: i + 1 })),
-      );
-    }
-    console.log(`✓ award ${a.slug} + ${phases.length} phases`);
-  }
-
   await upsert("initiatives", initiatives, "slug");
 
   // Unpublish (never delete) programmes the current profile dropped.
