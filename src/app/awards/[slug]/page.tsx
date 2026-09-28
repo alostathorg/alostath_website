@@ -78,9 +78,9 @@ export default async function AwardDetail({ params }: { params: Promise<{ slug: 
       {/* FACTS */}
       <div className="dp-facts" data-reveal="1">
         <div className="dp-facts-inner">
-          <Fact k="النوع" v={award.type ?? ""} icon={<IconAward />} />
-          <Fact k="المجالات" v={award.categories.join(" · ")} icon={<IconTag />} />
-          <Fact k="المستفيدون" v={award.beneficiaries ?? ""} icon={<IconPeople />} tone="sage" />
+          {award.type && <Fact k="النوع" v={award.type} icon={<IconAward />} />}
+          {award.categories.length > 0 && <Fact k="المجالات" v={award.categories.join(" · ")} icon={<IconTag />} />}
+          {award.beneficiaries && <Fact k="المستفيدون" v={award.beneficiaries} icon={<IconPeople />} tone="sage" />}
         </div>
       </div>
 
