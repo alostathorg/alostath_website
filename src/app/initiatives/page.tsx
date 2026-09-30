@@ -9,9 +9,9 @@ export const revalidate = 60;
 export const metadata: Metadata = { title: "المبادرات" };
 
 const CONDITIONS = [
-  { t: "تخدم المعلّم", d: "موجّهة لاحتياجاته الحقيقية" },
-  { t: "مستدامة", d: "نموذج قابل للاستمرار" },
-  { t: "شريكٌ مختص", d: "يضمن جودة التنفيذ" },
+  { t: "تخدم المعلّم وتكون مستدامة", d: "موجّهة لاحتياجاته بنموذجٍ قابل للاستمرار" },
+  { t: "تتكامل مع وزارة التعليم", d: "مع برامجها وتوجّهاتها الوطنية" },
+  { t: "يقودها شريكٌ مختص", d: "يضمن جودة التنفيذ واستمرارية الأثر" },
 ];
 
 function Row({ initiative, reverse }: { initiative: Initiative; reverse: boolean }) {
@@ -44,7 +44,7 @@ export default async function InitiativesPage() {
       <PageHero
         eyebrow="الريادة في تعزيز مكانة المعلّم"
         title="أبرز مبادرات الأستاذ"
-        lede="حزمةٌ من البرامج والخدمات والفرص المتنوّعة التي تعزّز جودة حياة المعلّم وتمكّنه مهنيّاً ومعيشيّاً — وتنقل خدمته من البُعد التربوي إلى الأبعاد الثقافية والتراثية والإعلامية."
+        lede="حزمةٌ من البرامج والخدمات والفرص المتنوّعة التي تعزّز جودة حياة المعلّم المهنية والمعيشية، إلى جانب منصات الحضور والمحتوى التي تنقل صوت المعلّم إلى الوجدان العام."
         below={initiatives.map((i) => (
           <a key={i.id} className="idx-pill" href={`#${i.slug}`}>{i.name}</a>
         ))}
@@ -54,7 +54,7 @@ export default async function InitiativesPage() {
         <div data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "48px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))", gap: 18 }}>
           <div style={{ fontSize: 18, fontWeight: 700, alignSelf: "center" }}>
             شروط قبول المبادرة
-            <div style={{ fontSize: 14, fontWeight: 400, color: "var(--text-muted)", marginTop: 6, lineHeight: 1.7 }}>كل مبادرة تستوفي معايير المنظومة</div>
+            <div style={{ fontSize: 14, fontWeight: 400, color: "var(--text-muted)", marginTop: 6, lineHeight: 1.7 }}>تستوفي كل مبادرة شرطاً أساسياً</div>
           </div>
           {CONDITIONS.map((c) => (
             <div key={c.t} style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: 18 }}>

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 import { FOOTER_ORG, NAV_PROGRAMS, type NavItem } from "@/lib/nav";
+import { LICENSE_LINE } from "@/lib/org";
 
 // Defaults mirror the original static footer; site_settings overrides them.
 const DEFAULTS = {
@@ -77,8 +78,9 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
           </div>
         </div>
       </div>
-      <div style={{ borderTop: "1px solid rgba(244,246,238,0.1)", padding: "20px 32px", fontSize: 13, color: "var(--inverse-subtle)", textAlign: "center" }}>
-        {c.copyright}
+      <div style={{ borderTop: "1px solid rgba(244,246,238,0.1)", padding: "20px 32px", fontSize: 13, lineHeight: 1.8, color: "var(--inverse-subtle)", textAlign: "center" }}>
+        <div>{LICENSE_LINE}</div>
+        <div>{c.copyright}</div>
       </div>
     </footer>
   );

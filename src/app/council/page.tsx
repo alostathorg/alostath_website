@@ -7,11 +7,13 @@ import { getSettings } from "@/lib/queries";
 export const revalidate = 60;
 export const metadata: Metadata = { title: "المجلس" };
 
+// «ما يسهم فيه المجلس» — the 2026 profile's three contributions, after the
+// council's own definition (منصة تعارف وتكامل).
 const CARDS = [
-  { t: "تعارفٌ وتكامل", d: "منصّة تجمع المعلّم بالجهات المؤثّرة في منظومة التعليم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
-  { t: "صناعة الحلول", d: "تحويل قضايا الميدان إلى حلولٍ عملية ومبادرات ذات أثر.", bg: "var(--sage-50)", fg: "var(--sage-700)" },
-  { t: "توعية المجتمع", d: "تعريف المجتمع بقضايا الميدان التعليمي ودور المعلّم فيه.", bg: "var(--gold-50)", fg: "var(--gold-700)" },
-  { t: "إبراز دور المعلّم", d: "تعزيز حضور المعلّم في صناعة قرارات التعليم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
+  { t: "تعارفٌ وتكامل", d: "منصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
+  { t: "إبراز دور المعلّم", d: "إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية.", bg: "var(--sage-50)", fg: "var(--sage-700)" },
+  { t: "توعية المجتمع", d: "توعية المجتمع بقضايا الميدان التعليمي من منظور من يعيشه يومياً.", bg: "var(--gold-50)", fg: "var(--gold-700)" },
+  { t: "قناة تواصل مباشرة", d: "خلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
 ];
 
 const PILLS = [
@@ -29,7 +31,7 @@ export default async function CouncilPage() {
   return (
     <PageShell active="council">
       <PageHero
-        eyebrow="الركيزة الثانية · ديوانيّة شهريّة"
+        eyebrow="منصات الحضور والمحتوى · ديوانيّة شهريّة"
         live
         title="مجلس الأستاذ"
         lede="منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر."
@@ -49,7 +51,10 @@ export default async function CouncilPage() {
         <div data-reveal="1">
           <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>عن المجلس</div>
           <p style={{ fontSize: "clamp(19px,2.2vw,24px)", lineHeight: 1.85, color: "var(--text-body)", fontWeight: 500, margin: 0 }}>ديوانيّةٌ شهريّة تجمع المعلّمين المتميّزين بنخبةٍ من الخبراء والممارسين والمختصّين من القطاعات الحكومية والخاصة، إلى جانب ممثّلي تحدّيات الميدان — بهدف الاطّلاع على مستجدّات التعليم وتحويلها إلى حلولٍ عملية ومبادرات تتكامل مع الطموحات الوطنية.</p>
-          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "24px 0 0" }}>يعمل المجلس كمنصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، بما يُسهم في إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول وتوعية المجتمع بقضايا الميدان التعليمي.</p>
+          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "24px 0 0" }}>يعمل المجلس كمنصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، بما يُسهم في إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية، وتوعية المجتمع بقضايا الميدان من منظور من يعيشه يومياً، وخلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.</p>
+          <p style={{ fontSize: 15, lineHeight: 1.9, color: "var(--text-subtle)", margin: "16px 0 0" }}>
+            ويكمّل المجلسَ ضمن منصات الحضور والمحتوى: <Link href="/initiatives/yawmiyat-muallim" style={{ color: "var(--olive-600)" }}>يوميات معلّم</Link> و<Link href="/initiatives/hadith-alostath" style={{ color: "var(--olive-600)" }}>بودكاست حديث الأستاذ</Link>.
+          </p>
         </div>
       </section>
 

@@ -16,7 +16,7 @@ export type NavItem = { href: string; label: string; key: string };
 export const NAV_PROGRAMS: NavItem[] = [
   { href: "/community", label: "المجتمع", key: "community" },
   { href: "/council", label: "المجلس", key: "council" },
-  { href: "/awards", label: "الجوائز", key: "awards" },
+  { href: "/awards", label: "الجائزة", key: "awards" },
   { href: "/initiatives", label: "المبادرات", key: "initiatives" },
   { href: PARTNERS_PATH, label: PARTNERS_NAV_LABEL, key: "partners" },
 ];

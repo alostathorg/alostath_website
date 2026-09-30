@@ -1,41 +1,29 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { getAwards, getInitiatives, getPosts, getSettings } from "@/lib/queries";
+import PersonAvatar from "@/components/PersonAvatar";
+import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
+import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
+import { BOARD, PARTNERS, SCALE } from "@/lib/org";
 
 export const revalidate = 60;
 
 const FR = "https://framerusercontent.com/images";
 
-const PARTNER_LOGOS = [
-  `${FR}/4sBcjSLS4jubOEsVcCbXkWVNhY.png?width=207&height=140`,
-  `${FR}/v9x3Fx1iVQfi7lDKfHZzoBR5jyA.png?width=291&height=133`,
-  `${FR}/JesMgKxUxDzz03XMMZNJBec8PZQ.png?width=190&height=145`,
-  `${FR}/EbXF4QTnbeW4N2TW19GCsrPiSWg.png?width=350&height=108`,
-  `${FR}/9nS4cQuPKDYpJjbS3BL8958ywz8.png?width=148&height=184`,
-  `${FR}/KUq3wXL2IzuD0NqVvpslS7yGF9c.png?width=199&height=145`,
-];
-
-const BOARD = [
-  { name: "د. عبدالإله الصالح", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228`, role: "رئيس مجلس الأمناء" },
-  { name: "د. خالد العواد", img: `${FR}/NMoq9rbaVdr8bBZzseUNUpJIws.png?width=374&height=410` },
-  { name: "د. زياد الدريس", img: `${FR}/m74hlEDKVe2RKWKLIMtvUKWhc.png?width=512&height=512` },
-  { name: "م. سامي الحصيّن", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
-];
-
+// The system as the 2026 profile lays it out: the community, the presence &
+// content platforms, the national award, the initiatives, and the research
+// centre that ties them together.
 const BENTO = [
   { t: "مجتمع الأستاذ", d: "يجمع مجتمع الأستاذ معلّمي الوطن ومعلّماته في مساحةٍ مهنية واحدة تصلهم بالمعرفة والخبرات والفرص، وتقرّب صوتهم من كل ما يُسهم في تطوير المهنة، بما يعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع.", ico: "/assets/community-ico.svg", full: true, href: "/community", cta: "انضم إلى المجتمع", bg: "var(--olive-50)", border: "var(--olive-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "منصة الأستاذ", d: "تعمل منصة الأستاذ كمنظومةٍ رقميّة متكاملة تجمع المعرفة والخدمات والفرص والمزايا في تجربةٍ واحدة سهلة الوصول، بما يختصر الوقت والجهد لتمكين المعلّم مهنيّاً وتهيئته في المهنة ورفع جودة حياته.", ico: `${FR}/Ik3kiue2mUdrmJNH3TwllSBDefg.png?width=596&height=596`, span2: true, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "مجلس الأستاذ", d: "يشكّل مجلس الأستاذ منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.", ico: `${FR}/oW8wZAFatzZf7ir8MDTyUDhp3M.png?width=597&height=596`, span2: true, bg: "var(--sage-50)", border: "var(--sage-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "جوائز الأستاذ", d: "تعمل جوائز الأستاذ على اكتشاف وإبراز مواهب المعلّمين وإنجازاتهم، ونقلها إلى واجهة المشهد الثقافي والتربوي، بما يعزّز مكانة المعلّم ويُعزّز ثقافة التقدير.", ico: `${FR}/WbdvWBZBTjJHiAqQ6PYvjlZi8.png?width=596&height=596`, span2: false, bg: "var(--gold-50)", border: "var(--gold-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "مبادرات الأستاذ", d: "تقدّم مبادرات الأستاذ حزمةً من البرامج والخدمات والفرص التي تعزّز جودة حياة المعلّم وتمكّنه مهنيّاً ومعيشيّاً، بما يوفّر له بيئةً داعمة ومتوازنة.", ico: `${FR}/u3gZvgjooyNzqcrahQkvdPHl0.png?width=596&height=596`, span2: false, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "مركز الأستاذ للتطوير والأبحاث", d: "مركز الأستاذ للتطوير والأبحاث هو العقل المحرّك لمنظومة الأستاذ، حيث يتولّى تنظيم وتكامل جميع مكوّنات المنظومة، وضمان عملها بتناغمٍ لتحقيق أهدافها الاستراتيجية.", ico: `${FR}/qgC0zLqifmgun1NVVyhrXhBGkM.png?width=596&height=596`, span2: true, bg: "var(--olive-900)", border: "transparent", ink: "var(--ink-inverse)", muted: "var(--inverse-muted)" },
+  { t: "منصات الحضور والمحتوى", d: "مجلس الأستاذ منصة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، و«يوميات معلّم» أعمالٌ وثائقية ودرامية وحوارية تنقل صوت المعلّم، وبودكاست «حديث الأستاذ» يرسّخ صورته في الوجدان العام.", ico: `${FR}/oW8wZAFatzZf7ir8MDTyUDhp3M.png?width=597&height=596`, span2: true, bg: "var(--sage-50)", border: "var(--sage-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "الجائزة الوطنية للمعلّم", d: "جائزةٌ وطنية مستدامة تتعرّف على المعلّمين الممارسين المتميّزين، وتحوّل تميّزهم إلى فرصٍ مهنية، وتنقل ممارساتهم إلى الميدان — ويُقاس نجاحها بأثرها في المهنة لا بعدد المكرَّمين.", ico: `${FR}/WbdvWBZBTjJHiAqQ6PYvjlZi8.png?width=596&height=596`, span2: true, bg: "var(--gold-50)", border: "var(--gold-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "مبادرات الأستاذ", d: "حزمةٌ من البرامج والخدمات والفرص التي تعزّز جودة حياة المعلّم المهنية والمعيشية: ناصية لتأهيل المعلّمين سفراءَ في الفعاليات الكبرى، واتحداك مدارس للنشاط البدني، والجمعية التعاونية للمعلّمين.", ico: `${FR}/u3gZvgjooyNzqcrahQkvdPHl0.png?width=596&height=596`, span2: true, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "مركز الأستاذ للتطوير والأبحاث", d: "القطب البحثي والمعرفي لمنظومة الأستاذ: يرصد الميدان التعليمي من منظور المعلّم، ويُجري الدراسات التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة، ويوثّق أثر المبادرات والبرامج.", ico: `${FR}/qgC0zLqifmgun1NVVyhrXhBGkM.png?width=596&height=596`, span2: true, bg: "var(--olive-900)", border: "transparent", ink: "var(--ink-inverse)", muted: "var(--inverse-muted)" },
 ];
 
 export default async function HomePage() {
-  const [awards, initiatives, posts, settings] = await Promise.all([
-    getAwards(),
+  const [initiatives, posts, settings] = await Promise.all([
     getInitiatives(),
     getPosts(),
     getSettings(),
@@ -43,8 +31,7 @@ export default async function HomePage() {
   const council = (settings.council as Record<string, string>) ?? {};
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
-  const featuredInitiatives = initiatives.slice(-3);
-  const featuredAwards = awards.slice(-2);
+  const featuredInitiatives = initiatives.slice(0, 3);
 
   return (
     <PageShell active="home">
@@ -57,7 +44,7 @@ export default async function HomePage() {
         eyebrow="مؤسسة الأستاذ"
         title="المعلم"
         accent="ناظر القيم"
-        lede="منظومة وطنية شاملة تُعزّز مكانة المعلّم ودوره، وتتكامل مع جهود وزارة التعليم وخدمة رؤية المملكة 2030، من خلال مبادرات خلاقة ومستدامة تُنفّذ بالشراكة مع مؤسسات متخصصة، ومجتمع مهني يجمع المعلمين بالمعرفة والخبرات والفرص، ويعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع."
+        lede="مؤسسة أهلية سعودية غير ربحية لتعزيز مكانة المعلّم، تسعى لأن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، وشريكاً فاعلاً لمنظومة التعليم والمجتمع في تحقيق رؤية المملكة 2030، من خلال مبادرات خلّاقة وفعّالة وذات أثر بالتكامل مع وزارة التعليم والمؤسسات العامة المختصة."
         actions={
           <>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
@@ -69,14 +56,13 @@ export default async function HomePage() {
 
       {/* PARTNERS */}
       <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)", padding: "44px 0", overflow: "hidden" }}>
-        <div style={{ textAlign: "center", fontSize: 14, fontWeight: 600, letterSpacing: "0.5px", color: "var(--ink-subtle)", marginBottom: 28 }}>شركاؤنا</div>
+        <div style={{ textAlign: "center", fontSize: 14, fontWeight: 600, letterSpacing: "0.5px", color: "var(--ink-subtle)", marginBottom: 28 }}>شركاء النجاح</div>
         <div style={{ position: "relative", overflow: "hidden" }}>
           <div className="marquee-track">
             {[0, 1].map((g) => (
               <div className="marquee-group" key={g} aria-hidden={g === 1}>
-                {PARTNER_LOGOS.map((src, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={i} src={src} alt={g === 0 ? "شريك" : ""} style={{ height: 64, width: "auto", objectFit: "contain", opacity: 0.85 }} />
+                {PARTNERS.map((name) => (
+                  <span key={name} style={{ fontSize: 19, fontWeight: 700, color: "var(--olive-700, var(--ink))", whiteSpace: "nowrap", padding: "14px 26px", border: "1px solid var(--hairline)", borderRadius: 14, background: "var(--canvas)" }}>{name}</span>
                 ))}
               </div>
             ))}
@@ -94,10 +80,27 @@ export default async function HomePage() {
           <div>
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
             <h2 className="h-accent" style={{ fontSize: "clamp(30px,4vw,46px)", fontWeight: 700, margin: "0 0 22px", color: "var(--color-primary)" }}>عن الأستاذ</h2>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة غير ربحيّة أُسّست عام 2023 بهدف خلق منظومةٍ شاملة تتكامل مع برامج وزارة التعليم لتعزيز مكانة ودور المعلّم، إيماناً بأنّ المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى لتكون مركز خبرةٍ في هذا المجال، وشريكاً لمنظومة التعليم والمجتمع في تحقيق أهداف الرؤية ومستهدفاتها في خدمة المعلّم والتعليم.</p>
+            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
+            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
+        </div>
+      </section>
+
+      {/* WHY — حجم غير مسبوق */}
+      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 96px" }}>
+        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 40 }}>
+          <div className="eyebrow" style={{ marginBottom: 14 }}>لماذا الأستاذ؟</div>
+          <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: 0, display: "inline-block" }}>حجمٌ غير مسبوق</h2>
+        </div>
+        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          {SCALE.map((s) => (
+            <div key={s.u} className="card-lift" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 26px" }}>
+              <div style={{ fontSize: "clamp(38px,4.6vw,54px)", fontWeight: 700, lineHeight: 1, color: s.accent ? "var(--gold-600)" : "var(--olive-600)", marginBottom: 14 }}>{s.n}</div>
+              <div style={{ fontSize: 17, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>{s.u}</div>
+              <div style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-muted)" }}>{s.d}</div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -108,13 +111,12 @@ export default async function HomePage() {
             <div className="eyebrow" style={{ marginBottom: 14 }}>قيادة المؤسسة</div>
             <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: 0, display: "inline-block" }}>مجــلس أمـــناء المــؤسسة</h2>
           </div>
-          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))", gap: 24, maxWidth: 980, margin: "0 auto" }}>
+          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 22, maxWidth: 1140, margin: "0 auto" }}>
             {BOARD.map((m) => (
-              <div key={m.name} className="card-lift" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 20px" }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={m.img} alt={m.name} style={{ width: 132, height: 132, borderRadius: "var(--radius-round)", objectFit: "cover", border: "3px solid var(--canvas)", boxShadow: "0 4px 12px rgba(35,39,26,0.10)" }} />
-                <div style={{ fontSize: 18, fontWeight: 600 }}>{m.name}</div>
-                <div style={{ fontSize: 14, color: "var(--text-subtle)", marginTop: -8 }}>{m.role ?? "عضو مجلس الأمناء"}</div>
+              <div key={m.name} className="card-lift" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 18px" }}>
+                <PersonAvatar person={m} size={124} radius="var(--radius-round)" />
+                <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.5 }}>{m.name}</div>
+                <div style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text-subtle)", marginTop: -8 }}>{m.role}</div>
               </div>
             ))}
           </div>
@@ -126,7 +128,7 @@ export default async function HomePage() {
         <div data-reveal="1" style={{ textAlign: "center", marginBottom: 60 }}>
           <div className="eyebrow" style={{ marginBottom: 14 }}>حلولٌ متكاملة</div>
           <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 700, margin: "0 auto 16px", display: "inline-block" }}>منظومة الأستاذ</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تحلّ التحديات التي تواجه المعلّم، وتعزّز مكانته المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته، وذلك عبر الحلول التالية:</p>
+          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تعزّز مكانة المعلّم المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته المهنية والمعيشية، وذلك عبر المكوّنات التالية:</p>
         </div>
         <div className="bento" data-reveal-group>
           {BENTO.map((b) => (
@@ -171,21 +173,19 @@ export default async function HomePage() {
 
       {/* AWARDS */}
       <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <SectionHead eyebrow="تقديرٌ واحتفاء" title="جوائز الأستاذ" href="/awards" cta="كل الجوائز ←" />
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28 }}>
-          {featuredAwards.map((a) => (
-            <Link key={a.id} href={`/awards/${a.slug}`} className="card-lift" style={cardStyle}>
-              <div className="media-zoom">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={a.hero_image_url ?? "/assets/alostath-logo.png"} alt={a.name} style={{ width: "100%", height: 248, objectFit: "cover", display: "block" }} />
-              </div>
-              <div style={{ padding: 32, display: "flex", flexDirection: "column", flex: 1 }}>
-                <h3 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 14px" }}>{a.name}</h3>
-                <p style={{ fontSize: 16, lineHeight: 1.9, color: "var(--text-muted)", margin: 0 }}>{a.overview ?? a.tagline}</p>
-                <span className="arrow-link" style={{ marginTop: 18, fontSize: 15 }}>التفاصيل <span className="arrow-link__a">←</span></span>
-              </div>
-            </Link>
-          ))}
+        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title={NATIONAL_AWARD.name} href={AWARD_PATH} cta="عن الجائزة ←" />
+        <div data-reveal="1">
+          <Link href={AWARD_PATH} className="card-lift" style={{ ...cardStyle, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))" }}>
+            <div className="media-zoom">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} style={{ width: "100%", height: "100%", minHeight: 260, objectFit: "cover", display: "block" }} />
+            </div>
+            <div style={{ padding: "clamp(28px,4vw,44px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <span className="badge badge-gold" style={{ alignSelf: "flex-start", marginBottom: 16 }}>{NATIONAL_AWARD.statusLabel}</span>
+              <p style={{ fontSize: 17, lineHeight: 1.95, color: "var(--text-muted)", margin: 0 }}>{NATIONAL_AWARD.overview}</p>
+              <span className="arrow-link" style={{ marginTop: 20, fontSize: 15 }}>التفاصيل <span className="arrow-link__a">←</span></span>
+            </div>
+          </Link>
         </div>
       </section>
 
