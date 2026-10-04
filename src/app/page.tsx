@@ -5,21 +5,22 @@ import PersonAvatar from "@/components/PersonAvatar";
 import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
-import { BOARD, PARTNERS, SCALE } from "@/lib/org";
+import { BOARD, PARTNERS } from "@/lib/org";
 
 export const revalidate = 60;
 
 const FR = "https://framerusercontent.com/images";
 
-// The system as the 2026 profile lays it out: the community, the presence &
-// content platforms, the national award, the initiatives, and the research
-// centre that ties them together.
+// The system's six parts on a 4-column grid: the community across the top,
+// the platform and the council a half row each, then the awards and the
+// initiatives a quarter each beside the research centre's half.
 const BENTO = [
   { t: "مجتمع الأستاذ", d: "يجمع مجتمع الأستاذ معلّمي الوطن ومعلّماته في مساحةٍ مهنية واحدة تصلهم بالمعرفة والخبرات والفرص، وتقرّب صوتهم من كل ما يُسهم في تطوير المهنة، بما يعزّز حضورهم وأثرهم في الميدان التعليمي والمجتمع.", ico: "/assets/community-ico.svg", full: true, href: "/community", cta: "انضم إلى المجتمع", bg: "var(--olive-50)", border: "var(--olive-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "منصات الحضور والمحتوى", d: "مجلس الأستاذ منصة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، و«يوميات معلّم» أعمالٌ وثائقية ودرامية وحوارية تنقل صوت المعلّم، وبودكاست «حديث الأستاذ» يرسّخ صورته في الوجدان العام.", ico: `${FR}/oW8wZAFatzZf7ir8MDTyUDhp3M.png?width=597&height=596`, span2: true, bg: "var(--sage-50)", border: "var(--sage-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "الجائزة الوطنية للمعلّم", d: "جائزةٌ وطنية مستدامة تتعرّف على المعلّمين الممارسين المتميّزين، وتحوّل تميّزهم إلى فرصٍ مهنية، وتنقل ممارساتهم إلى الميدان — ويُقاس نجاحها بأثرها في المهنة لا بعدد المكرَّمين.", ico: `${FR}/WbdvWBZBTjJHiAqQ6PYvjlZi8.png?width=596&height=596`, span2: true, bg: "var(--gold-50)", border: "var(--gold-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "مبادرات الأستاذ", d: "حزمةٌ من البرامج والخدمات والفرص التي تعزّز جودة حياة المعلّم المهنية والمعيشية: ناصية لتأهيل المعلّمين سفراءَ في الفعاليات الكبرى، واتحداك مدارس للنشاط البدني، والجمعية التعاونية للمعلّمين.", ico: `${FR}/u3gZvgjooyNzqcrahQkvdPHl0.png?width=596&height=596`, span2: true, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
-  { t: "مركز الأستاذ للتطوير والأبحاث", d: "القطب البحثي والمعرفي لمنظومة الأستاذ: يرصد الميدان التعليمي من منظور المعلّم، ويُجري الدراسات التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة، ويوثّق أثر المبادرات والبرامج.", ico: `${FR}/qgC0zLqifmgun1NVVyhrXhBGkM.png?width=596&height=596`, span2: true, bg: "var(--olive-900)", border: "transparent", ink: "var(--ink-inverse)", muted: "var(--inverse-muted)" },
+  { t: "منصة الأستاذ", d: "تعمل منصة الأستاذ كمنظومةٍ رقميّة متكاملة تجمع المعرفة والخدمات والفرص والمزايا في تجربةٍ واحدة سهلة الوصول، بما يختصر الوقت والجهد لتمكين المعلّم مهنيّاً وتهيئته في المهنة ورفع جودة حياته.", ico: `${FR}/Ik3kiue2mUdrmJNH3TwllSBDefg.png?width=596&height=596`, span2: true, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "مجلس الأستاذ", d: "يشكّل مجلس الأستاذ منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.", ico: `${FR}/oW8wZAFatzZf7ir8MDTyUDhp3M.png?width=597&height=596`, span2: true, bg: "var(--sage-50)", border: "var(--sage-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "جوائز الأستاذ", d: "تعمل جوائز الأستاذ على اكتشاف وإبراز مواهب المعلّمين وإنجازاتهم، ونقلها إلى واجهة المشهد الثقافي والتربوي، بما يعزّز مكانة المعلّم ويُعزّز ثقافة التقدير.", ico: `${FR}/WbdvWBZBTjJHiAqQ6PYvjlZi8.png?width=596&height=596`, span2: false, bg: "var(--gold-50)", border: "var(--gold-100)", ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "مبادرات الأستاذ", d: "تقدّم مبادرات الأستاذ حزمةً من البرامج والخدمات والفرص التي تعزّز جودة حياة المعلّم وتمكّنه مهنيّاً ومعيشيّاً، بما يوفّر له بيئةً داعمة ومتوازنة.", ico: `${FR}/u3gZvgjooyNzqcrahQkvdPHl0.png?width=596&height=596`, span2: false, bg: "var(--surface-1)", border: undefined, ink: "var(--ink)", muted: "var(--text-muted)" },
+  { t: "مركز الأستاذ للتطوير والأبحاث", d: "مركز الأستاذ للتطوير والأبحاث هو العقل المحرّك لمنظومة الأستاذ، حيث يتولّى تنظيم وتكامل جميع مكوّنات المنظومة، وضمان عملها بتناغمٍ لتحقيق أهدافها الاستراتيجية.", ico: `${FR}/qgC0zLqifmgun1NVVyhrXhBGkM.png?width=596&height=596`, span2: true, bg: "var(--olive-900)", border: "transparent", ink: "var(--ink-inverse)", muted: "var(--inverse-muted)" },
 ];
 
 export default async function HomePage() {
@@ -84,23 +85,6 @@ export default async function HomePage() {
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
-        </div>
-      </section>
-
-      {/* WHY — حجم غير مسبوق */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 96px" }}>
-        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 40 }}>
-          <div className="eyebrow" style={{ marginBottom: 14 }}>لماذا الأستاذ؟</div>
-          <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: 0, display: "inline-block" }}>حجمٌ غير مسبوق</h2>
-        </div>
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
-          {SCALE.map((s) => (
-            <div key={s.u} className="card-lift" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 26px" }}>
-              <div style={{ fontSize: "clamp(38px,4.6vw,54px)", fontWeight: 700, lineHeight: 1, color: s.accent ? "var(--gold-600)" : "var(--olive-600)", marginBottom: 14 }}>{s.n}</div>
-              <div style={{ fontSize: 17, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>{s.u}</div>
-              <div style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-muted)" }}>{s.d}</div>
-            </div>
-          ))}
         </div>
       </section>
 
