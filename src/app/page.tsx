@@ -5,7 +5,7 @@ import PersonAvatar from "@/components/PersonAvatar";
 import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
-import { BOARD, SCALE } from "@/lib/org";
+import { BOARD } from "@/lib/org";
 
 export const revalidate = 60;
 
@@ -68,23 +68,6 @@ export default async function HomePage() {
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
-        </div>
-      </section>
-
-      {/* WHY — حجم غير مسبوق */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 96px" }}>
-        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 40 }}>
-          <div className="eyebrow" style={{ marginBottom: 14 }}>لماذا الأستاذ؟</div>
-          <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: 0, display: "inline-block" }}>حجمٌ غير مسبوق</h2>
-        </div>
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
-          {SCALE.map((s) => (
-            <div key={s.u} className="card-lift" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 26px" }}>
-              <div style={{ fontSize: "clamp(38px,4.6vw,54px)", fontWeight: 700, lineHeight: 1, color: s.accent ? "var(--gold-600)" : "var(--olive-600)", marginBottom: 14 }}>{s.n}</div>
-              <div style={{ fontSize: 17, fontWeight: 700, color: "var(--ink)", marginBottom: 6 }}>{s.u}</div>
-              <div style={{ fontSize: 14, lineHeight: 1.7, color: "var(--text-muted)" }}>{s.d}</div>
-            </div>
-          ))}
         </div>
       </section>
 
