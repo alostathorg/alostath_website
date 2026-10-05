@@ -8,7 +8,6 @@ export type Person = { name: string; role: string; img?: string };
 /** مجلس الأمناء — profile order. A member without a photo gets a monogram. */
 export const BOARD: Person[] = [
   { name: "د. عبدالإله بن عثمان الصالح", role: "رئيس مجلس الأمناء والمشرف التنفيذي", img: `${FR}/j0X0zJyXfEroP129Xo0aCS03jtA.jpeg?width=213&height=228` },
-  { name: "م. عبدالله العبدالله", role: "أمين عام المجلس" },
   { name: "د. خالد العواد", role: "عضو رئيسي", img: `${FR}/NMoq9rbaVdr8bBZzseUNUpJIws.png?width=374&height=410` },
   { name: "د. زياد الدريس", role: "عضو رئيسي", img: `${FR}/m74hlEDKVe2RKWKLIMtvUKWhc.png?width=512&height=512` },
   { name: "م. سامي الحصيّن", role: "عضو رئيسي", img: `${FR}/910EvdMGyQXgtbyN7rLmXIXR5eU.png?width=435&height=440` },
