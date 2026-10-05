@@ -5,7 +5,7 @@ import PersonAvatar from "@/components/PersonAvatar";
 import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
-import { BOARD, PARTNERS, SCALE } from "@/lib/org";
+import { BOARD, SCALE } from "@/lib/org";
 
 export const revalidate = 60;
 
@@ -53,22 +53,6 @@ export default async function HomePage() {
         }
         scrollCue="#about"
       />
-
-      {/* PARTNERS */}
-      <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)", padding: "44px 0", overflow: "hidden" }}>
-        <div style={{ textAlign: "center", fontSize: 14, fontWeight: 600, letterSpacing: "0.5px", color: "var(--ink-subtle)", marginBottom: 28 }}>شركاء النجاح</div>
-        <div style={{ position: "relative", overflow: "hidden" }}>
-          <div className="marquee-track">
-            {[0, 1].map((g) => (
-              <div className="marquee-group" key={g} aria-hidden={g === 1}>
-                {PARTNERS.map((name) => (
-                  <span key={name} style={{ fontSize: 19, fontWeight: 700, color: "var(--olive-700, var(--ink))", whiteSpace: "nowrap", padding: "14px 26px", border: "1px solid var(--hairline)", borderRadius: 14, background: "var(--canvas)" }}>{name}</span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ABOUT */}
       <section id="about" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
