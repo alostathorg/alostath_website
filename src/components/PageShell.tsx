@@ -5,11 +5,12 @@ import { getSettings } from "@/lib/queries";
 /** Header + footer wrapper. Fetches site settings for the footer contact block. */
 export default async function PageShell({
   active,
-  overlayHeader = false,
+  overlayHeader = true,
   children,
 }: {
   active?: string;
-  /** Header floats transparent over a full-bleed hero until the page scrolls. */
+  /** Header floats transparent over the page's hero until the page scrolls.
+   *  Pass false on a page that does not open with a PageHero. */
   overlayHeader?: boolean;
   children: React.ReactNode;
 }) {

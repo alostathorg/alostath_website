@@ -42,7 +42,7 @@ export default async function UnsubscribePage({
   const copy = state === "unsubscribed" ? COPY.unsubscribed : state === "resubscribed" ? COPY.resubscribed : COPY.confirm;
 
   return (
-    <PageShell>
+    <PageShell overlayHeader={false}>
       <section style={{ maxWidth: 620, margin: "0 auto", padding: "clamp(72px,12vh,120px) 32px" }}>
         <div className="cm-panel" style={{ textAlign: "center" }}>
           {invalid ? (

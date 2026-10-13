@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
+import CriteriaBand from "@/components/CriteriaBand";
 import { getInitiatives } from "@/lib/queries";
 import type { Initiative } from "@/lib/types";
 
@@ -50,20 +51,7 @@ export default async function InitiativesPage() {
         ))}
       />
 
-      <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)" }}>
-        <div data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "48px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))", gap: 18 }}>
-          <div style={{ fontSize: 18, fontWeight: 700, alignSelf: "center" }}>
-            شروط قبول المبادرة
-            <div style={{ fontSize: 14, fontWeight: 400, color: "var(--text-muted)", marginTop: 6, lineHeight: 1.7 }}>تستوفي كل مبادرة شرطاً أساسياً</div>
-          </div>
-          {CONDITIONS.map((c) => (
-            <div key={c.t} style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: 18 }}>
-              <div style={{ fontWeight: 600, color: "var(--olive-600)", marginBottom: 4 }}>{c.t}</div>
-              <div style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.6 }}>{c.d}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <CriteriaBand title="شروط قبول المبادرة" note="تستوفي كل مبادرة شرطاً أساسياً" items={CONDITIONS} />
 
       {initiatives.map((initiative, i) => {
         const shaded = i % 2 === 1;

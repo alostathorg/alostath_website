@@ -35,7 +35,7 @@ export default async function HomePage() {
   const featuredInitiatives = initiatives.slice(0, 3);
 
   return (
-    <PageShell active="home" overlayHeader>
+    <PageShell active="home">
       <PageHero
         id="hero"
         size="xl"

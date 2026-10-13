@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
+import CriteriaBand from "@/components/CriteriaBand";
 import { getBrandPartners } from "@/lib/queries";
 import type { BrandPartner } from "@/lib/types";
 import {
@@ -119,20 +120,7 @@ export default async function PartnersPage() {
       />
 
       {/* SELECTION CRITERIA */}
-      <section style={{ background: "var(--surface-1)", borderBottom: "1px solid var(--hairline)" }}>
-        <div data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "48px 32px", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(210px,1fr))", gap: 18 }}>
-          <div style={{ fontSize: 18, fontWeight: 700, alignSelf: "center" }}>
-            كيف نختار الشركاء
-            <div style={{ fontSize: 14, fontWeight: 400, color: "var(--text-muted)", marginTop: 6, lineHeight: 1.7 }}>كل علامة هنا استوفت ثلاثة شروط</div>
-          </div>
-          {CRITERIA.map((c) => (
-            <div key={c.t} style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: 18 }}>
-              <div style={{ fontWeight: 600, color: "var(--olive-600)", marginBottom: 4 }}>{c.t}</div>
-              <div style={{ fontSize: 13, color: "var(--text-muted)", lineHeight: 1.6 }}>{c.d}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <CriteriaBand title="كيف نختار الشركاء" note="كل علامة هنا استوفت ثلاثة شروط" items={CRITERIA} />
 
       {/* PARTNERS */}
       <section id="grid" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: empty ? "72px 32px 96px" : "64px 32px 24px" }}>
