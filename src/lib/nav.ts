@@ -4,11 +4,12 @@
 // box and forced a font-size hack between 981px and 1120px just to fit. The bar
 // now carries six: the five programmes a teacher comes for, plus «من نحن».
 //
-// «الرئيسية» is the logo's job, and «المدونة» / «الملف الإعلامي» live in the
+// «الرئيسية» is the logo's job, and «الأخبار» / «المدونة» / «الملف الإعلامي» live in the
 // footer and in the mobile panel — both keep inline entry points in the body
 // copy so they are never reachable from the chrome alone.
 
 import { PARTNERS_NAV_LABEL, PARTNERS_PATH } from "@/lib/brandPartners";
+import { NEWS_NAV_LABEL, NEWS_PATH } from "@/lib/news";
 
 export type NavItem = { href: string; label: string; key: string };
 
@@ -30,6 +31,7 @@ export const NAV_PRIMARY: NavItem[] = [...NAV_PROGRAMS, ABOUT];
 
 /** Never a desktop tab — the mobile panel and the footer only. */
 export const NAV_SECONDARY: NavItem[] = [
+  { href: NEWS_PATH, label: NEWS_NAV_LABEL, key: "news" },
   { href: "/blog", label: "المدونة", key: "blog" },
   { href: "/press", label: "الملف الإعلامي", key: "press" },
 ];

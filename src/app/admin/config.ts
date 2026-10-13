@@ -5,6 +5,7 @@ import {
   BRAND_PRICING_LABELS,
   PARTNERS_NAV_LABEL,
 } from "@/lib/brandPartners";
+import { NEWS_KINDS, NEWS_KIND_LABELS, NEWS_NAV_LABEL } from "@/lib/news";
 
 // Declarative schema that drives the generic admin CRUD engine.
 // Each collection maps 1:1 to a Supabase table; fields describe how to render
@@ -143,6 +144,28 @@ export const COLLECTIONS: Collection[] = [
       { name: "published_at", label: "تاريخ النشر", type: "date", group: G_BASIC },
       { name: "excerpt", label: "المقتطف", type: "textarea", group: G_TEXT },
       { name: "body", label: "نص المقال", type: "lines", help: "اكتب كل فقرة في سطر مستقل", group: G_TEXT },
+      { name: "cover_url", label: "صورة الغلاف", type: "image", group: G_MEDIA },
+    ],
+  },
+  {
+    // «الأخبار» — dated news, announcements and media coverage. Not the blog:
+    // see supabase/migrations/0004_news.sql for why it is its own table.
+    table: "news",
+    slug: "news",
+    labelSingular: "خبر",
+    labelPlural: NEWS_NAV_LABEL,
+    orderBy: { column: "published_at", ascending: false },
+    fields: [
+      { name: "title", label: "العنوان", type: "text", group: G_BASIC, listColumn: true },
+      { name: "slug", label: "مُعرّف الرابط", type: "text", help: "بالإنجليزية وبدون مسافات، مثال: award-2026-launch", group: G_BASIC, listColumn: true },
+      { name: "published", label: "منشور على الموقع", type: "boolean", help: "يبقى الخبر مسودة حتى يُراجَع ويُعتمد", group: G_BASIC, listColumn: true },
+      { name: "kind", label: "نوع الخبر", type: "select", options: NEWS_KINDS, optionLabels: NEWS_KIND_LABELS, group: G_BASIC, listColumn: true },
+      { name: "pinned", label: "خبر مثبّت", type: "boolean", help: "يظهر أولاً في بطاقة عريضة أعلى صفحة الأخبار", group: G_BASIC },
+      { name: "published_at", label: "تاريخ الخبر", type: "date", group: G_BASIC, listColumn: true },
+      { name: "excerpt", label: "الملخّص", type: "textarea", help: "سطران على الأكثر — يظهر على البطاقة", group: G_TEXT },
+      { name: "body", label: "نص الخبر", type: "lines", help: "اكتب كل فقرة في سطر مستقل", group: G_TEXT },
+      { name: "source_name", label: "اسم الوسيلة الإعلامية", type: "text", help: "لأخبار «في الإعلام» فقط", placeholder: "مثال: صحيفة الرياض", group: G_LINKS },
+      { name: "source_url", label: "رابط الخبر الأصلي", type: "text", help: "لأخبار «في الإعلام» فقط — يظهر زر «اقرأ الخبر في مصدره»", placeholder: "https://…", group: G_LINKS },
       { name: "cover_url", label: "صورة الغلاف", type: "image", group: G_MEDIA },
     ],
   },

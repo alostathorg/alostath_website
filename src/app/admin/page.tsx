@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { PARTNERS_NAV_LABEL } from "@/lib/brandPartners";
+import { NEWS_NAV_LABEL } from "@/lib/news";
 import { COLLECTIONS } from "./config";
 
 export const dynamic = "force-dynamic";
@@ -26,6 +27,9 @@ const TrophyIcon = (
 const FlagIcon = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" /></svg>
 );
+const NewsIcon = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /><path d="M18 14h-8" /><path d="M15 18h-5" /><path d="M10 6h8v4h-8z" /></svg>
+);
 const PenIcon = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
 );
@@ -46,10 +50,11 @@ const Chevron = (
 );
 
 export default async function AdminDashboard() {
-  const [awards, initiatives, posts, brands, registrations, members, newIdeas] = await Promise.all([
+  const [awards, initiatives, posts, news, brands, registrations, members, newIdeas] = await Promise.all([
     count("awards"),
     count("initiatives"),
     count("blog_posts"),
+    count("news"),
     count("brand_partners"),
     count("registrations"),
     count("community_members"),
@@ -60,6 +65,7 @@ export default async function AdminDashboard() {
     { label: "الجوائز", value: awards, href: "/admin/collections/awards", icon: TrophyIcon },
     { label: "المبادرات", value: initiatives, href: "/admin/collections/initiatives", icon: FlagIcon },
     { label: "المقالات", value: posts, href: "/admin/collections/posts", icon: PenIcon },
+    { label: NEWS_NAV_LABEL, value: news, href: "/admin/collections/news", icon: NewsIcon },
     { label: PARTNERS_NAV_LABEL, value: brands, href: "/admin/collections/brands", icon: StoreIcon },
     { label: "الطلبات والاشتراكات", value: registrations, href: "/admin/registrations", icon: InboxIcon },
     { label: "أعضاء المجتمع", value: members, href: "/admin/community", icon: UsersIcon },

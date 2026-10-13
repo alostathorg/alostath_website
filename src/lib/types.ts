@@ -66,6 +66,21 @@ export interface BlogPost {
   published: boolean;
 }
 
+export interface NewsItem {
+  id: string;
+  slug: string;
+  title: string;
+  kind: string; // news | announcement | media — labels in lib/news.ts
+  excerpt: string | null;
+  body: string[];
+  cover_url: string | null;
+  source_name: string | null;
+  source_url: string | null;
+  pinned: boolean;
+  published_at: string | null;
+  published: boolean;
+}
+
 export interface Registration {
   id: string;
   program_name: string;
