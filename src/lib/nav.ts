@@ -2,9 +2,10 @@
 //
 // The header used to carry nine tabs, which needed ~773px of the 1144px content
 // box and forced a font-size hack between 981px and 1120px just to fit. The bar
-// now carries six: the five programmes a teacher comes for, plus «من نحن».
+// now carries seven: the five programmes a teacher comes for, «الأخبار», and
+// «من نحن».
 //
-// «الرئيسية» is the logo's job, and «الأخبار» / «المدونة» / «الملف الإعلامي» live in the
+// «الرئيسية» is the logo's job, and «المدونة» / «الملف الإعلامي» live in the
 // footer and in the mobile panel — both keep inline entry points in the body
 // copy so they are never reachable from the chrome alone.
 
@@ -26,15 +27,16 @@ export const HOME: NavItem = { href: "/", label: "الرئيسية", key: "home"
 export const ABOUT: NavItem = { href: "/about", label: "من نحن", key: "about" };
 export const CONTACT: NavItem = { href: "/contact", label: "تواصل معنا", key: "contact" };
 
-/** The six desktop tabs. Array order is RTL visual order, right → left. */
-export const NAV_PRIMARY: NavItem[] = [...NAV_PROGRAMS, ABOUT];
+export const NEWS: NavItem = { href: NEWS_PATH, label: NEWS_NAV_LABEL, key: "news" };
+
+/** The seven desktop tabs. Array order is RTL visual order, right → left. */
+export const NAV_PRIMARY: NavItem[] = [...NAV_PROGRAMS, NEWS, ABOUT];
 
 /** Never a desktop tab — the mobile panel and the footer only. */
 export const NAV_SECONDARY: NavItem[] = [
-  { href: NEWS_PATH, label: NEWS_NAV_LABEL, key: "news" },
   { href: "/blog", label: "المدونة", key: "blog" },
   { href: "/press", label: "الملف الإعلامي", key: "press" },
 ];
 
 /** The footer's «المؤسسة» column: everything that is not a programme. */
-export const FOOTER_ORG: NavItem[] = [HOME, ABOUT, ...NAV_SECONDARY, CONTACT];
+export const FOOTER_ORG: NavItem[] = [HOME, ABOUT, NEWS, ...NAV_SECONDARY, CONTACT];
