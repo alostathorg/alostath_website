@@ -5,7 +5,8 @@ import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { DetailPager, SectionHead } from "@/components/DetailKit";
 import { getPost, getPosts } from "@/lib/queries";
-import { formatArabicDate } from "@/lib/format";
+import { formatArabicDate, readingTime } from "@/lib/format";
+import PostCard from "../PostCard";
 
 export const revalidate = 60;
 
@@ -20,20 +21,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPost(slug);
   return { title: post?.title ?? "المدونة", description: post?.excerpt ?? undefined };
-}
-
-/**
- * Reading time, in the Arabic a reader would say it: دقيقة واحدة، دقيقتان،
- * ثلاث→عشر دقائق، then back to the singular for eleven and up. 180 words a
- * minute is the usual figure for Arabic prose.
- */
-function readingTime(body: string[]): string {
-  const words = body.join(" ").trim().split(/\s+/).filter(Boolean).length;
-  const min = Math.max(1, Math.round(words / 180));
-  if (min === 1) return "قراءة في دقيقة واحدة";
-  if (min === 2) return "قراءة في دقيقتين";
-  if (min <= 10) return `قراءة في ${min} دقائق`;
-  return `قراءة في ${min} دقيقة`;
 }
 
 export default async function PostPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -82,82 +69,52 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         eyebrow={post.category}
         title={post.title}
         image={post.cover_url}
-        imageOpacity={0.34}
         lede={post.excerpt || undefined}
-        meta={<div className="ph-date">{formatArabicDate(post.published_at)}</div>}
+        meta={
+          <div className="bl-hero-meta">
+            <span>{formatArabicDate(post.published_at)}</span>
+            <span className="bl-dot" aria-hidden />
+            <span>{readingTime(post.body)}</span>
+          </div>
+        }
       />
 
-      <article className="post-wrap" data-read-target>
-        <div className="post-meta">
-          {post.category && <span className="post-meta-chip">{post.category}</span>}
-          <span className="post-meta-item">{formatArabicDate(post.published_at)}</span>
-          <span className="post-meta-dot" aria-hidden />
-          <span className="post-meta-item">{readingTime(post.body)}</span>
-          <div className="post-meta-share">
-            {share.map((s) => (
-              <a
-                key={s.key}
-                className="post-share-btn"
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                title={s.label}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>{s.icon}</svg>
-              </a>
-            ))}
-          </div>
-        </div>
+      <div className="bl-wrap bl-article">
+        <aside className="bl-share" aria-label="مشاركة المقال">
+          <span className="bl-share-k">شارك</span>
+          {share.map((s) => (
+            <a key={s.key} className="bl-share-btn" href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label} title={s.label}>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden>{s.icon}</svg>
+            </a>
+          ))}
+        </aside>
 
-        <div className="post-rule" aria-hidden />
-
-        <div className="post-body">
+        <article className="bl-prose" data-read-target>
           {post.body.map((para, i) => (
             <p key={i}>{para}</p>
           ))}
-        </div>
+          <div className="bl-endmark" aria-hidden><span /></div>
+        </article>
+      </div>
 
-        <div className="post-end">
+      <div className="bl-wrap">
+        <div className="bl-after">
           <Link href="/blog" className="arrow-link">
             <span className="arrow-link__a" aria-hidden>→</span>
             العودة إلى المدونة
           </Link>
-          <div className="post-meta-share">
-            {share.map((s) => (
-              <a
-                key={s.key}
-                className="post-share-btn"
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={s.label}
-                title={s.label}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden>{s.icon}</svg>
-              </a>
-            ))}
-          </div>
+          {post.category && <span className="bl-tag">{post.category}</span>}
         </div>
-      </article>
+      </div>
 
       {/* MORE — the article no longer ends in a dead end */}
       {more.length > 0 && (
         <section className="dp-shade" data-reveal="1">
           <div className="dp-sec">
             <SectionHead eyebrow="اقرأ أيضاً" title="من المدونة" />
-            <div className="blog-grid is-fit" data-reveal-group>
+            <div className="bl-grid" data-reveal-group>
               {more.map((p) => (
-                <Link key={p.id} className="blog-card" href={`/blog/${p.slug}`}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="blog-card-img" src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
-                  <div className="blog-card-body">
-                    <div className="blog-card-cat">{p.category}</div>
-                    <h3 className="blog-card-title">{p.title}</h3>
-                    <p className="blog-card-excerpt">{p.excerpt}</p>
-                    <div className="blog-card-date">{formatArabicDate(p.published_at)}</div>
-                  </div>
-                </Link>
+                <PostCard key={p.id} post={p} headingLevel={3} />
               ))}
             </div>
           </div>

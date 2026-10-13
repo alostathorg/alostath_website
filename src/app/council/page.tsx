@@ -10,23 +10,30 @@ export const metadata: Metadata = { title: "المجلس" };
 // «ما يسهم فيه المجلس» — the 2026 profile's three contributions, after the
 // council's own definition (منصة تعارف وتكامل).
 const CARDS = [
-  { t: "تعارفٌ وتكامل", d: "منصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
-  { t: "إبراز دور المعلّم", d: "إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية.", bg: "var(--sage-50)", fg: "var(--sage-700)" },
-  { t: "توعية المجتمع", d: "توعية المجتمع بقضايا الميدان التعليمي من منظور من يعيشه يومياً.", bg: "var(--gold-50)", fg: "var(--gold-700)" },
-  { t: "قناة تواصل مباشرة", d: "خلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.", bg: "var(--olive-50)", fg: "var(--olive-600)" },
+  { t: "تعارفٌ وتكامل", d: "منصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم.", ico: <><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></> },
+  { t: "إبراز دور المعلّم", d: "إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية.", ico: <><path d="m12 3 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.8l-5.8 3.1 1.1-6.5L2.6 9.8l6.5-.9z" /></> },
+  { t: "توعية المجتمع", d: "توعية المجتمع بقضايا الميدان التعليمي من منظور من يعيشه يومياً.", ico: <><path d="m3 11 18-5v12L3 14v-3z" /><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6" /></> },
+  { t: "قناة تواصل مباشرة", d: "خلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.", ico: <><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /><path d="M8 9h8" /><path d="M8 13h5" /></> },
 ];
 
-const PILLS = [
-  { t: "المعلّمون المتميّزون", c: "var(--olive-500)" },
-  { t: "الخبراء والمختصّون", c: "var(--sage-500)" },
-  { t: "الجهات الحكومية", c: "var(--gold-500)" },
-  { t: "القطاع الخاص", c: "var(--olive-500)" },
+// The four seats around the table.
+const SEATS = [
+  { t: "المعلّمون المتميّزون", d: "صوت الميدان" },
+  { t: "الخبراء والمختصّون", d: "المعرفة والتجربة" },
+  { t: "الجهات الحكومية", d: "القرار والسياسات" },
+  { t: "القطاع الخاص", d: "الشراكة والتنفيذ" },
+];
+
+// What a session does, read off the council's own definition.
+const FLOW = [
+  { t: "الاطّلاع", d: "على مستجدّات التعليم وتحدّيات الميدان كما يعيشها المعلّم." },
+  { t: "الحوار", d: "بين المعلّم وصنّاع القرار والخبراء حول طاولةٍ واحدة." },
+  { t: "الأثر", d: "حلولٌ عملية ومبادرات تتكامل مع الطموحات الوطنية." },
 ];
 
 export default async function CouncilPage() {
   const settings = await getSettings();
   const council = (settings.council as Record<string, string>) ?? {};
-  const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
 
   return (
     <PageShell active="council">
@@ -46,80 +53,109 @@ export default async function CouncilPage() {
         </div>
       </div>
 
-      {/* INTRO */}
-      <section style={{ maxWidth: 980, margin: "0 auto", padding: "72px 32px 24px" }}>
-        <div data-reveal="1">
-          <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>عن المجلس</div>
-          <p style={{ fontSize: "clamp(19px,2.2vw,24px)", lineHeight: 1.85, color: "var(--text-body)", fontWeight: 500, margin: 0 }}>ديوانيّةٌ شهريّة تجمع المعلّمين المتميّزين بنخبةٍ من الخبراء والممارسين والمختصّين من القطاعات الحكومية والخاصة، إلى جانب ممثّلي تحدّيات الميدان — بهدف الاطّلاع على مستجدّات التعليم وتحويلها إلى حلولٍ عملية ومبادرات تتكامل مع الطموحات الوطنية.</p>
-          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "24px 0 0" }}>يعمل المجلس كمنصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، بما يُسهم في إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية، وتوعية المجتمع بقضايا الميدان من منظور من يعيشه يومياً، وخلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.</p>
-          <p style={{ fontSize: 15, lineHeight: 1.9, color: "var(--text-subtle)", margin: "16px 0 0" }}>
-            ويكمّل المجلسَ ضمن منصات الحضور والمحتوى: <Link href="/initiatives/yawmiyat-muallim" style={{ color: "var(--olive-600)" }}>يوميات معلّم</Link> و<Link href="/initiatives/hadith-alostath" style={{ color: "var(--olive-600)" }}>بودكاست حديث الأستاذ</Link>.
-          </p>
+      {/* INTRO — the definition, beside the majlis itself */}
+      <section className="cn-wrap cn-intro" data-reveal="1">
+        <div className="cn-intro-text">
+          <div className="kicker">عن المجلس</div>
+          <p className="cn-lead">ديوانيّةٌ شهريّة تجمع المعلّمين المتميّزين بنخبةٍ من الخبراء والممارسين والمختصّين من القطاعات الحكومية والخاصة، إلى جانب ممثّلي تحدّيات الميدان — بهدف الاطّلاع على مستجدّات التعليم وتحويلها إلى حلولٍ عملية ومبادرات تتكامل مع الطموحات الوطنية.</p>
+          <p className="cn-p">يعمل المجلس كمنصّة تعارفٍ وتكامل بين المعلّم والجهات المؤثّرة في منظومة التعليم، بما يُسهم في إبراز دور المعلّم وتعزيز مشاركته في صناعة الحلول التعليمية، وتوعية المجتمع بقضايا الميدان من منظور من يعيشه يومياً، وخلق قناة تواصل مباشرة ومنتظمة بين صنّاع القرار التعليمي والمعلّمين أنفسهم.</p>
+        </div>
+        {council.hero_image && (
+          <figure className="cn-photo">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={council.hero_image} alt="جلسة من جلسات مجلس الأستاذ" />
+            <figcaption>من جلسات مجلس الأستاذ</figcaption>
+          </figure>
+        )}
+      </section>
+
+      {/* THE TABLE — who sits at the majlis */}
+      <section className="cn-table-sec">
+        <div className="cn-wrap cn-table-grid">
+          <div className="cn-table-text" data-reveal="1">
+            <div className="kicker is-gold">طاولةٌ واحدة</div>
+            <h2>من يجلس إلى المجلس؟</h2>
+            <p>يلتقي في ديوانيّة المجلس صنّاع التعليم من مختلف المواقع، فيتحوّل الحوار إلى شراكةٍ تصنع الأثر.</p>
+          </div>
+          <div className="cn-table" data-reveal="1" aria-label="المشاركون في المجلس">
+            <div className="cn-table-ring" aria-hidden />
+            <div className="cn-table-center">
+              <strong>المجلس</strong>
+              <span>ديوانيّة شهريّة</span>
+            </div>
+            {SEATS.map((seat, i) => (
+              <div key={seat.t} className={`cn-seat is-${i + 1}`}>
+                <strong>{seat.t}</strong>
+                <span>{seat.d}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* WHAT IT DOES */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "56px 32px" }}>
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 20 }}>
-          {CARDS.map((c) => (
-            <div key={c.t} className="c-card card-lift" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 16, padding: 30 }}>
-              <div className="c-ico" style={{ width: 46, height: 46, borderRadius: 12, background: c.bg, color: c.fg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}><IconUsers /></div>
-              <h3 style={{ fontSize: 19, fontWeight: 600, margin: "0 0 8px" }}>{c.t}</h3>
-              <p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-muted)", margin: 0 }}>{c.d}</p>
-            </div>
+      <section className="cn-wrap cn-sec">
+        <div className="cn-head" data-reveal="1">
+          <div className="kicker">ما يُسهم فيه المجلس</div>
+          <h2>أربع إسهامات لصوت المعلّم</h2>
+        </div>
+        <div className="cn-cards" data-reveal-group>
+          {CARDS.map((c, i) => (
+            <article key={c.t} className="cn-card">
+              <span className="cn-card-n">{String(i + 1).padStart(2, "0")}</span>
+              <span className="cn-card-ico" aria-hidden>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{c.ico}</svg>
+              </span>
+              <h3>{c.t}</h3>
+              <p>{c.d}</p>
+            </article>
           ))}
         </div>
       </section>
 
-      {/* WHO PARTICIPATES */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div data-reveal="1" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "72px 32px" }}>
-          <div className="council-row" style={{ display: "grid", gridTemplateColumns: "0.8fr 1.2fr", gap: 48, alignItems: "center" }}>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 }}>طاولةٌ واحدة</div>
-              <h2 style={{ fontSize: "clamp(26px,3.4vw,38px)", fontWeight: 700, margin: "0 0 14px" }}>من يجلس إلى المجلس؟</h2>
-              <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 }}>يلتقي في ديوانيّة المجلس صنّاع التعليم من مختلف المواقع، فيتحوّل الحوار إلى شراكةٍ تصنع الأثر.</p>
-            </div>
-            <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 14 }}>
-              {PILLS.map((p) => (
-                <div key={p.t} className="c-pill" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: 20, display: "flex", alignItems: "center", gap: 12, fontSize: 16, fontWeight: 600 }}>
-                  <span className="c-dot" style={{ width: 9, height: 9, borderRadius: 9999, background: p.c, flex: "none" }} />{p.t}
-                </div>
-              ))}
-            </div>
-          </div>
+      {/* FLOW — from conversation to impact */}
+      <section className="cn-wrap cn-sec is-tight">
+        <div className="cn-head" data-reveal="1">
+          <div className="kicker">من الحوار إلى الأثر</div>
+          <h2>ما الذي يحدث في الجلسة؟</h2>
+        </div>
+        <ol className="cn-flow" data-reveal-group>
+          {FLOW.map((f, i) => (
+            <li key={f.t}>
+              <span>{i + 1}</span>
+              <h3>{f.t}</h3>
+              <p>{f.d}</p>
+            </li>
+          ))}
+        </ol>
+        <div className="cn-siblings" data-reveal="1">
+          <span>ويكمّل المجلسَ ضمن منصات الحضور والمحتوى:</span>
+          <Link href="/initiatives/yawmiyat-muallim">يوميات معلّم ←</Link>
+          <Link href="/initiatives/hadith-alostath">بودكاست حديث الأستاذ ←</Link>
         </div>
       </section>
 
-      {/* COUNTDOWN */}
-      <section id="next" style={{ maxWidth: "var(--container-max)", margin: "64px auto 0", padding: "0 32px" }}>
-        <div data-reveal="1" data-countdown-target={nextSession} style={{ position: "relative", overflow: "hidden", borderRadius: 24, background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
+      {/* CLOSE — register for the next session, or bring an issue to it */}
+      <section id="next" className="cn-wrap cn-close">
+        <div className="cn-close-main" data-reveal="1">
           {council.hero_image && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={council.hero_image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.2 }} />
+            <img src={council.hero_image} alt="" aria-hidden />
           )}
-          <div style={{ position: "relative", padding: "clamp(40px,6vw,72px) clamp(28px,5vw,64px)", textAlign: "center" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 14 }}>الجلسة القادمة</div>
-            <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 36px" }}>مجلسنا القادم قـــــــــرب</h2>
-            <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
-                <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
-                  <div data-countdown={k} style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 500, color: "var(--gold-500)", lineHeight: 1 }}>--</div>
-                  <div style={{ fontSize: 14, color: "var(--inverse-subtle)", marginTop: 8 }}>{label}</div>
-                </div>
-              ))}
-            </div>
+          <div>
+            <div className="kicker is-gold">الجلسة القادمة</div>
+            <h2>كن أول من يعلم</h2>
+            <p>سجّل اهتمامك بحضور مجلس الأستاذ، وسنُبلغك بموعد الجلسة القادمة فور الإعلان عنه.</p>
             <button type="button" data-register="مجلس الأستاذ" data-register-status="council" className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
           </div>
         </div>
-      </section>
-
-      {/* CTA */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
-        <div data-reveal="1" style={{ textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>صوتك جزءٌ من الحوار</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>انضمّ إلى مجلس الأستاذ، أو رشّح قضيّةً من الميدان تستحقّ النقاش في جلستنا القادمة.</p>
-          <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا</Link>
+        <div className="cn-close-side" data-reveal="1">
+          <span className="cn-close-ico" aria-hidden>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
+          </span>
+          <h3>صوتك جزءٌ من الحوار</h3>
+          <p>رشّح قضيّةً من الميدان تستحقّ النقاش في جلستنا القادمة.</p>
+          <Link href="/contact" className="btn btn-primary btn-md">رشّح قضيّة</Link>
         </div>
       </section>
     </PageShell>

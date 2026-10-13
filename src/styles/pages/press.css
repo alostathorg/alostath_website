@@ -1,0 +1,109 @@
+/* ============================================================
+   الملف الإعلامي — the brand kit
+   (page: src/app/press/page.tsx; CopyButton.tsx)
+
+   Built for the person on deadline: the boilerplate and fact sheet
+   first, ready to copy; then the logos on the backdrops they are made
+   for, the palette (click a swatch to copy its hex), the type, the
+   files, and the press email.
+   ============================================================ */
+
+.pr-wrap { max-width: 1280px; margin-inline: auto; padding-inline: clamp(20px,5vw,56px); }
+.pr-sec { padding-block: clamp(64px,8vw,104px); }
+.pr-head { margin-bottom: clamp(28px,3.6vw,44px); max-width: 760px; }
+.pr-head h2 { font-size: clamp(28px,3.4vw,44px); font-weight: 700; line-height: 1.25; margin: 0 0 12px; color: var(--ink); }
+.pr-head p { font-size: 16.5px; line-height: 1.9; color: var(--text-muted); margin: 0; text-align: start; }
+
+.pr-copy { font-family: var(--font-sans); font-size: 14px; font-weight: 600; color: var(--olive-700); background: var(--canvas); border: 1px solid var(--hairline-strong); border-radius: 10px; padding: 9px 16px; cursor: pointer; transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.pr-copy:hover { border-color: var(--olive-700); }
+.pr-copy.is-done { background: var(--sage-50); color: var(--sage-700); border-color: var(--sage-100); }
+
+/* ── Fact sheet ──────────────────────────────────────────────── */
+.pr-facts-sec { padding-top: clamp(56px,7vw,88px); }
+.pr-facts { display: grid; grid-template-columns: 1.3fr 1fr; border-radius: 28px; overflow: hidden; border: 1px solid var(--hairline); background: var(--canvas); }
+.pr-boiler { padding: clamp(28px,3.6vw,48px); display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.pr-boiler p { font-size: clamp(17px,1.5vw,19px); line-height: 2; color: var(--text-body); margin: 0 0 22px; padding-inline-start: 18px; border-inline-start: 3px solid var(--gold-500); text-align: start; }
+.pr-sheet { margin: 0; padding: clamp(20px,2.8vw,36px) clamp(24px,3vw,40px); background: var(--surface-1); border-inline-start: 1px solid var(--hairline); display: flex; flex-direction: column; justify-content: center; }
+.pr-sheet > div { display: flex; justify-content: space-between; gap: 16px; padding-block: 13px; border-bottom: 1px solid var(--hairline); }
+.pr-sheet > div:last-child { border-bottom: none; }
+.pr-sheet dt { font-size: 14px; color: var(--ink-subtle); }
+.pr-sheet dd { margin: 0; font-size: 15px; font-weight: 700; color: var(--ink); text-align: left; }
+.pr-sheet dd.is-mono { font-family: var(--font-mono); font-weight: 500; letter-spacing: .5px; }
+
+/* ── Logos ───────────────────────────────────────────────────── */
+.pr-logos { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.pr-logo { border-radius: 26px; overflow: hidden; border: 1px solid var(--hairline); background: var(--canvas); }
+.pr-logo-stage { height: 240px; display: flex; align-items: center; justify-content: center; padding: 32px; }
+.pr-logo-stage.is-light { background: var(--surface-1); }
+.pr-logo-stage.is-dark { background: var(--olive-900); }
+.pr-logo-stage.is-gold { background: var(--gold-50); }
+/* The safe area, drawn on hover: the clear space the logo asks for. */
+.pr-logo-safe { position: relative; display: flex; padding: 22px; border-radius: 6px; outline: 1px dashed transparent; outline-offset: 0; transition: outline-color .25s ease; }
+.pr-logo:hover .pr-logo-safe { outline-color: rgba(191,155,47,.8); }
+.pr-logo-safe img { max-width: 220px; max-height: 96px; width: auto; height: auto; object-fit: contain; }
+.pr-logo-meta { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 22px; border-top: 1px solid var(--hairline); }
+.pr-logo-meta h3 { font-size: 17px; font-weight: 700; margin: 0 0 2px; color: var(--ink); }
+.pr-logo-meta p { font-size: 13.5px; line-height: 1.6; color: var(--text-muted); margin: 0; text-align: start; }
+.pr-dl { flex: none; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--olive-700); border: 1px solid var(--hairline-strong); transition: background .2s ease, color .2s ease, border-color .2s ease; }
+.pr-dl:hover { background: var(--olive-900); color: var(--gold-500); border-color: var(--olive-900); }
+
+.pr-rules { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+.pr-rules > div { padding: 24px 26px; border-radius: 22px; border: 1px solid var(--hairline); }
+.pr-rules .is-do { background: var(--sage-50); border-color: var(--sage-100); }
+.pr-rules .is-dont { background: #FBF3F1; border-color: #F1DDD8; }
+.pr-rules h3 { display: flex; align-items: center; gap: 10px; font-size: 16px; font-weight: 700; margin: 0 0 10px; }
+.pr-rules .is-do h3::before { content: "✓"; color: var(--sage-700); }
+.pr-rules .is-dont h3::before { content: "✕"; color: #B3402E; }
+.pr-rules ul { margin: 0; padding-inline-start: 20px; }
+.pr-rules li { font-size: 14.5px; line-height: 1.9; color: var(--text-body); }
+
+/* ── Palette ─────────────────────────────────────────────────── */
+.pr-colors-sec { background: var(--surface-1); border-block: 1px solid var(--hairline); }
+.pr-palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-radius: 28px; overflow: hidden; box-shadow: 0 30px 60px -40px rgba(30,40,20,.5); }
+.pr-swatch { min-height: 280px; display: flex; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 22px 20px; background: var(--sw); color: #fff; transition: flex-grow .3s ease; }
+.pr-swatch.is-light { color: var(--ink); box-shadow: inset 0 0 0 1px var(--hairline); }
+.pr-swatch-nm { font-size: 16px; font-weight: 700; }
+.pr-swatch-hex { align-self: flex-start; font-family: var(--font-mono); font-size: 13.5px; font-weight: 500; letter-spacing: .5px; color: inherit; background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 6px 10px; cursor: pointer; direction: ltr; transition: background .2s ease; }
+.pr-swatch.is-light .pr-swatch-hex { background: rgba(0,0,0,.04); border-color: rgba(0,0,0,.12); }
+.pr-swatch-hex:hover { background: rgba(255,255,255,.28); }
+.pr-swatch-hex.is-done { font-family: var(--font-sans); }
+
+/* ── Type + downloads ────────────────────────────────────────── */
+.pr-type-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; align-items: stretch; }
+.pr-type { padding: clamp(28px,3.6vw,48px); border-radius: 28px; border: 1px solid var(--hairline); background: var(--canvas); }
+.pr-type-big { font-size: clamp(64px,9vw,128px); font-weight: 700; line-height: 1; color: var(--ink); margin: 6px 0 22px; }
+.pr-type-weights { display: flex; flex-wrap: wrap; gap: 10px 26px; padding-block: 16px; margin-bottom: 18px; border-block: 1px solid var(--hairline); font-size: 24px; color: var(--ink); }
+.pr-type-weights small { font-family: var(--font-mono); font-size: 11px; font-weight: 400; color: var(--ink-subtle); margin-inline-start: 4px; }
+.pr-type p { font-size: 15.5px; line-height: 1.9; color: var(--text-muted); margin: 0 0 14px; text-align: start; }
+.pr-type p strong { color: var(--ink); }
+.pr-type-glyphs { font-family: var(--font-mono); font-size: 15px; color: var(--ink-subtle); text-align: right; }
+
+.pr-downloads { position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; gap: 12px; padding: clamp(28px,3.6vw,48px); border-radius: 28px; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
+.pr-downloads::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 80px 80px; opacity: .1; -webkit-mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); }
+.pr-downloads h2 { font-size: clamp(24px,2.4vw,30px); font-weight: 700; margin: 0 0 10px; }
+.pr-file { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 18px; background: rgba(244,246,238,.06); border: 1px solid rgba(244,246,238,.14); color: var(--ink-inverse); text-decoration: none; font-size: 13.5px; color: var(--inverse-muted); transition: background .2s ease, border-color .2s ease; }
+.pr-file strong { display: block; font-size: 16px; color: var(--ink-inverse); margin-bottom: 2px; }
+.pr-file > svg { color: var(--gold-500); }
+.pr-file:hover { background: rgba(191,155,47,.12); border-color: rgba(191,155,47,.5); }
+.pr-file.is-soon { opacity: .55; pointer-events: none; }
+.pr-file-type { font-family: var(--font-mono); font-size: 12px; font-weight: 600; color: var(--olive-900); background: var(--gold-500); border-radius: 8px; padding: 8px 10px; }
+
+/* ── Contact ─────────────────────────────────────────────────── */
+.pr-contact { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px; margin-bottom: clamp(72px,9vw,120px); padding: clamp(28px,3.6vw,44px) clamp(28px,4vw,56px); border-radius: 28px; background: var(--gold-50); border: 1px solid var(--gold-100); }
+.pr-contact h2 { font-size: clamp(24px,2.6vw,32px); font-weight: 700; margin: 0 0 6px; color: var(--ink); }
+.pr-contact p { font-size: 15.5px; color: var(--text-muted); margin: 0; max-width: 56ch; text-align: start; }
+.pr-contact-mail { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.pr-contact-mail a { font-family: var(--font-mono); font-size: 19px; font-weight: 500; color: var(--olive-900); text-decoration: none; padding: 10px 18px; border-radius: 12px; background: var(--canvas); border: 1px solid var(--gold-100); }
+.pr-contact-mail a:hover { border-color: var(--gold-500); }
+
+@media (max-width: 960px) {
+  .pr-facts, .pr-type-grid { grid-template-columns: 1fr; }
+  .pr-sheet { border-inline-start: none; border-top: 1px solid var(--hairline); }
+  .pr-swatch { min-height: 180px; }
+}
+@media (max-width: 600px) {
+  .pr-rules { grid-template-columns: 1fr; }
+  .pr-palette { grid-template-columns: 1fr 1fr; }
+  .pr-swatch { min-height: 140px; }
+}
+@media (prefers-reduced-motion: reduce) { .pr-logo-safe, .pr-dl, .pr-file, .pr-copy { transition: none; } }

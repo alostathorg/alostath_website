@@ -254,9 +254,12 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 }
 .h-accent.is-center::after { margin-inline: auto; }
 
-/* Reusable eyebrow label */
+/* Reusable eyebrow label. Block, not inline-block: centered section heads
+   set the heading itself inline-block (so its gold rule centres under it),
+   and an inline-block eyebrow would then share its line wherever the row
+   had room. */
 .eyebrow {
-  display: inline-block;
+  display: block;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: .5px;
@@ -386,25 +389,34 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
    Page hero — the one stage every page opens with
    (component: src/components/PageHero.tsx)
 
-   Three densities on one shell: md = index pages, lg = detail pages,
-   xl = the home page. A page supplies content, never chrome — the
-   gradient, the orbs, the watermark, the gold rule and the horizon
-   hairline all live here so no two heroes can drift apart again.
+   Every hero is full-bleed and sits under the floating header, so a
+   page opens on its dark stage edge to edge, the way the home page
+   does. Three densities share it: md = index pages, lg = detail pages,
+   xl = the home page (with `full`, the whole viewport). A page supplies
+   content, never chrome: the stage, its girih lattice, the gold light,
+   the grain, the title rule and the horizon all live here.
    ============================================================ */
+
+:root { --hdr-h: 74px; }
 
 .ph {
   position: relative;
   overflow: hidden;
   isolation: isolate;
+  display: flex;
+  align-items: flex-end;
   color: var(--ink-inverse);
   background:
-    radial-gradient(86% 74% at 96% 104%, rgba(120,161,131,.16), transparent 62%),
-    linear-gradient(155deg, #26321A 0%, var(--olive-900) 52%, #141C0A 100%);
+    radial-gradient(70% 90% at 0% 0%, rgba(191,155,47,.10), transparent 60%),
+    radial-gradient(60% 70% at 100% 100%, rgba(120,161,131,.12), transparent 60%),
+    linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%);
 }
-.ph-full { min-height: 88vh; display: flex; align-items: center; }
+.ph[data-size="md"] { min-height: clamp(440px, 60vh, 620px); }
+.ph[data-size="lg"] { min-height: clamp(520px, 72vh, 760px); }
+.ph-full { min-height: 100vh; min-height: 100svh; background: #10160a; }
 
-/* Horizon: the dark stage ends on a line rather than just stopping. On detail
-   pages the facts card straddles it. */
+/* Horizon: the stage ends on a gold line rather than just stopping. On
+   detail pages the facts card straddles it. */
 .ph::after {
   content: "";
   position: absolute;
@@ -413,39 +425,60 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   height: 1px;
   z-index: 4;
   pointer-events: none;
-  background: linear-gradient(90deg, transparent, rgba(191,155,47,.40) 16%, rgba(191,155,47,.40) 84%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(191,155,47,.45) 16%, rgba(191,155,47,.45) 84%, transparent);
 }
 
-/* Slow floating light. Same two orbs on every page, so the stage reads as one
-   place seen from slightly different angles. */
-.ph-orb { position: absolute; z-index: 0; border-radius: 50%; filter: blur(70px); pointer-events: none; }
-.ph-orb-gold { width: 460px; height: 460px; background: radial-gradient(circle, rgba(191,155,47,.38), transparent 70%); top: -180px; inset-inline-end: -100px; opacity: .9; animation: phFloat 19s ease-in-out infinite; }
-.ph-orb-sage { width: 380px; height: 380px; background: radial-gradient(circle, rgba(120,161,131,.26), transparent 70%); bottom: -190px; inset-inline-start: -90px; opacity: .8; animation: phFloat 24s ease-in-out infinite reverse; }
-@keyframes phFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(26px,-30px) scale(1.06); } }
+/* ── Stage layers ─────────────────────────────────────────────────── */
 
-/* Brand watermark. A radial mask dissolves every edge, so the mark can sit
-   half off-stage without the hard crop the old per-page <img>s all had. */
-.ph-mark {
+/* Gold light, drifting slowly over the lattice side of the stage. */
+.ph-orb-gold {
   position: absolute;
   z-index: 0;
-  bottom: 5%;
-  inset-inline-end: -1%;
-  width: min(470px, 38%);
-  aspect-ratio: 5405 / 3338;
-  background: url("/assets/alostath-logo-inverse.png") center / contain no-repeat;
-  opacity: .075;
+  width: 620px;
+  height: 620px;
+  top: -260px;
+  left: -160px;
+  border-radius: 50%;
+  filter: blur(80px);
+  background: radial-gradient(circle, rgba(191,155,47,.24), transparent 70%);
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
-  mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
+  animation: phFloat 20s ease-in-out infinite;
 }
-.ph[data-size="xl"] .ph-mark { width: min(520px, 42%); }
+@keyframes phFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(40px,30px) scale(1.08); } }
 
-/* Photograph + its scrim. The gradient runs dark→clear toward the inline-end
-   (the site is RTL, so: dark under the text column at the right, photograph
-   left to breathe on the left). */
-.ph-photo { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; }
+/* Film grain over the whole stage, so the dark reads as material. */
+.ph-orb-sage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: .08;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Girih lattice: an eight-point star tiling in fine gold line, strongest
+   at the far (left) edge and dissolving before it reaches the text
+   column. It replaces the blurred logo watermark. */
+.ph-mark {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: .16;
+  pointer-events: none;
+  background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px repeat;
+  -webkit-mask-image: radial-gradient(85% 120% at 0% 30%, #000 0%, rgba(0,0,0,.55) 38%, transparent 70%);
+  mask-image: radial-gradient(85% 120% at 0% 30%, #000 0%, rgba(0,0,0,.55) 38%, transparent 70%);
+  animation: phLattice 60s linear infinite;
+}
+@keyframes phLattice { to { background-position: 96px 96px; } }
+
+/* Photograph + cinematic scrim: a head band so the floating header stays
+   legible, dark under the text (right, RTL), and a floor for the copy. */
+.ph-photo { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; object-fit: cover; transform-origin: 30% 40%; animation: phDrift 22s cubic-bezier(.25,.6,.3,1) both; }
+@keyframes phDrift { from { transform: scale(1.12); } to { transform: scale(1.02); } }
 .ph[data-photo] .ph-mark { display: none; }
-.ph[data-photo] .ph-orb { opacity: .34; }
+.ph[data-photo] .ph-orb-gold { opacity: .4; }
 .ph[data-photo]::before {
   content: "";
   position: absolute;
@@ -453,8 +486,9 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(to left, rgba(20,27,13,.80) 0%, rgba(20,27,13,.52) 38%, rgba(20,27,13,.20) 72%, rgba(20,27,13,.06) 100%),
-    linear-gradient(to top, rgba(20,27,13,.58), rgba(20,27,13,0) 52%);
+    linear-gradient(to bottom, rgba(12,17,7,.72) 0%, rgba(12,17,7,.28) 16%, rgba(12,17,7,0) 30%),
+    linear-gradient(to left, rgba(12,17,7,.88) 0%, rgba(12,17,7,.58) 36%, rgba(12,17,7,.14) 70%, rgba(12,17,7,0) 100%),
+    linear-gradient(to top, rgba(12,17,7,.94) 0%, rgba(12,17,7,.6) 28%, rgba(12,17,7,0) 60%);
 }
 
 /* ── Column ───────────────────────────────────────────────────────── */
@@ -463,69 +497,98 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: var(--container-max);
+  max-width: 1440px;
   margin-inline: auto;
-  padding: clamp(56px,8vh,88px) clamp(20px,4vw,32px) clamp(64px,9vh,100px);
+  padding: calc(var(--hdr-h) + clamp(40px,7vh,72px)) clamp(20px,5vw,72px) clamp(56px,9vh,96px);
 }
-.ph[data-size="lg"] .ph-inner { padding-block: clamp(60px,9vh,96px) clamp(76px,11vh,116px); }
-.ph[data-size="xl"] .ph-inner { padding-block: clamp(72px,12vh,124px); }
+/* Room under the copy for the facts card that straddles the horizon —
+   on detail pages, and on any index page that mounts one under its hero. */
+.ph[data-size="lg"] .ph-inner,
+.ph:has(+ .dp-facts) .ph-inner { padding-bottom: clamp(96px,13vh,136px); }
+.ph-full .ph-inner { padding-bottom: clamp(104px,15vh,148px); }
 
-.ph-inner.ph-has-aside { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: clamp(32px,5vw,64px); align-items: center; }
+.ph-inner.ph-has-aside { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(0,.75fr); gap: clamp(32px,5vw,72px); align-items: end; }
 
-.ph-crumbs { display: flex; align-items: center; flex-wrap: wrap; font-size: 14px; color: var(--inverse-muted); margin-bottom: 26px; }
+.ph-crumbs { display: flex; align-items: center; flex-wrap: wrap; gap: 2px; font-size: 14px; color: var(--inverse-muted); margin-bottom: 26px; }
 .ph-crumbs a { color: var(--inverse-muted); text-decoration: none; transition: color .15s ease; }
 .ph-crumbs a:hover { color: var(--ink-inverse); }
 .ph-crumbs [aria-current] { display: inline-block; max-width: 46ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: bottom; color: var(--gold-500); }
 .ph[data-tone="sage"] .ph-crumbs [aria-current] { color: var(--sage-500); }
-.ph-crumb-sep { opacity: .5; margin-inline: 10px; }
+.ph-crumb-sep { opacity: .45; margin-inline: 10px; }
 
 .ph-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  font-size: 13px;
+  gap: 14px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: var(--tracking-eyebrow);
+  letter-spacing: .4px;
   color: var(--gold-500);
-  margin-bottom: 18px;
+  margin-bottom: clamp(16px,2.4vh,22px);
 }
+.ph-eyebrow::before { content: ""; width: 36px; height: 1px; background: currentColor; opacity: .8; }
+.ph-eyebrow .live-dot { margin-inline-start: -4px; }
 .ph[data-tone="sage"] .ph-eyebrow { color: var(--sage-500); }
 
 .ph-title {
-  font-size: clamp(40px,6vw,70px);
+  font-size: clamp(40px,6vw,88px);
   font-weight: var(--weight-bold);
-  line-height: 1.16;
+  line-height: 1.1;
+  letter-spacing: -.01em;
   margin: 0;
-  max-width: 20ch;
+  max-width: 22ch;
   text-wrap: balance;
   /* a long unbroken name (a Latin brand, say) breaks rather than overflows */
   overflow-wrap: break-word;
+  text-shadow: 0 2px 30px rgba(0,0,0,.3);
 }
-.ph[data-size="lg"] .ph-title { font-size: clamp(42px,6.8vw,82px); line-height: 1.08; max-width: 17ch; }
-.ph[data-size="xl"] .ph-title { font-size: clamp(42px,7vw,86px); line-height: 1.12; max-width: 14ch; }
-.ph-accent { display: block; color: var(--gold-500); }
-.ph[data-tone="sage"] .ph-accent { color: var(--sage-500); }
+.ph[data-size="lg"] .ph-title { font-size: clamp(40px,6.4vw,96px); line-height: 1.06; max-width: 16ch; }
+.ph-accent {
+  display: block;
+  background: linear-gradient(180deg, #E2C46A 0%, var(--gold-500) 55%, #A9851F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+.ph[data-tone="sage"] .ph-accent { background: none; color: var(--sage-500); }
 
-.ph-rule { width: 72px; height: 3px; border-radius: 3px; background: var(--gold-500); margin-top: clamp(22px,3vh,30px); }
-.ph[data-tone="sage"] .ph-rule { background: var(--sage-500); }
+/* The rule runs the width of the column: solid gold at the reading edge,
+   then a hairline that dissolves toward the far side. */
+.ph-rule {
+  width: 100%;
+  height: 1px;
+  margin-top: clamp(22px,3.6vh,34px);
+  background: linear-gradient(to left, var(--gold-500) 0, rgba(191,155,47,.55) 96px, rgba(244,246,238,.18) 96px, rgba(244,246,238,.18) 70%, transparent);
+}
+.ph[data-tone="sage"] .ph-rule { background: linear-gradient(to left, var(--sage-500) 0, rgba(120,161,131,.55) 96px, rgba(244,246,238,.18) 96px, rgba(244,246,238,.18) 70%, transparent); }
 
-/* Hero prose is set flush, never justified: at this measure and size the gaps
-   justification opens up are wider than the leading. Body prose deeper in a
-   page still justifies. */
+/* Hero prose is set flush, never justified: at this measure and size the
+   gaps justification opens up are wider than the leading. */
 .ph-lede {
-  font-size: clamp(17px,2vw,21px);
-  line-height: 1.85;
-  color: var(--inverse-muted);
-  margin: clamp(20px,3vh,26px) 0 0;
+  font-size: clamp(17px,1.5vw,20px);
+  line-height: 1.9;
+  color: rgba(244,246,238,.84);
+  margin: clamp(20px,3vh,28px) 0 0;
   max-width: 62ch;
   text-align: start;
   text-wrap: pretty;
 }
-.ph[data-size="lg"] .ph-lede { font-size: clamp(18px,2.2vw,24px); line-height: 1.7; max-width: 54ch; }
-.ph-note { font-size: clamp(15px,1.6vw,17px); line-height: 1.9; color: var(--inverse-subtle); margin: 16px 0 0; max-width: 66ch; text-align: start; }
-.ph-meta { margin-top: clamp(22px,3vh,30px); }
-.ph-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: clamp(26px,4vh,36px); }
-.ph-below { display: flex; gap: 12px; flex-wrap: wrap; margin-top: clamp(26px,4vh,36px); }
+.ph-note { font-size: clamp(15px,1.4vw,17px); line-height: 1.9; color: var(--inverse-subtle); margin: 14px 0 0; max-width: 66ch; text-align: start; }
+.ph-meta { margin-top: clamp(20px,3vh,28px); }
+.ph-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-top: clamp(24px,3.6vh,34px); }
+.ph-below { display: flex; gap: 10px; flex-wrap: wrap; margin-top: clamp(24px,3.6vh,34px); }
+
+.ph .btn-outline.btn-on-dark {
+  background: rgba(244,246,238,.06);
+  border-color: rgba(244,246,238,.38);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.ph .btn-outline.btn-on-dark:hover { background: rgba(244,246,238,.14); border-color: rgba(244,246,238,.6); }
+/* An olive primary disappears into the olive stage; on the hero it turns ivory. */
+.ph .btn-primary { background: var(--ink-inverse); color: var(--olive-800); }
+.ph .btn-primary:hover:not([disabled]) { background: #fff; color: var(--ink); box-shadow: 0 10px 30px -12px rgba(0,0,0,.5); }
 
 /* Status pill in the eyebrow's place (detail pages) */
 .ph-badge {
@@ -538,30 +601,152 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   font-size: 13px;
   font-weight: 600;
   color: var(--gold-500);
-  background: rgba(191,155,47,.16);
-  border: 1px solid rgba(191,155,47,.40);
+  background: rgba(191,155,47,.14);
+  border: 1px solid rgba(191,155,47,.38);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
 }
-.ph-badge.is-sage { color: #cfe3d5; background: rgba(120,161,131,.22); border-color: rgba(120,161,131,.50); }
+.ph-badge.is-sage { color: #cfe3d5; background: rgba(120,161,131,.2); border-color: rgba(120,161,131,.48); }
 .ph-date { font-size: 14px; color: var(--inverse-subtle); }
 
+/* Staged entrance: the copy rises in order (the column's one-piece
+   .hero-in rise is switched off for this). */
+.ph .hero-in { animation: none; }
+.ph .ph-col > * { animation: ostRiseSoft .9s cubic-bezier(.22,.7,.25,1) both; }
+.ph .ph-col > :nth-child(1) { animation-delay: .1s; }
+.ph .ph-col > :nth-child(2) { animation-delay: .2s; }
+.ph .ph-col > :nth-child(3) { animation-delay: .3s; }
+.ph .ph-col > :nth-child(4) { animation-delay: .4s; }
+.ph .ph-col > :nth-child(5) { animation-delay: .5s; }
+.ph .ph-col > :nth-child(n+6) { animation-delay: .6s; }
+.ph .ph-aside { animation: ostRiseSoft 1s .35s cubic-bezier(.22,.7,.25,1) both; }
+
+/* ── Full stage (home) ────────────────────────────────────────────────
+   The title sits on one line, sized off the viewport width so «المعلم
+   ناظر القيم» fills a desktop and still fits a 320px phone; the lede
+   and the buttons share the row beneath it. Keyed on [data-hero] so it
+   outranks the size rules above. */
+.ph-full[data-hero] .ph-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "eyebrow eyebrow" "title title" "rule rule" "lede actions";
+  column-gap: clamp(32px,5vw,80px);
+  align-items: end;
+}
+.ph-full[data-hero] .ph-eyebrow { grid-area: eyebrow; justify-self: start; }
+.ph-full[data-hero] .ph-title   { grid-area: title; }
+.ph-full[data-hero] .ph-rule    { grid-area: rule; }
+.ph-full[data-hero] .ph-lede    { grid-area: lede; max-width: 64ch; font-size: clamp(16px,1.35vw,19px); line-height: 1.95; }
+.ph-full[data-hero] .ph-actions { grid-area: actions; flex-wrap: nowrap; }
+.ph-full[data-hero] .ph-title { font-size: clamp(38px, 8vw, 132px); line-height: 1.05; max-width: none; white-space: nowrap; }
+.ph-full[data-hero] .ph-accent { display: inline; filter: drop-shadow(0 2px 18px rgba(0,0,0,.35)); }
+.ph-full[data-photo] .ph-orb-gold { display: none; }
+
+.scroll-cue { color: rgba(244,246,238,.62); }
+.ph-full .scroll-cue { bottom: clamp(22px,4vh,36px); }
+
+@media (max-width: 1100px) {
+  .ph-full[data-hero] .ph-col { grid-template-columns: minmax(0, 1fr); grid-template-areas: "eyebrow" "title" "rule" "lede" "actions"; }
+  .ph-full[data-hero] .ph-actions { flex-wrap: wrap; }
+}
 @media (max-width: 880px) {
-  .ph-inner.ph-has-aside { grid-template-columns: 1fr; }
+  .ph-inner.ph-has-aside { grid-template-columns: 1fr; align-items: start; }
   .ph-aside { order: -1; }
 }
-/* Below this the watermark would sit behind the text instead of beside it,
-   and the text column spans the full width — so the photo scrim stops being
-   directional and becomes an even floor. */
 @media (max-width: 700px) {
-  .ph-mark { display: none; }
-  .ph-full { min-height: 0; }
+  .ph[data-size="md"] { min-height: 0; }
+  .ph[data-size="lg"] { min-height: 0; }
+  .ph-inner { padding: calc(64px + 40px) 20px 56px; }
+  .ph[data-size="lg"] .ph-inner,
+  .ph:has(+ .dp-facts) .ph-inner { padding-bottom: 88px; }
+  .ph-full .ph-inner { padding: calc(64px + 32px) 20px clamp(92px,14vh,120px); }
+  .ph-full[data-hero] .ph-title { font-size: clamp(28px, 10.2vw, 64px); }
+  .ph-mark { opacity: .12; -webkit-mask-image: linear-gradient(to bottom, #000, transparent 70%); mask-image: linear-gradient(to bottom, #000, transparent 70%); }
   .ph[data-photo]::before {
     background:
-      linear-gradient(to left, rgba(20,27,13,.76) 0%, rgba(20,27,13,.62) 60%, rgba(20,27,13,.56) 100%),
-      linear-gradient(to top, rgba(20,27,13,.50), rgba(20,27,13,0) 62%);
+      linear-gradient(to bottom, rgba(12,17,7,.7) 0%, rgba(12,17,7,0) 24%),
+      linear-gradient(to top, rgba(12,17,7,.95) 0%, rgba(12,17,7,.78) 42%, rgba(12,17,7,.3) 78%, rgba(12,17,7,.2) 100%);
   }
+  .ph-actions .btn { flex: 1 1 0; justify-content: center; }
+  .ph-rule { background: linear-gradient(to left, var(--gold-500) 0, var(--gold-500) 72px, rgba(244,246,238,.18) 72px, transparent); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ph-orb { animation: none; }
+  .ph-orb-gold, .ph-mark, .ph-photo, .ph .ph-col > *, .ph .ph-aside { animation: none; }
+}
+
+/* ── Floating header ──────────────────────────────────────────────────
+   Every page opens on a dark hero, so the header floats over it:
+   transparent with light ink, then the frosted white bar once the page
+   scrolls or the phone menu opens. */
+header[data-overlay] {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .3s ease, border-color .3s ease, box-shadow .3s ease, -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease;
+}
+header[data-overlay] > div { max-width: 1440px !important; padding-inline: clamp(20px,5vw,72px) !important; }
+header[data-overlay] .logo-inverse { display: none; }
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .logo-ink { display: none; }
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .logo-inverse { display: block; }
+header[data-overlay].is-scrolled,
+header[data-overlay]:has(nav.is-open) {
+  background: rgba(255,255,255,.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--hairline);
+}
+@media (min-width: 981px) {
+  header[data-overlay]:not(.is-scrolled) .nav-a { color: rgba(244,246,238,.82); }
+  header[data-overlay]:not(.is-scrolled) .nav-a:hover,
+  header[data-overlay]:not(.is-scrolled) .nav-a[data-active="true"] { color: #fff; background: rgba(244,246,238,.12); }
+  header[data-overlay]:not(.is-scrolled) .header-cta .btn {
+    background: rgba(244,246,238,.1);
+    color: #fff;
+    border: 1px solid rgba(244,246,238,.42);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  header[data-overlay]:not(.is-scrolled) .header-cta .btn:hover { background: var(--gold-500); border-color: var(--gold-500); color: var(--ink); }
+}
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .nav-toggle {
+  background: rgba(244,246,238,.08);
+  border-color: rgba(244,246,238,.32);
+  color: #fff;
+}
+
+/* ============================================================
+   Criteria band — «how we choose», right under an index hero
+   (component: src/components/CriteriaBand.tsx)
+   ============================================================ */
+.crit { background: var(--surface-1); border-bottom: 1px solid var(--hairline); }
+.crit-in {
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: clamp(36px,5vw,56px) clamp(20px,5vw,72px);
+  display: grid;
+  grid-template-columns: minmax(200px, .8fr) 3fr;
+  gap: clamp(24px,4vw,64px);
+  align-items: center;
+}
+.crit-head h2 { font-size: clamp(20px,1.9vw,24px); font-weight: 700; line-height: 1.35; margin: 0; color: var(--ink); }
+.crit-head p { font-size: 14.5px; line-height: 1.7; color: var(--text-muted); margin: 8px 0 0; }
+.crit-head::after { content: ""; display: block; width: 40px; height: 3px; border-radius: 3px; background: var(--gold-500); margin-top: 18px; }
+.crit-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); }
+.crit-item { position: relative; padding: 6px clamp(18px,2.4vw,32px); border-inline-start: 1px solid var(--hairline-strong); }
+.crit-num { display: block; font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: .5px; color: var(--gold-600); margin-bottom: 12px; }
+.crit-item h3 { font-size: 17px; font-weight: 700; line-height: 1.4; margin: 0 0 6px; color: var(--olive-700); }
+.crit-item p { font-size: 14.5px; line-height: 1.75; color: var(--text-muted); margin: 0; }
+@media (max-width: 900px) {
+  .crit-in { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .crit-list { grid-template-columns: 1fr; gap: 0; }
+  .crit-item { display: grid; grid-template-columns: auto 1fr; column-gap: 16px; padding: 18px 0; border-inline-start: none; border-top: 1px solid var(--hairline); }
+  .crit-item:first-child { border-top: none; padding-top: 4px; }
+  .crit-num { grid-row: span 2; margin: 3px 0 0; }
 }
 
 /* ============================================================
@@ -701,7 +886,7 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 /* Shaded band — a full-bleed change of surface between two chapters. */
 .dp-shade { background: var(--surface-1); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
 /* The opening paragraph of a chapter: set larger than body copy, and darker. */
-.dp-prose { font-size: clamp(19px,2.2vw,25px); line-height: 1.9; font-weight: 500; color: var(--text-body); margin: 0; max-width: 64ch; }
+.dp-prose { font-size: clamp(18px,1.7vw,22px); line-height: 2; font-weight: 400; color: var(--text-body); margin: 0; max-width: 64ch; text-align: start; }
 
 /* ── Chapter head ─────────────────────────────────────────────────────── */
 .dp-head { margin: 0 0 clamp(26px,3.4vw,38px); }
@@ -807,20 +992,17 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(191,155,47,.45) 18%, rgba(191,155,47,.45) 82%, transparent);
 }
-/* Brand watermark, dissolved at every edge exactly as in the hero. */
+/* The hero's girih lattice, dissolving toward the copy. */
 .dp-monument::after {
   content: "";
   position: absolute;
   z-index: 0;
-  bottom: -8%;
-  inset-inline-end: -3%;
-  width: min(320px, 32%);
-  aspect-ratio: 5405 / 3338;
-  background: url("/assets/alostath-logo-inverse.png") center / contain no-repeat;
-  opacity: .07;
+  inset: 0;
+  background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px;
+  opacity: .12;
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
-  mask-image: radial-gradient(closest-side at 50% 50%, #000 34%, transparent 82%);
+  -webkit-mask-image: radial-gradient(70% 120% at 0% 100%, #000, transparent 70%);
+  mask-image: radial-gradient(70% 120% at 0% 100%, #000, transparent 70%);
 }
 .dp-monument-orb {
   position: absolute;
@@ -837,7 +1019,7 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 .dp-monument.is-sage .dp-monument-orb { background: radial-gradient(circle, rgba(120,161,131,.34), transparent 70%); }
 .dp-monument-in { position: relative; z-index: 1; max-width: 62ch; }
 .dp-monument.is-center .dp-monument-in { max-width: 58ch; margin-inline: auto; text-align: center; }
-.dp-monument-q { font-size: clamp(23px,2.9vw,34px); font-weight: 600; line-height: 1.6; margin: 0; color: var(--ink-inverse); }
+.dp-monument-q { font-size: clamp(22px,2.6vw,32px); font-weight: 600; line-height: 1.65; margin: 0; color: var(--ink-inverse); text-align: start; }
 .dp-monument.is-center .dp-monument-q { text-align: center; text-align-last: center; }
 .dp-monument-note { font-size: 16px; line-height: 1.9; color: var(--inverse-muted); margin: 20px 0 0; }
 .dp-monument.is-center .dp-monument-note { text-align: center; text-align-last: center; }

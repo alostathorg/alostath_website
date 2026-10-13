@@ -6,6 +6,17 @@
 @import "./tokens/spacing.css";
 @import "./tokens/elevation.css";
 @import "./design-system.css";
+@import "./pages/shared.css";
+@import "./pages/about.css";
+@import "./pages/blog.css";
+@import "./pages/news.css";
+@import "./pages/initiatives.css";
+@import "./pages/partners.css";
+@import "./pages/awards.css";
+@import "./pages/council.css";
+@import "./pages/community.css";
+@import "./pages/contact.css";
+@import "./pages/press.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -70,33 +81,7 @@ section[id] {
 
 /* ── Page-scoped styles that lived in individual pages' <style> blocks ── */
 
-/* Awards + council responsive rows */
-@media (max-width: 880px) {
-  .award-row { grid-template-columns: 1fr !important; }
-  .council-row { grid-template-columns: 1fr !important; }
-}
 
-/* Initiatives list rows */
-.initiative-row {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: clamp(28px, 4vw, 56px);
-  align-items: center;
-}
-.initiative-row.is-rev .initiative-row-media { order: 2; }
-.initiative-row.is-rev .initiative-row-body { order: 1; }
-.initiative-row-media img {
-  width: 100%;
-  height: clamp(220px, 28vw, 320px);
-  object-fit: cover;
-  display: block;
-  border-radius: 18px;
-}
-@media (max-width: 880px) {
-  .initiative-row { grid-template-columns: 1fr !important; }
-  .initiative-row.is-rev .initiative-row-media { order: 1; }
-  .initiative-row.is-rev .initiative-row-body { order: 2; }
-}
 
 /* Hero jump pill (initiatives index) */
 .idx-pill {
@@ -141,44 +126,11 @@ section[id] {
 .c-pill .c-dot { transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .c-pill:hover .c-dot { transform: scale(1.35); }
 
-/* Blog list cards */
-.blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  text-decoration: none;
-  color: inherit;
-  background: var(--surface-1);
-  border: 1px solid var(--hairline);
-  border-radius: 18px;
-  overflow: hidden;
-  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
-}
-.blog-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--gold-500);
-  box-shadow: 0 18px 40px -24px rgba(30, 40, 20, 0.45);
-}
-.blog-card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
-.blog-card-body { padding: 22px 24px 26px; display: flex; flex-direction: column; flex: 1; }
-.blog-card-cat { font-size: 13px; font-weight: 600; color: var(--olive-600); margin-bottom: 10px; }
-.blog-card-title { font-size: 19px; font-weight: 700; color: var(--ink); margin: 0 0 10px; line-height: 1.45; }
-.blog-card-excerpt { font-size: 14px; line-height: 1.75; color: var(--text-muted); margin: 0 0 16px; flex: 1; }
-.blog-card-date { font-size: 13px; color: var(--ink-subtle); }
-@media (max-width: 980px) { .blog-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .blog-grid { grid-template-columns: 1fr; } }
-/* «اقرأ أيضاً» shows whatever else is published — one, two or three cards. A
-   fixed three-column track would leave a hole; this fills the row at any count. */
-.blog-grid.is-fit { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-
-/* ── News — /news, /news/[slug] and the home page strip ─────────────────────
-   Same card material as .blog-card so the two sections read as one family; the
-   type badge (olive news · gold announcement · sage media) is what tells them
-   apart. The pinned item gets the wide variant: image beside the text. */
-.news-section { max-width: var(--container-max); margin: 0 auto; padding: 64px 32px 96px; }
+/* ── News cards — the home page strip and the pinned lead on /news ──────────
+   The type badge (olive news · gold announcement · sage media) tells items
+   apart. The pinned item gets the wide variant: image beside the text. The
+   /news feed itself lives in pages/news.css. */
 .news-empty { font-size: 18px; color: var(--text-muted); text-align: center; }
-.news-lead { margin-bottom: 40px; }
-.news-filter { margin-bottom: 28px; }
 .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .news-grid.is-fit { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .news-card {
@@ -216,87 +168,15 @@ section[id] {
 }
 @media (max-width: 620px) {
   .news-grid { grid-template-columns: 1fr; }
-  .news-section { padding: 48px 16px 72px; }
 }
-/* Media coverage: the hand-off to the original story. */
-.news-source { margin-top: clamp(32px,4vw,44px); display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: var(--sage-50); border: 1px solid var(--sage-100); border-radius: 16px; padding: 22px 26px; }
-.news-source-k { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
-.news-source-v { font-size: 18px; font-weight: 700; color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .news-card, .news-card-media img { transition: none; } }
 
-/* ── Article — /blog/[slug] ────────────────────────────────────────────────
-   The page used to be a hero, three paragraphs and a text link. What was
-   missing was everything around the prose: who wrote when, how long the read
-   is, a way to pass it on, and somewhere to go next. */
-.post-wrap { max-width: 760px; margin: 0 auto; padding: clamp(44px,5.6vw,64px) clamp(20px,4vw,32px) clamp(56px,7vw,80px); }
-
-.post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-.post-meta-chip { font-size: 13px; font-weight: 600; color: var(--olive-700); background: var(--olive-50); border: 1px solid var(--olive-100); border-radius: var(--radius-round); padding: 6px 14px; }
-.post-meta-item { font-size: 14px; color: var(--ink-subtle); }
-.post-meta-dot { width: 4px; height: 4px; border-radius: var(--radius-round); background: var(--hairline-strong); flex: none; }
-.post-meta-share { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
-.post-share-btn {
-  width: 36px;
-  height: 36px;
-  flex: none;
-  border-radius: var(--radius-round);
-  border: 1px solid var(--hairline);
-  background: var(--canvas);
-  color: var(--ink-subtle);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
-}
-.post-share-btn:hover { color: var(--olive-700); background: var(--surface-1); border-color: var(--hairline-strong); transform: translateY(-2px); }
-
-/* A gold tick between the meta rail and the first line — the article opens on
-   a mark rather than simply starting. */
-.post-rule { width: 64px; height: 3px; border-radius: 3px; background: var(--gold-500); margin: 30px 0 32px; }
-
-/* Article body. The opening paragraph is set larger and darker so the piece has
-   a lede; Arabic sets no versal, so the emphasis is the block's, never a
-   drop-capped letter's. */
-.post-body p { font-size: 18px; line-height: 1.95; color: var(--text-body); margin: 0 0 24px; }
-.post-body > p:first-child { font-size: clamp(19px,2.1vw,22px); line-height: 1.9; font-weight: 500; color: var(--ink); }
-.post-body p:last-child { margin-bottom: 0; }
-
-.post-end { margin-top: clamp(36px,4.6vw,52px); padding-top: 26px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
-.post-end .post-meta-share { margin-inline-start: 0; }
-
-/* Reading progress. Sits on the very top edge, above the sticky header, and is
-   driven from SiteChrome — scroll-driven CSS animations are still Chromium-only.
-   The site is RTL, so the line grows from the right. */
+/* Reading progress under the header edge (article pages; wired in SiteChrome). */
 .read-bar { position: fixed; z-index: 60; top: 0; inset-inline: 0; height: 3px; pointer-events: none; background: rgba(35,39,26,.05); }
 .read-bar > span { display: block; height: 100%; transform: scaleX(var(--read, 0)); transform-origin: right center; background: linear-gradient(to left, var(--gold-500), var(--olive-500)); }
 
-@media (prefers-reduced-motion: reduce) { .post-share-btn { transition: none; } }
 
-/* Press page */
-.press-section { max-width: var(--container-max); margin: 0 auto; padding: clamp(56px, 9vw, 88px) 32px; }
-.press-head { margin-bottom: 36px; }
-.press-head .eyebrow { margin-bottom: 12px; }
-.press-head h2 { font-size: clamp(24px, 3vw, 36px); font-weight: 700; margin: 0; color: var(--ink); display: inline-block; }
-.press-head p { font-size: 16px; line-height: 1.85; color: var(--text-muted); margin: 12px 0 0; max-width: 70ch; }
-.logo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-.logo-card { border: 1px solid var(--hairline); border-radius: 18px; overflow: hidden; background: var(--canvas); display: flex; flex-direction: column; }
-.logo-preview { height: 200px; display: flex; align-items: center; justify-content: center; padding: 32px; }
-.logo-preview img { max-width: 70%; max-height: 110px; width: auto; height: auto; object-fit: contain; }
-.logo-meta { padding: 22px 24px 24px; border-top: 1px solid var(--hairline); }
-.logo-meta h3 { font-size: 17px; font-weight: 700; margin: 0 0 4px; color: var(--ink); }
-.logo-meta p { font-size: 13px; color: var(--text-muted); margin: 0 0 16px; line-height: 1.6; }
-.dl-row { display: flex; gap: 10px; flex-wrap: wrap; }
-.dl-btn { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; text-decoration: none; color: var(--olive-700); background: var(--olive-50); border: 1px solid var(--olive-100); border-radius: 9px; padding: 9px 14px; transition: background 0.15s, transform 0.15s; }
-.dl-btn:hover { background: var(--olive-100); transform: translateY(-1px); }
-.swatch-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; }
-.swatch { border: 1px solid var(--hairline); border-radius: 14px; overflow: hidden; }
-.swatch-chip { height: 96px; }
-.swatch-info { padding: 14px 16px; }
-.swatch-info .nm { font-size: 14px; font-weight: 700; color: var(--ink); margin: 0 0 2px; }
-.swatch-info .hx { font-size: 13px; font-family: var(--font-mono); color: var(--text-muted); margin: 0; direction: ltr; text-align: start; }
-@media (max-width: 860px) { .logo-grid { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .logo-grid { grid-template-columns: 1fr; } }
+
 
 /* ── «الإعلامات» partner showcase — /partners and /partners/[slug] ──────────
    Prefix bp- (brand partner). Reuses .card-lift, .badge-*, .arrow-link,
@@ -305,55 +185,10 @@ section[id] {
    well (max-width/max-height + object-fit: contain), never a cover crop, and
    the well is white so a white-backed PNG shows no box. */
 
-/* List grid — mirrors .blog-grid breakpoints */
-.bp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-@media (max-width: 980px) { .bp-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .bp-grid { grid-template-columns: 1fr; } }
-
-/* Card */
-.bp-card { position: relative; display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--canvas); border: 1px solid var(--hairline); border-radius: 18px; overflow: hidden; }
-.bp-card:hover { border-color: var(--gold-500); }
-.bp-logo-well { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; padding: 26px 30px; background: var(--canvas); border-bottom: 1px solid var(--hairline); }
-.bp-logo-well img { max-width: 72%; max-height: 84px; width: auto; height: auto; object-fit: contain; display: block; transition: transform .45s cubic-bezier(.22,.7,.25,1); }
-.bp-card:hover .bp-logo-well img { transform: scale(1.04); }
+/* Logo monogram and outbound domain, shared by the directory and the detail page. */
 .bp-monogram { width: 76px; height: 76px; border-radius: 20px; background: var(--olive-900); color: var(--gold-500); font-size: 32px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center; flex: none; }
-.bp-flag { position: absolute; top: 14px; inset-inline-start: 14px; }
-.bp-body { padding: 20px 24px 22px; display: flex; flex-direction: column; flex: 1; gap: 10px; }
-.bp-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-.bp-name { font-size: 19px; font-weight: 700; color: var(--ink); margin: 2px 0 0; line-height: 1.4; }
-/* Clamped to two lines, so it opts out of the global justified-prose rule (a
-   clamped justified line rivers). */
-.bp-tagline { font-size: 14.5px; line-height: 1.75; color: var(--text-muted); margin: 0; text-align: start; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-/* The offer is a headline; it may take two lines but never loses its threshold to an ellipsis. */
-.bp-offer { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; font-weight: 600; line-height: 1.55; color: var(--gold-700); background: var(--gold-50); border: 1px solid var(--gold-100); border-radius: 10px; padding: 9px 12px; min-width: 0; }
-.bp-offer svg { flex: none; margin-top: 3px; }
-.bp-offer span { min-width: 0; text-align: start; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-/* The CTA stays whole; a long hostname drops to its own line instead of splitting it. */
-.bp-foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
-.bp-foot .arrow-link { flex: none; white-space: nowrap; }
-.bp-foot .bp-domain { min-width: 0; overflow-wrap: anywhere; }
 .bp-domain { font-size: 12.5px; color: var(--ink-subtle); direction: ltr; unicode-bidi: isolate; text-decoration: none; }
 a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
-/* Keyboard focus: the same gold edge as hover plus a solid ring, on the card's own radius. */
-.bp-card:focus-visible { border-radius: 18px; border-color: var(--gold-500); box-shadow: 0 0 0 3px var(--olive-500); }
-
-/* Featured spotlight: a full row, the logo well becomes the inline-start column */
-.bp-card.is-featured { grid-column: 1 / -1; flex-direction: row; }
-.bp-card.is-featured .bp-logo-well { flex: 0 0 40%; height: auto; min-height: 240px; border-bottom: none; border-inline-end: 1px solid var(--hairline); }
-.bp-card.is-featured .bp-logo-well img { max-width: 64%; max-height: 132px; }
-.bp-card.is-featured .bp-monogram { width: 104px; height: 104px; border-radius: 26px; font-size: 44px; }
-.bp-card.is-featured .bp-body { padding: 32px 36px; justify-content: center; }
-.bp-card.is-featured .bp-name { font-size: clamp(24px, 2.6vw, 30px); }
-.bp-card.is-featured .bp-tagline { font-size: 16px; -webkit-line-clamp: 3; }
-.bp-card.is-featured .bp-foot { margin-top: 8px; }
-@media (max-width: 620px) {
-  .bp-card.is-featured { flex-direction: column; }
-  /* Stacked: reserve the flag row above the logo and cap the logo like a regular card. */
-  .bp-card.is-featured .bp-logo-well { flex: none; min-height: 0; height: 160px; padding-top: 48px; border-inline-end: none; border-bottom: 1px solid var(--hairline); }
-  .bp-card.is-featured .bp-logo-well img { max-width: 72%; max-height: 84px; }
-  .bp-card.is-featured .bp-monogram { width: 76px; height: 76px; border-radius: 20px; font-size: 32px; }
-  .bp-card.is-featured .bp-body { padding: 20px 24px 22px; }
-}
 
 .bp-disclaimer { font-size: 13px; line-height: 1.7; color: var(--text-muted); text-align: center; text-align-last: center; margin: 28px auto 0; max-width: 64ch; }
 

@@ -2,7 +2,7 @@ import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { getInitiatives, getNews, getPosts, getSettings } from "@/lib/queries";
+import { getInitiatives, getNews, getPosts } from "@/lib/queries";
 import { NEWS_PATH } from "@/lib/news";
 import NewsCard from "./news/NewsCard";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
@@ -25,14 +25,11 @@ const BENTO = [
 ];
 
 export default async function HomePage() {
-  const [initiatives, news, posts, settings] = await Promise.all([
+  const [initiatives, news, posts] = await Promise.all([
     getInitiatives(),
     getNews(),
     getPosts(),
-    getSettings(),
   ]);
-  const council = (settings.council as Record<string, string>) ?? {};
-  const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
   const latestNews = news.slice(0, 3);
   const featuredInitiatives = initiatives.slice(0, 3);
@@ -44,7 +41,7 @@ export default async function HomePage() {
         size="xl"
         full
         image={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`}
-        imageOpacity={0.5}
+        imageOpacity={1}
         eyebrow="مؤسسة الأستاذ"
         title="المعلم"
         accent="ناظر القيم"
@@ -115,30 +112,6 @@ export default async function HomePage() {
               )}
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* COUNCIL COUNTDOWN */}
-      <section id="almajlis" style={{ maxWidth: "var(--container-max)", margin: "56px auto 0", padding: "0 32px" }}>
-        <div data-reveal="1" data-countdown-target={nextSession} style={{ position: "relative", overflow: "hidden", borderRadius: 24, background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
-          {council.hero_image && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={council.hero_image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.22 }} />
-          )}
-          <div style={{ position: "relative", padding: "clamp(40px,6vw,72px) clamp(28px,5vw,64px)", textAlign: "center" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 14 }}>مجلس الأستاذ</div>
-            <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 16px" }}>مجلسنا القادم قـــــــــرب</h2>
-            <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", maxWidth: "62ch", margin: "0 auto 40px" }}>منصّة حوارٍ مهني تجمع المعلّمين مع الخبراء والجهات الحكومية والخاصة، لتحويل صوت المعلّم إلى شراكةٍ فاعلة في مناقشة القضايا التعليمية وصناعة المبادرات ذات الأثر.</p>
-            <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
-                <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
-                  <div data-countdown={k} style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 500, color: "var(--gold-500)", lineHeight: 1 }}>--</div>
-                  <div style={{ fontSize: 14, color: "var(--inverse-subtle)", marginTop: 8 }}>{label}</div>
-                </div>
-              ))}
-            </div>
-            <Link href="/council" className="btn btn-secondary btn-lg">سجّل اهتمامك</Link>
-          </div>
         </div>
       </section>
 
