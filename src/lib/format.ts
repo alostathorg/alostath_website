@@ -105,3 +105,17 @@ export function formatArabicDate(iso: string | null): string {
   // fallback for a runtime that ignores the extension and formats with `arab`.
   return isNaN(d.getTime()) ? "" : toLatinDigits(AR_DATE.format(d));
 }
+
+/**
+ * Reading time, in the Arabic a reader would say it: دقيقة واحدة، دقيقتان،
+ * ثلاث→عشر دقائق، then back to the singular for eleven and up. 180 words a
+ * minute is the usual figure for Arabic prose.
+ */
+export function readingTime(body: string[]): string {
+  const words = body.join(" ").trim().split(/\s+/).filter(Boolean).length;
+  const min = Math.max(1, Math.round(words / 180));
+  if (min === 1) return "قراءة في دقيقة واحدة";
+  if (min === 2) return "قراءة في دقيقتين";
+  if (min <= 10) return `قراءة في ${min} دقائق`;
+  return `قراءة في ${min} دقيقة`;
+}

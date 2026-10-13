@@ -1,9 +1,8 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { getPosts } from "@/lib/queries";
-import { formatArabicDate } from "@/lib/format";
+import BlogIndex from "./BlogIndex";
 
 export const revalidate = 60;
 export const metadata: Metadata = { title: "المدونة" };
@@ -18,24 +17,17 @@ export default async function BlogPage() {
         lede="قراءاتٌ وتحليلاتٌ ومستجدّاتٌ حول مكانة المعلّم، ومبادرات المنظومة وأثرها في خدمة التعليم."
       />
 
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "64px 32px 96px" }}>
+      <section className="bl-wrap bl-index">
         {posts.length === 0 ? (
-          <p style={{ fontSize: 18, color: "var(--text-muted)", textAlign: "center" }}>لا توجد مقالات منشورة بعد.</p>
-        ) : (
-          <div className="blog-grid" data-reveal="1">
-            {posts.map((p) => (
-              <Link key={p.id} className="blog-card" href={`/blog/${p.slug}`}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="blog-card-img" src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} />
-                <div className="blog-card-body">
-                  <div className="blog-card-cat">{p.category}</div>
-                  <h2 className="blog-card-title">{p.title}</h2>
-                  <p className="blog-card-excerpt">{p.excerpt}</p>
-                  <div className="blog-card-date">{formatArabicDate(p.published_at)}</div>
-                </div>
-              </Link>
-            ))}
+          <div className="bl-empty">
+            <span className="bl-empty-ico" aria-hidden>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" /></svg>
+            </span>
+            <h2>المقالات في الطريق</h2>
+            <p>لم تُنشر مقالات بعد — تابعنا لتصلك أولى القراءات.</p>
           </div>
+        ) : (
+          <BlogIndex posts={posts} />
         )}
       </section>
     </PageShell>
