@@ -8,3 +8,10 @@
 .kicker.is-gold { color: var(--gold-500); }
 .kicker.is-center { justify-content: center; }
 .kicker.is-center::after { content: ""; width: 28px; height: 1px; background: currentColor; }
+
+/* Filter chip with a count — the blog categories, the partner directory. */
+.chip { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-sans); font-size: 15px; font-weight: 600; color: var(--text-muted); background: var(--canvas); border: 1px solid var(--hairline-strong); border-radius: 999px; padding: 9px 12px 9px 18px; cursor: pointer; transition: color .18s ease, background .18s ease, border-color .18s ease; }
+.chip:hover { color: var(--ink); border-color: var(--ink-subtle); }
+.chip.is-active { color: var(--ink-inverse); background: var(--olive-900); border-color: var(--olive-900); }
+.chip-n { font-family: var(--font-mono); font-size: 12px; min-width: 24px; height: 24px; padding-inline: 6px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--surface-2); color: var(--ink-subtle); }
+.chip.is-active .chip-n { background: var(--gold-500); color: var(--olive-900); }

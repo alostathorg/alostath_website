@@ -26,11 +26,11 @@ export default function BlogIndex({ posts }: { posts: BlogPost[] }) {
               type="button"
               role="tab"
               aria-selected={cat === key}
-              className={`bl-chip${cat === key ? " is-active" : ""}`}
+              className={`chip${cat === key ? " is-active" : ""}`}
               onClick={() => setCat(key)}
             >
               {label}
-              <span className="bl-chip-n">{key === "all" ? posts.length : posts.filter((p) => p.category === key).length}</span>
+              <span className="chip-n">{key === "all" ? posts.length : posts.filter((p) => p.category === key).length}</span>
             </button>
           ))}
         </div>

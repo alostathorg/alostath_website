@@ -11,6 +11,7 @@
 @import "./pages/blog.css";
 @import "./pages/news.css";
 @import "./pages/initiatives.css";
+@import "./pages/partners.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -207,55 +208,10 @@ section[id] {
    well (max-width/max-height + object-fit: contain), never a cover crop, and
    the well is white so a white-backed PNG shows no box. */
 
-/* List grid — mirrors .blog-grid breakpoints */
-.bp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-@media (max-width: 980px) { .bp-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 620px) { .bp-grid { grid-template-columns: 1fr; } }
-
-/* Card */
-.bp-card { position: relative; display: flex; flex-direction: column; text-decoration: none; color: inherit; background: var(--canvas); border: 1px solid var(--hairline); border-radius: 18px; overflow: hidden; }
-.bp-card:hover { border-color: var(--gold-500); }
-.bp-logo-well { position: relative; height: 160px; display: flex; align-items: center; justify-content: center; padding: 26px 30px; background: var(--canvas); border-bottom: 1px solid var(--hairline); }
-.bp-logo-well img { max-width: 72%; max-height: 84px; width: auto; height: auto; object-fit: contain; display: block; transition: transform .45s cubic-bezier(.22,.7,.25,1); }
-.bp-card:hover .bp-logo-well img { transform: scale(1.04); }
+/* Logo monogram and outbound domain, shared by the directory and the detail page. */
 .bp-monogram { width: 76px; height: 76px; border-radius: 20px; background: var(--olive-900); color: var(--gold-500); font-size: 32px; font-weight: 700; line-height: 1; display: flex; align-items: center; justify-content: center; flex: none; }
-.bp-flag { position: absolute; top: 14px; inset-inline-start: 14px; }
-.bp-body { padding: 20px 24px 22px; display: flex; flex-direction: column; flex: 1; gap: 10px; }
-.bp-meta { display: flex; flex-wrap: wrap; gap: 6px; }
-.bp-name { font-size: 19px; font-weight: 700; color: var(--ink); margin: 2px 0 0; line-height: 1.4; }
-/* Clamped to two lines, so it opts out of the global justified-prose rule (a
-   clamped justified line rivers). */
-.bp-tagline { font-size: 14.5px; line-height: 1.75; color: var(--text-muted); margin: 0; text-align: start; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-/* The offer is a headline; it may take two lines but never loses its threshold to an ellipsis. */
-.bp-offer { display: flex; align-items: flex-start; gap: 8px; font-size: 13.5px; font-weight: 600; line-height: 1.55; color: var(--gold-700); background: var(--gold-50); border: 1px solid var(--gold-100); border-radius: 10px; padding: 9px 12px; min-width: 0; }
-.bp-offer svg { flex: none; margin-top: 3px; }
-.bp-offer span { min-width: 0; text-align: start; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-/* The CTA stays whole; a long hostname drops to its own line instead of splitting it. */
-.bp-foot { margin-top: auto; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 8px 12px; flex-wrap: wrap; }
-.bp-foot .arrow-link { flex: none; white-space: nowrap; }
-.bp-foot .bp-domain { min-width: 0; overflow-wrap: anywhere; }
 .bp-domain { font-size: 12.5px; color: var(--ink-subtle); direction: ltr; unicode-bidi: isolate; text-decoration: none; }
 a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
-/* Keyboard focus: the same gold edge as hover plus a solid ring, on the card's own radius. */
-.bp-card:focus-visible { border-radius: 18px; border-color: var(--gold-500); box-shadow: 0 0 0 3px var(--olive-500); }
-
-/* Featured spotlight: a full row, the logo well becomes the inline-start column */
-.bp-card.is-featured { grid-column: 1 / -1; flex-direction: row; }
-.bp-card.is-featured .bp-logo-well { flex: 0 0 40%; height: auto; min-height: 240px; border-bottom: none; border-inline-end: 1px solid var(--hairline); }
-.bp-card.is-featured .bp-logo-well img { max-width: 64%; max-height: 132px; }
-.bp-card.is-featured .bp-monogram { width: 104px; height: 104px; border-radius: 26px; font-size: 44px; }
-.bp-card.is-featured .bp-body { padding: 32px 36px; justify-content: center; }
-.bp-card.is-featured .bp-name { font-size: clamp(24px, 2.6vw, 30px); }
-.bp-card.is-featured .bp-tagline { font-size: 16px; -webkit-line-clamp: 3; }
-.bp-card.is-featured .bp-foot { margin-top: 8px; }
-@media (max-width: 620px) {
-  .bp-card.is-featured { flex-direction: column; }
-  /* Stacked: reserve the flag row above the logo and cap the logo like a regular card. */
-  .bp-card.is-featured .bp-logo-well { flex: none; min-height: 0; height: 160px; padding-top: 48px; border-inline-end: none; border-bottom: 1px solid var(--hairline); }
-  .bp-card.is-featured .bp-logo-well img { max-width: 72%; max-height: 84px; }
-  .bp-card.is-featured .bp-monogram { width: 76px; height: 76px; border-radius: 20px; font-size: 32px; }
-  .bp-card.is-featured .bp-body { padding: 20px 24px 22px; }
-}
 
 .bp-disclaimer { font-size: 13px; line-height: 1.7; color: var(--text-muted); text-align: center; text-align-last: center; margin: 28px auto 0; max-width: 64ch; }
 
