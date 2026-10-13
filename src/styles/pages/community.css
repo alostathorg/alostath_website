@@ -1,0 +1,88 @@
+/* ============================================================
+   مجتمع الأستاذ — membership, and a voice
+   (page: src/app/community/page.tsx; forms: JoinForm, IdeaForm)
+
+   Two ways in, each set beside what it gives: the join form next to
+   the membership card and what happens after you send it; the idea
+   form next to what becomes of an idea.
+   ============================================================ */
+
+.cm-wrap { max-width: 1280px; margin-inline: auto; padding-inline: clamp(20px,5vw,56px); }
+
+/* ── Intro + benefits ────────────────────────────────────────── */
+.cm-intro { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,80px); align-items: start; padding-block: clamp(72px,8vw,112px); }
+.cm-intro-text h2 { font-size: clamp(30px,3.6vw,48px); font-weight: 700; line-height: 1.25; margin: 0 0 22px; color: var(--ink); }
+.cm-lead { font-size: clamp(18px,1.6vw,21px); line-height: 1.9; font-weight: 500; color: var(--text-body); margin: 0 0 18px; text-align: start; }
+.cm-p { font-size: 16.5px; line-height: 1.95; color: var(--text-muted); margin: 0; }
+.cm-pull { margin: 32px 0 0; padding: 22px 26px; border-radius: 20px; background: var(--olive-900); color: var(--ink-inverse); font-size: clamp(18px,1.7vw,22px); font-weight: 600; line-height: 1.7; text-align: start; position: relative; }
+.cm-pull::before { content: "”"; position: absolute; top: -18px; left: 22px; font-size: 72px; line-height: 1; color: var(--gold-500); font-family: Georgia, serif; }
+
+.cm-benefits { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.cm-benefits li { display: flex; gap: 20px; padding-block: 22px; border-bottom: 1px solid var(--hairline); }
+.cm-benefits li:first-child { padding-top: 6px; }
+.cm-benefits-ico { flex: none; width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: var(--gold-50); color: var(--gold-700); border: 1px solid var(--gold-100); transition: background .25s ease, color .25s ease; }
+.cm-benefits li:hover .cm-benefits-ico { background: var(--olive-900); color: var(--gold-500); border-color: var(--olive-900); }
+.cm-benefits-k { font-size: 12.5px; font-weight: 600; color: var(--ink-subtle); }
+.cm-benefits h3 { font-size: 19px; font-weight: 700; margin: 4px 0 6px; color: var(--ink); }
+.cm-benefits p { font-size: 15px; line-height: 1.85; color: var(--text-muted); margin: 0; text-align: start; }
+
+/* ── Split: aside + form ─────────────────────────────────────── */
+.cm-join-sec { background: var(--surface-1); border-block: 1px solid var(--hairline); }
+.cm-split { display: grid; grid-template-columns: 380px minmax(0,1fr); gap: clamp(28px,4vw,56px); align-items: start; padding-block: clamp(64px,8vw,104px); scroll-margin-top: 90px; }
+.cm-aside { position: sticky; top: calc(var(--hdr-h, 74px) + 24px); }
+.cm-form-col { min-width: 0; }
+.cm-form-col .cm-panel { box-shadow: 0 30px 70px -48px rgba(30,40,20,.5); border-radius: 28px; }
+
+.cm-member { position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 1.586; border-radius: 22px; padding: 22px 24px; display: flex; flex-direction: column; color: var(--ink-inverse); background: linear-gradient(135deg, #2E3A1C 0%, #1B2311 55%, #11170A 100%); box-shadow: 0 30px 60px -30px rgba(20,27,13,.7), inset 0 0 0 1px rgba(191,155,47,.25); transform: rotate(-2deg); transition: transform .4s cubic-bezier(.22,.7,.25,1); }
+.cm-member:hover { transform: rotate(0); }
+.cm-member::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 64px 64px; opacity: .14; -webkit-mask-image: linear-gradient(120deg, transparent 30%, #000 100%); mask-image: linear-gradient(120deg, transparent 30%, #000 100%); }
+.cm-member::after { content: ""; position: absolute; top: -40%; right: -20%; width: 70%; height: 140%; z-index: -1; background: linear-gradient(100deg, transparent, rgba(255,255,255,.08), transparent); transform: rotate(18deg); }
+.cm-member img { height: 30px; width: auto; align-self: flex-start; }
+.cm-member-k { margin-top: auto; font-size: 11.5px; letter-spacing: .5px; color: var(--gold-500); }
+.cm-member strong { font-size: 20px; font-weight: 700; margin: 2px 0 14px; }
+.cm-member-foot { display: flex; justify-content: space-between; font-size: 12px; color: var(--inverse-muted); padding-top: 12px; border-top: 1px solid rgba(244,246,238,.14); }
+
+.cm-steps { list-style: none; margin: 36px 0 0; padding: 0; }
+.cm-steps li { position: relative; display: flex; gap: 16px; padding-bottom: 22px; }
+.cm-steps li:not(:last-child)::after { content: ""; position: absolute; top: 38px; bottom: 2px; right: 17px; width: 1px; background: var(--hairline-strong); }
+.cm-steps li > span { flex: none; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 14px; color: var(--olive-900); background: var(--gold-500); }
+.cm-steps strong { display: block; font-size: 16px; font-weight: 700; margin: 6px 0 2px; color: var(--ink); }
+.cm-steps p { font-size: 14px; line-height: 1.75; color: var(--text-muted); margin: 0; text-align: start; }
+.cm-privacy { display: flex; gap: 10px; align-items: flex-start; margin: 8px 0 0; padding: 14px 16px; border-radius: 14px; background: var(--canvas); border: 1px solid var(--hairline); font-size: 13.5px; line-height: 1.7; color: var(--text-muted); text-align: start; }
+.cm-privacy svg { flex: none; margin-top: 3px; color: var(--sage-600); }
+
+.cm-split.is-idea { grid-template-columns: minmax(0,1fr) 380px; }
+.cm-split.is-idea .cm-aside { order: 2; }
+.cm-idea-aside { padding: clamp(26px,3vw,36px); border-radius: 28px; background: var(--gold-50); border: 1px solid var(--gold-100); }
+.cm-idea-ico { width: 56px; height: 56px; border-radius: 18px; display: flex; align-items: center; justify-content: center; background: var(--canvas); color: var(--gold-700); border: 1px solid var(--gold-100); margin-bottom: 20px; }
+.cm-idea-aside h2 { font-size: 24px; font-weight: 700; line-height: 1.4; margin: 0 0 10px; color: var(--ink); }
+.cm-idea-aside > p { font-size: 15px; line-height: 1.9; color: var(--text-muted); margin: 0 0 18px; text-align: start; }
+.cm-idea-list { list-style: none; margin: 0; padding: 0; }
+.cm-idea-list li { display: flex; gap: 10px; padding-block: 10px; border-top: 1px solid rgba(191,155,47,.25); font-size: 14.5px; line-height: 1.7; color: var(--text-body); }
+.cm-idea-list li::before { content: ""; flex: none; width: 7px; height: 7px; margin-top: 9px; background: var(--gold-500); transform: rotate(45deg); }
+
+/* ── Voices + ask ────────────────────────────────────────────── */
+.cm-voices-sec { padding-bottom: clamp(56px,7vw,88px); }
+.cm-voices-head { margin-bottom: 32px; }
+.cm-voices-head h2 { font-size: clamp(28px,3.4vw,42px); font-weight: 700; margin: 0; }
+.cm-voices-head p { font-size: 16px; line-height: 1.85; color: var(--text-muted); margin: 12px 0 0; max-width: 62ch; text-align: start; }
+
+.cm-ask { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin-bottom: clamp(72px,9vw,120px); padding: clamp(28px,3.4vw,44px) clamp(28px,4vw,56px); border-radius: 28px; background: var(--surface-1); border: 1px solid var(--hairline); }
+.cm-ask h2 { font-size: clamp(22px,2.4vw,30px); font-weight: 700; margin: 0 0 6px; }
+.cm-ask p { font-size: 15.5px; color: var(--text-muted); margin: 0; text-align: start; }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 1000px) {
+  .cm-intro { grid-template-columns: 1fr; }
+  .cm-split, .cm-split.is-idea { grid-template-columns: 1fr; }
+  .cm-aside { position: static; }
+  .cm-split.is-idea .cm-aside { order: 0; }
+  .cm-split:not(.is-idea) .cm-aside { display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: start; }
+  .cm-split:not(.is-idea) .cm-steps { margin-top: 0; }
+  .cm-privacy { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .cm-split:not(.is-idea) .cm-aside { grid-template-columns: 1fr; }
+  .cm-member { max-width: 340px; }
+}
+@media (prefers-reduced-motion: reduce) { .cm-member, .cm-benefits-ico { transition: none; } }

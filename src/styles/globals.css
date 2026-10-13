@@ -14,6 +14,7 @@
 @import "./pages/partners.css";
 @import "./pages/awards.css";
 @import "./pages/council.css";
+@import "./pages/community.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,

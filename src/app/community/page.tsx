@@ -52,6 +52,13 @@ const BENEFITS = [
   },
 ];
 
+// What happens after the form is sent.
+const JOIN_STEPS = [
+  { t: "سجّل بياناتك", d: "دقائق قليلة تكفي لتعريفنا بك وبما يهمّك." },
+  { t: "نتعرّف عليك", d: "نفهم تخصّصك ومنطقتك وكيف تودّ المساهمة." },
+  { t: "تصلك الفرص", d: "المبادرات والجوائز والدعوات التي تناسبك أولاً بأول." },
+];
+
 export default async function CommunityPage() {
   const [initiatives, ideas, settings] = await Promise.all([
     getInitiatives(),
@@ -101,70 +108,91 @@ export default async function CommunityPage() {
         </div>
       </div>
 
-      {/* INTRO */}
-      <section style={{ maxWidth: 980, margin: "0 auto", padding: "72px 32px 24px" }}>
-        <div data-reveal="1">
-          <div className="eyebrow" style={{ color: "var(--gold-600)", marginBottom: 14 }}>عن المجتمع</div>
-          <h2 style={{ fontSize: "clamp(26px,3.4vw,38px)", fontWeight: 700, color: "var(--ink)", margin: "0 0 20px" }}>
-            المعلم شريك في صناعة القرار
-          </h2>
-          <p style={{ fontSize: "clamp(19px,2.2vw,24px)", lineHeight: 1.85, color: "var(--text-body)", fontWeight: 500, margin: 0 }}>
-            أسست مؤسسة الأستاذ «مجتمع الأستاذ» ليكون قناة مباشرة تجمع المعلمين، وتستمع إلى آرائهم
-            وتجاربهم، وتفتح المجال أمامهم للمشاركة في تطوير المبادرات والبرامج التي تمسّ مهنتهم
-            وحياتهم.
-          </p>
-          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "24px 0 0" }}>
-            فالمعلم ليس متلقيًا للمبادرات فحسب؛ بل شريك في بنائها، وصوتٌ حاضر في تطوير منظومة
-            التعليم.
-          </p>
-          <p style={{ fontSize: "clamp(17px,2vw,20px)", lineHeight: 1.8, color: "var(--olive-600)", fontWeight: 600, margin: "32px 0 0", paddingInlineStart: 18, borderInlineStart: "3px solid var(--gold-500)" }}>
-            حين نقترب من المعلم، نفهم احتياجه أكثر، ونصنع مبادرات أكثر أثرًا.
-          </p>
+      {/* INTRO — the statement, and the four things a member gets */}
+      <section className="cm-wrap cm-intro">
+        <div className="cm-intro-text" data-reveal="1">
+          <div className="kicker">عن المجتمع</div>
+          <h2>المعلم شريك في صناعة القرار</h2>
+          <p className="cm-lead">أسست مؤسسة الأستاذ «مجتمع الأستاذ» ليكون قناة مباشرة تجمع المعلمين، وتستمع إلى آرائهم وتجاربهم، وتفتح المجال أمامهم للمشاركة في تطوير المبادرات والبرامج التي تمسّ مهنتهم وحياتهم.</p>
+          <p className="cm-p">فالمعلم ليس متلقيًا للمبادرات فحسب؛ بل شريك في بنائها، وصوتٌ حاضر في تطوير منظومة التعليم.</p>
+          <p className="cm-pull">حين نقترب من المعلم، نفهم احتياجه أكثر، ونصنع مبادرات أكثر أثرًا.</p>
         </div>
-      </section>
-
-      {/* BENEFITS */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "40px 32px 16px" }}>
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 20 }}>
+        <ul className="cm-benefits" data-reveal-group>
           {BENEFITS.map((b) => (
-            <div key={b.t} className="c-card card-lift" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 16, padding: 30 }}>
-              <div className="c-ico" style={{ width: 46, height: 46, borderRadius: 12, background: b.bg, color: b.fg, display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 18 }}>
-                <b.Icon />
+            <li key={b.t}>
+              <span className="cm-benefits-ico" aria-hidden><b.Icon /></span>
+              <div>
+                <span className="cm-benefits-k">{b.n} · {b.k}</span>
+                <h3>{b.t}</h3>
+                <p>{b.d}</p>
               </div>
-              <div className="cm-benefit-kicker">
-                <span className="cm-benefit-num">{b.n}</span>
-                {b.k}
-              </div>
-              <h3 style={{ fontSize: 19, fontWeight: 600, margin: "0 0 8px" }}>{b.t}</h3>
-              <p style={{ fontSize: 15, lineHeight: 1.75, color: "var(--text-muted)", margin: 0 }}>{b.d}</p>
-            </div>
+            </li>
           ))}
+        </ul>
+      </section>
+
+      {/* JOIN — the form, beside the membership it grants */}
+      <section id="join" className="cm-join-sec">
+        <div className="cm-wrap cm-split">
+          <aside className="cm-aside" data-reveal="1">
+            <div className="cm-member" aria-hidden>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/assets/alostath-logo-inverse.png" alt="" />
+              <span className="cm-member-k">بطاقة العضوية</span>
+              <strong>عضو في مجتمع الأستاذ</strong>
+              <div className="cm-member-foot">
+                <span>مجانية</span>
+                <span>معلّمو ومعلّمات الوطن</span>
+              </div>
+            </div>
+            <ol className="cm-steps">
+              {JOIN_STEPS.map((st, i) => (
+                <li key={st.t}>
+                  <span>{i + 1}</span>
+                  <div>
+                    <strong>{st.t}</strong>
+                    <p>{st.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <p className="cm-privacy">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>
+              بياناتك لدى المؤسسة وحدها، ويمكنك إلغاء الاشتراك بضغطة واحدة في أي وقت.
+            </p>
+          </aside>
+          <div className="cm-form-col" data-reveal="1">
+            <JoinForm />
+          </div>
         </div>
       </section>
 
-      {/* JOIN */}
-      <section id="join" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 56 }}>
-        <div data-reveal="1" style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(56px,8vw,84px) 32px" }}>
-          <JoinForm />
-        </div>
-      </section>
-
-      {/* IDEAS */}
-      <section id="idea" style={{ maxWidth: 900, margin: "0 auto", padding: "clamp(56px,8vw,84px) 32px 0" }}>
-        <div data-reveal="1">
+      {/* IDEAS — the second way in: bring an idea */}
+      <section id="idea" className="cm-wrap cm-split is-idea">
+        <aside className="cm-aside cm-idea-aside" data-reveal="1">
+          <span className="cm-idea-ico" aria-hidden>
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
+          </span>
+          <h2>الفكرة التي تبدأ من الفصل</h2>
+          <p>أنت الأقرب إلى الميدان. كل فكرة تصلنا يقرؤها الفريق، وما يصلح منها قد يصبح مبادرةً أو يُطوِّر مبادرةً قائمة.</p>
+          <ul className="cm-idea-list">
+            <li>اقترح مبادرة جديدة لحاجةٍ تراها كل يوم</li>
+            <li>أو طوّر مبادرةً قائمة من مبادرات الأستاذ</li>
+            <li>وقد نشارك فكرتك في «أصوات المجتمع» بعد موافقتك</li>
+          </ul>
+        </aside>
+        <div className="cm-form-col" data-reveal="1">
           <IdeaForm initiatives={initiatives.map((i) => ({ slug: i.slug, name: i.name }))} />
         </div>
       </section>
 
       {/* VOICES — only rendered once the team has showcased something */}
       {ideas.length > 0 && (
-        <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "clamp(56px,8vw,84px) 32px 0" }}>
-          <div data-reveal="1" style={{ marginBottom: 32 }}>
-            <div className="eyebrow" style={{ color: "var(--gold-600)", marginBottom: 12 }}>من الميدان</div>
-            <h2 style={{ fontSize: "clamp(26px,3.4vw,38px)", fontWeight: 700, margin: 0 }}>أصوات المجتمع</h2>
-            <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "12px 0 0", maxWidth: "62ch" }}>
-              أفكارٌ وصلتنا من معلّمين ومعلّمات، اخترنا أن نشاركها معكم.
-            </p>
+        <section className="cm-wrap cm-voices-sec">
+          <div className="cm-voices-head" data-reveal="1">
+            <div className="kicker">من الميدان</div>
+            <h2>أصوات المجتمع</h2>
+            <p>أفكارٌ وصلتنا من معلّمين ومعلّمات، اخترنا أن نشاركها معكم.</p>
           </div>
           <div data-reveal-group className="cm-voices">
             {ideas.map((idea) => (
@@ -186,12 +214,12 @@ export default async function CommunityPage() {
       )}
 
       {/* CTA */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
-        <div data-reveal="1" style={{ textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>لديك سؤال قبل الانضمام؟</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>
-            فريق المؤسسة سعيدٌ بالإجابة عن أي استفسار يخصّ المجتمع أو برامج المؤسسة.
-          </p>
+      <section className="cm-wrap">
+        <div className="cm-ask" data-reveal="1">
+          <div>
+            <h2>لديك سؤال قبل الانضمام؟</h2>
+            <p>فريق المؤسسة سعيدٌ بالإجابة عن أي استفسار يخصّ المجتمع أو برامج المؤسسة.</p>
+          </div>
           <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا</Link>
         </div>
       </section>
