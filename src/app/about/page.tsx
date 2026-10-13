@@ -87,10 +87,6 @@ export default function AboutPage() {
           <figure className="ab-portrait">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى مدرسي" />
-            <figcaption className="ab-portrait-seal">
-              <span>منذ</span>
-              <strong>2023</strong>
-            </figcaption>
           </figure>
         </div>
         <ol className="ab-wrap ab-milestones" data-reveal-group>

@@ -31,15 +31,6 @@
 .ab-portrait { position: relative; margin: 0; }
 .ab-portrait::before { content: ""; position: absolute; inset: 28px -28px -28px 28px; border: 1px solid var(--gold-500); border-radius: 28px; opacity: .55; }
 .ab-portrait img { position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 28px; box-shadow: 0 40px 80px -40px rgba(30,40,20,.55); }
-.ab-portrait-seal {
-  position: absolute; bottom: -28px; right: -24px;
-  width: 132px; height: 132px; border-radius: 50%;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: var(--olive-900); color: var(--ink-inverse);
-  box-shadow: 0 0 0 8px var(--canvas), 0 20px 40px -20px rgba(0,0,0,.5);
-}
-.ab-portrait-seal span { font-size: 13px; color: var(--gold-500); }
-.ab-portrait-seal strong { font-family: var(--font-mono); font-size: 32px; font-weight: 500; line-height: 1.1; }
 
 .ab-milestones { list-style: none; margin-top: clamp(64px,7vw,104px); padding-block: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
 .ab-milestones::before { content: ""; position: absolute; top: 9px; inset-inline: clamp(20px,5vw,56px); height: 1px; background: linear-gradient(to left, var(--gold-500), var(--hairline-strong) 60%, transparent); }
@@ -205,8 +196,6 @@
 }
 @media (max-width: 600px) {
   .ab-portrait::before { inset: 16px -14px -16px 14px; }
-  .ab-portrait-seal { width: 104px; height: 104px; right: -10px; bottom: -22px; }
-  .ab-portrait-seal strong { font-size: 26px; }
   .ab-milestones { grid-template-columns: 1fr; }
   .ab-why { grid-template-columns: 1fr; }
   .ab-values { grid-template-columns: 1fr; }
