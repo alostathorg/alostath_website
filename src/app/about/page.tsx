@@ -78,7 +78,7 @@ export default function AboutPage() {
       <section className="ab-manifesto">
         <div className="ab-wrap ab-manifesto-grid" data-reveal="1">
           <div className="ab-manifesto-text">
-            <div className="ab-kicker">عن المؤسسة</div>
+            <div className="kicker">عن المؤسسة</div>
             <h2 className="ab-display">المعلّم <em>ركيزةُ</em> التعليم</h2>
             <p className="ab-lead">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
             <p className="ab-prose">ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
@@ -108,11 +108,11 @@ export default function AboutPage() {
       <section className="ab-vision">
         <div className="ab-wrap ab-vision-grid" data-reveal="1">
           <div>
-            <div className="ab-kicker is-gold">رؤيتنا</div>
+            <div className="kicker is-gold">رؤيتنا</div>
             <p className="ab-vision-q">الريادة في تعزيز مكانة <em>المعلّم.</em></p>
           </div>
           <div className="ab-mission">
-            <div className="ab-kicker is-gold">رسالتنا</div>
+            <div className="kicker is-gold">رسالتنا</div>
             <p>مؤسسة الأستاذ كيانٌ غير ربحي مستقل في تقديم خدمات ومنتجات نوعية ومبتكرة في تعزيز مكانة المعلّم، بالشراكة مع المجتمع والجهات المعنية، من خلال قنوات خدمة مباشرة وغير مباشرة، في سبيل تحقيق قيمة نوعية مستدامة.</p>
           </div>
         </div>
@@ -192,7 +192,7 @@ export default function AboutPage() {
       <section className="ab-wrap ab-research-wrap">
         <div className="ab-research" data-reveal="1">
           <div className="ab-research-main">
-            <div className="ab-kicker is-gold">القطب البحثي والمعرفي</div>
+            <div className="kicker is-gold">القطب البحثي والمعرفي</div>
             <h2>مركز الأستاذ للتطوير والأبحاث</h2>
             <p>يعمل المركز بالتوازي مع مكوّنات منظومة الأستاذ لتحقيق أهدافها الاستراتيجية، ويتخصّص في رصد ودراسة الميدان التعليمي من منظور المعلّم، وإجراء الدراسات والأبحاث التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة.</p>
             <p>ويتولّى المركز أيضاً توثيق أثر المبادرات والبرامج، وتطوير الأدلّة والآليات التي تسهم في التوسّع المستمر لمنظومة الأستاذ وتعزيز أثرها على المعلّم والمنظومة التعليمية والوطن.</p>
@@ -231,7 +231,7 @@ export default function AboutPage() {
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></svg>
               </span>
               <div>
-                <div className="ab-kicker">المؤسسة</div>
+                <div className="kicker">المؤسسة</div>
                 <h2>بيانات الترخيص</h2>
               </div>
             </div>
@@ -248,7 +248,7 @@ export default function AboutPage() {
             <div className="ab-profile-doc" aria-hidden>
               <span>PDF</span>
             </div>
-            <div className="ab-kicker is-gold">الملف التعريفي</div>
+            <div className="kicker is-gold">الملف التعريفي</div>
             <h2>تعرّف على المؤسسة عن قرب</h2>
             <p>حمّل الملف التعريفي المفصّل لمؤسسة الأستاذ: التطلّعات الاستراتيجية، ومنصات الحضور والمحتوى، والجائزة الوطنية للمعلّم، والمبادرات، والأثر والفريق.</p>
             <div className="ab-profile-actions">
@@ -305,7 +305,7 @@ export default function AboutPage() {
       {/* NEWSLETTER */}
       <section className="ab-news">
         <div className="ab-news-in" data-reveal="1">
-          <div className="ab-kicker is-gold">النشرة البريدية</div>
+          <div className="kicker is-gold">النشرة البريدية</div>
           <h2>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
           <p>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب.</p>
           <form data-newsletter-form>
@@ -329,7 +329,7 @@ export default function AboutPage() {
 function Head({ kicker, title, center = false }: { kicker: string; title: string; center?: boolean }) {
   return (
     <div className={`ab-head${center ? " is-center" : ""}`} data-reveal="1">
-      <div className="ab-kicker">{kicker}</div>
+      <div className="kicker">{kicker}</div>
       <h2>{title}</h2>
     </div>
   );

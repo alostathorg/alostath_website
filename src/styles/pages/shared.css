@@ -1,0 +1,10 @@
+/* ============================================================
+   Shared page pieces — used across the redesigned page bodies
+   ============================================================ */
+
+/* Kicker: the small gold label over a section title, led by a rule. */
+.kicker { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; letter-spacing: .5px; color: var(--gold-600); margin-bottom: 16px; }
+.kicker::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+.kicker.is-gold { color: var(--gold-500); }
+.kicker.is-center { justify-content: center; }
+.kicker.is-center::after { content: ""; width: 28px; height: 1px; background: currentColor; }

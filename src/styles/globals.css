@@ -6,9 +6,11 @@
 @import "./tokens/spacing.css";
 @import "./tokens/elevation.css";
 @import "./design-system.css";
+@import "./pages/shared.css";
 @import "./pages/about.css";
 @import "./pages/blog.css";
 @import "./pages/news.css";
+@import "./pages/initiatives.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -79,27 +81,6 @@ section[id] {
   .council-row { grid-template-columns: 1fr !important; }
 }
 
-/* Initiatives list rows */
-.initiative-row {
-  display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: clamp(28px, 4vw, 56px);
-  align-items: center;
-}
-.initiative-row.is-rev .initiative-row-media { order: 2; }
-.initiative-row.is-rev .initiative-row-body { order: 1; }
-.initiative-row-media img {
-  width: 100%;
-  height: clamp(220px, 28vw, 320px);
-  object-fit: cover;
-  display: block;
-  border-radius: 18px;
-}
-@media (max-width: 880px) {
-  .initiative-row { grid-template-columns: 1fr !important; }
-  .initiative-row.is-rev .initiative-row-media { order: 1; }
-  .initiative-row.is-rev .initiative-row-body { order: 2; }
-}
 
 /* Hero jump pill (initiatives index) */
 .idx-pill {
