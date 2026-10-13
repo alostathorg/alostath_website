@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { BOARD, LICENSE, PARTNERS, SCALE, TEAM, monogram } from "@/lib/org";
+import { BOARD, LICENSE, PARTNERS, SCALE, TEAM } from "@/lib/org";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "من نحن" };
@@ -268,7 +268,7 @@ export default function AboutPage() {
             <h3>فريق الأستاذ</h3>
             <ul>
               {TEAM.map((n) => (
-                <li key={n}><span aria-hidden>{monogram(n)}</span>{n}</li>
+                <li key={n}>{n}</li>
               ))}
             </ul>
           </div>
