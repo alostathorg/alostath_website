@@ -85,14 +85,10 @@
 
 /* ── Research centre ─────────────────────────────────────────── */
 .ab-research-wrap { padding-bottom: clamp(64px,8vw,112px); }
-.ab-research { position: relative; overflow: hidden; isolation: isolate; display: grid; grid-template-columns: 1.6fr 1fr; gap: clamp(28px,4vw,56px); align-items: center; border-radius: 32px; padding: clamp(36px,5vw,72px); color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
+.ab-research { position: relative; overflow: hidden; isolation: isolate; border-radius: 32px; padding: clamp(36px,5vw,72px); color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
 .ab-research::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 100% at 0% 100%, #000, transparent 70%); mask-image: radial-gradient(60% 100% at 0% 100%, #000, transparent 70%); }
 .ab-research h2 { font-size: clamp(28px,3.2vw,42px); font-weight: 700; line-height: 1.25; margin: 0 0 20px; }
 .ab-research-main p { font-size: 16px; line-height: 1.95; color: var(--inverse-muted); margin: 0 0 14px; max-width: 70ch; }
-.ab-research-note { border-radius: 22px; padding: clamp(24px,3vw,36px); background: rgba(244,246,238,.05); border: 1px solid rgba(191,155,47,.35); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); }
-.ab-research-tag { display: block; font-size: 12px; font-weight: 600; letter-spacing: .5px; color: var(--gold-500); margin-bottom: 14px; }
-.ab-research-note p { font-size: clamp(18px,1.7vw,22px); line-height: 1.7; margin: 0; color: var(--ink-inverse); text-align: start; }
-.ab-research-note strong { color: var(--gold-500); font-weight: 700; }
 
 /* ── Impact ──────────────────────────────────────────────────── */
 .ab-impact { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; column-gap: clamp(32px,5vw,80px); }
@@ -169,7 +165,7 @@
   .ab-partners li:nth-child(4) { border-inline-start: none; }
 }
 @media (max-width: 900px) {
-  .ab-manifesto-grid, .ab-vision-grid, .ab-research, .ab-licence-grid { grid-template-columns: 1fr; }
+  .ab-manifesto-grid, .ab-vision-grid, .ab-licence-grid { grid-template-columns: 1fr; }
   .ab-portrait { max-width: 520px; margin-inline: auto 28px; }
   .ab-values { grid-template-columns: 1fr 1fr; }
   .ab-value:nth-child(n) { border-inline-start: 1px solid var(--hairline); border-top: 1px solid var(--hairline); }
