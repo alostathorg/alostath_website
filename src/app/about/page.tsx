@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { BOARD, LICENSE, PARTNERS, SCALE, TEAM, monogram } from "@/lib/org";
+import { BOARD, LICENSE, PARTNERS, SCALE, TEAM } from "@/lib/org";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "من نحن" };
@@ -48,14 +48,6 @@ const AREAS = [
   },
 ];
 
-// The dates the profile itself gives, read as a short rail under the intro.
-const MILESTONES = [
-  { y: "2023", t: "الانطلاق", d: "تأسيس مؤسسة الأستاذ من إيمانٍ بأن المعلّم ركيزة التعليم" },
-  { y: "2024", t: "الترخيص الرسمي", d: "من المركز الوطني لتنمية القطاع غير الربحي في 20 أبريل" },
-  { y: "اليوم", t: "تحت إشراف وزارة التعليم", d: "ضمن المجموعة الثانية: التعليم والأبحاث" },
-  { y: "2030", t: "رؤية المملكة", d: "شريكٌ فاعل في بناء جيلٍ يحقق مستهدفاتها" },
-];
-
 const IMPACT = [
   "تعزيز مكانة المعلّم المهنية والمجتمعية، عبر مبادرات ومنصات تبرز دوره وتحتفي بأثره.",
   "رفع جودة التعليم، من خلال تطوير قدرات المعلّم وربطه بأدوات وشراكات نوعية.",
@@ -74,7 +66,7 @@ export default function AboutPage() {
         lede="مرخّصة من المركز الوطني لتنمية القطاع غير الربحي، وتعمل تحت إشراف وزارة التعليم — لتعزيز مكانة المعلّم وخدمة رؤية المملكة 2030."
       />
 
-      {/* MANIFESTO — who we are, and the dates that made it official */}
+      {/* MANIFESTO — who we are */}
       <section className="ab-manifesto">
         <div className="ab-wrap ab-manifesto-grid" data-reveal="1">
           <div className="ab-manifesto-text">
@@ -87,21 +79,8 @@ export default function AboutPage() {
           <figure className="ab-portrait">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى مدرسي" />
-            <figcaption className="ab-portrait-seal">
-              <span>منذ</span>
-              <strong>2023</strong>
-            </figcaption>
           </figure>
         </div>
-        <ol className="ab-wrap ab-milestones" data-reveal-group>
-          {MILESTONES.map((m) => (
-            <li key={m.y}>
-              <span className="ab-ms-year">{m.y}</span>
-              <span className="ab-ms-t">{m.t}</span>
-              <span className="ab-ms-d">{m.d}</span>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* VISION / MISSION — the one line the foundation stands on */}
@@ -124,7 +103,7 @@ export default function AboutPage() {
           <Head kicker="لماذا الأستاذ؟" title="حجمٌ غير مسبوق، وتوقيتٌ استراتيجي" />
           <div className="ab-ledger" data-reveal-group>
             {SCALE.map((s) => (
-              <div key={s.u} className={`ab-figure${s.accent ? " is-accent" : ""}`}>
+              <div key={s.u} className="ab-figure">
                 <div className="ab-figure-n">{s.n}</div>
                 <div className="ab-figure-u">{s.u}</div>
                 <div className="ab-figure-d">{s.d}</div>
@@ -197,10 +176,6 @@ export default function AboutPage() {
             <p>يعمل المركز بالتوازي مع مكوّنات منظومة الأستاذ لتحقيق أهدافها الاستراتيجية، ويتخصّص في رصد ودراسة الميدان التعليمي من منظور المعلّم، وإجراء الدراسات والأبحاث التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة.</p>
             <p>ويتولّى المركز أيضاً توثيق أثر المبادرات والبرامج، وتطوير الأدلّة والآليات التي تسهم في التوسّع المستمر لمنظومة الأستاذ وتعزيز أثرها على المعلّم والمنظومة التعليمية والوطن.</p>
           </div>
-          <aside className="ab-research-note">
-            <span className="ab-research-tag">من أعمال المركز</span>
-            <p>الدراسة التي بُني عليها مقترح <strong>«المرجعية المهنية الوطنية للمعلّم»</strong> المرفوع لولي العهد.</p>
-          </aside>
         </div>
       </section>
 
@@ -279,11 +254,9 @@ export default function AboutPage() {
         <div className="ab-wrap">
           <Head kicker="قيادة المؤسسة" title="مجلس أمناء المؤسسة" center />
           <div className="ab-board" data-reveal-group>
-            {BOARD.map((m, i) => (
-              <figure key={m.name} className={`ab-member${i === 0 ? " is-chair" : ""}`}>
-                <div className="ab-member-frame">
-                  <PersonAvatar person={m} size={i === 0 ? 168 : 140} radius="var(--radius-round)" />
-                </div>
+            {BOARD.map((m) => (
+              <figure key={m.name} className="ab-member card-lift">
+                <PersonAvatar person={m} size={124} radius="var(--radius-round)" />
                 <figcaption>
                   <strong>{m.name}</strong>
                   <span>{m.role}</span>
@@ -295,7 +268,7 @@ export default function AboutPage() {
             <h3>فريق الأستاذ</h3>
             <ul>
               {TEAM.map((n) => (
-                <li key={n}><span aria-hidden>{monogram(n)}</span>{n}</li>
+                <li key={n}>{n}</li>
               ))}
             </ul>
           </div>
