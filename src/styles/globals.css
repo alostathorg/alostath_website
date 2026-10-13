@@ -12,6 +12,7 @@
 @import "./pages/news.css";
 @import "./pages/initiatives.css";
 @import "./pages/partners.css";
+@import "./pages/awards.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,

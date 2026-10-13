@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { NATIONAL_AWARD as A } from "@/lib/award";
+import AwardToc from "./AwardToc";
 
 export const metadata: Metadata = { title: A.name };
 
@@ -93,211 +94,202 @@ export default function AwardsPage() {
         }
       />
 
-      {/* عن الجائزة */}
-      <section id="overview" style={wrap("84px 32px 40px")}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 48, alignItems: "center" }}>
-          <div>
-            <div style={eyebrowStyle}>عن الجائزة</div>
-            <p style={{ fontSize: "clamp(17px,1.8vw,19px)", lineHeight: 1.95, color: "var(--text-body, var(--ink))", margin: "0 0 22px" }}>{A.overview}</p>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-              {[A.beneficiaries, A.scope, "التحقّق الميداني من الممارسة وأثرها"].map((t) => (
-                <span key={t} className="dp-chip">{t}</span>
+      <div className="aw-wrap aw-dossier">
+        <AwardToc chapters={CHAPTERS} />
+
+        <div className="aw-chapters">
+          {/* 01 — عن الجائزة */}
+          <section id="overview" className="aw-ch" data-reveal="1">
+            <ChapterHead n={1} eyebrow="عن الجائزة" title="تقديرٌ يتحوّل إلى تمكين" />
+            <div className="aw-intro">
+              <p className="aw-lead">{A.overview}</p>
+              <figure className="aw-intro-fig">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={A.image} alt={A.name} />
+              </figure>
+            </div>
+            <dl className="aw-keys">
+              <div><dt>تستهدف</dt><dd>{A.beneficiaries}</dd></div>
+              <div><dt>النطاق</dt><dd>{A.scope}</dd></div>
+              <div><dt>منهجية التقييم</dt><dd>التحقّق الميداني من الممارسة وأثرها</dd></div>
+            </dl>
+          </section>
+
+          {/* 02 — السياق */}
+          <section id="history" className="aw-ch" data-reveal="1">
+            <ChapterHead n={2} eyebrow="السياق والمسوّغ الاستراتيجي" title="التجربة السابقة — جائزة التعليم للتميّز" />
+            <p className="aw-p">سبق للمملكة أن أطلقت «جائزة التعليم للتميّز» بقرار وزاري عام 1431هـ، وشملت سبع فئات: المعلّم المتميّز، المرشد الطلابي، المشرف التربوي، الإدارة المدرسية، المدرسة المتميّزة، الطالب المتميّز، العمل التطوعي المتميّز، والتميّز الإداري. ولم تعد الجائزة إلى الميدان منذ ذلك الحين.</p>
+            <div className="aw-ledger">
+              {HISTORY.map((h) => (
+                <div key={h.l} className={h.dark ? "is-stop" : undefined}>
+                  <strong>{h.n}</strong>
+                  <span>{h.l}</span>
+                </div>
               ))}
             </div>
-          </div>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={A.image} alt={A.name} style={{ width: "100%", aspectRatio: "16/10", objectFit: "cover", borderRadius: 18, display: "block", border: "1px solid var(--hairline)" }} />
-        </div>
-      </section>
+            <aside className="aw-lesson">
+              <span className="aw-lesson-k">الدرس المستخلص</span>
+              <p className="aw-lesson-q">الخلل الذي أوقف الجائزة السابقة خللٌ في الحوكمة والاستمرارية، لا في المعايير.</p>
+              <p>فقد توفّرت لها الميزانية والتغطية الوزارية والإقبال الميداني، وتوقّفت رغم ذلك، لأنها كانت أمانة عامة داخل الوزارة بلا شخصية اعتبارية مستقلة تُلزم بتسليم الدورة. والمطلوب كيانٌ مالكٌ للجائزة، لا نشاطٌ داخل جهة يظل عرضة للتوقف.</p>
+            </aside>
+          </section>
 
-      {/* السياق — التجربة السابقة */}
-      <section style={wrap("72px 32px 32px")}>
-        <div data-reveal="1">
-          <Head eyebrow="السياق والمسوّغ الاستراتيجي" title="التجربة السابقة — جائزة التعليم للتميّز" />
-          <p style={{ ...lede, marginBottom: 32 }}>سبق للمملكة أن أطلقت «جائزة التعليم للتميّز» بقرار وزاري عام 1431هـ، وشملت سبع فئات: المعلّم المتميّز، المرشد الطلابي، المشرف التربوي، الإدارة المدرسية، المدرسة المتميّزة، الطالب المتميّز، العمل التطوعي المتميّز، والتميّز الإداري. ولم تعد الجائزة إلى الميدان منذ ذلك الحين.</p>
-          <div data-reveal-group style={grid(220)}>
-            {HISTORY.map((h) => (
-              <div key={h.l} style={{ ...card, ...(h.dark ? { background: "var(--olive-900)", borderColor: "transparent", color: "var(--ink-inverse)" } : {}) }}>
-                <div style={{ fontSize: "clamp(34px,4vw,46px)", fontWeight: 700, lineHeight: 1, color: h.dark ? "var(--gold-500)" : "var(--olive-600)", marginBottom: 12 }}>{h.n}</div>
-                <div style={{ fontSize: 15, lineHeight: 1.7, color: h.dark ? "var(--inverse-muted)" : "var(--text-muted)" }}>{h.l}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+          {/* 03 — الدراسة المعيارية */}
+          <section id="benchmark" className="aw-ch" data-reveal="1">
+            <ChapterHead n={3} eyebrow="الدراسة المعيارية · 13 جائزة" title="ما تعلّمناه من التجارب الدولية والإقليمية" />
+            <p className="aw-p">اختيرت بناءً على طول عمرها المؤسسي وحجم مشاركتها ومدى ملاءمة نموذج تصميمها لجائزة وطنية حكومية في سياق خليجي.</p>
+            <div className="aw-bench">
+              <BenchList title="سبع جوائز دولية" items={INTERNATIONAL} />
+              <BenchList title="ست جوائز إقليمية وعربية" items={REGIONAL} />
+            </div>
+            <h3 className="aw-h3">أبرز خلاصات المقارنة المرجعية</h3>
+            <ol className="aw-findings">
+              {FINDINGS.map((f, i) => (
+                <li key={f.t}>
+                  <span className="aw-findings-n">{String(i + 1).padStart(2, "0")}</span>
+                  <div>
+                    <h4>{f.t}</h4>
+                    <p>{f.d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
 
-      {/* الدرس المستخلص */}
-      <section style={wrap("32px 32px")}>
-        <div data-reveal="1" style={{ background: "var(--olive-900)", color: "var(--ink-inverse)", borderRadius: 22, padding: "clamp(36px,5vw,60px)" }}>
-          <div style={{ ...eyebrowStyle, color: "var(--gold-500)" }}>الدرس المستخلص</div>
-          <p style={{ fontSize: "clamp(22px,2.8vw,32px)", fontWeight: 700, lineHeight: 1.55, margin: "0 0 18px" }}>الخلل الذي أوقف الجائزة السابقة خللٌ في الحوكمة والاستمرارية، لا في المعايير.</p>
-          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--inverse-muted)", margin: 0, maxWidth: "80ch" }}>فقد توفّرت لها الميزانية والتغطية الوزارية والإقبال الميداني، وتوقّفت رغم ذلك، لأنها كانت أمانة عامة داخل الوزارة بلا شخصية اعتبارية مستقلة تُلزم بتسليم الدورة. والمطلوب كيانٌ مالكٌ للجائزة، لا نشاطٌ داخل جهة يظل عرضة للتوقف.</p>
-        </div>
-      </section>
-
-      {/* الدراسة المعيارية */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 40 }}>
-        <div style={wrap("80px 32px")}>
-          <div data-reveal="1">
-            <Head eyebrow="الدراسة المعيارية · 13 جائزة" title="ما تعلّمناه من التجارب الدولية والإقليمية" />
-            <p style={{ ...lede, marginBottom: 32 }}>اختيرت بناءً على طول عمرها المؤسسي وحجم مشاركتها ومدى ملاءمة نموذج تصميمها لجائزة وطنية حكومية في سياق خليجي.</p>
-          </div>
-          <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28, marginBottom: 40 }}>
-            <BenchList title="سبع جوائز دولية" items={INTERNATIONAL} />
-            <BenchList title="ست جوائز إقليمية وعربية" items={REGIONAL} />
-          </div>
-          <h3 data-reveal="1" style={{ fontSize: 22, fontWeight: 700, margin: "0 0 18px" }}>أبرز خلاصات المقارنة المرجعية</h3>
-          <div data-reveal-group style={grid(280)}>
-            {FINDINGS.map((f) => (
-              <div key={f.t} style={card}>
-                <h4 style={cardTitle}>{f.t}</h4>
-                <p style={cardBody}>{f.d}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* التكامل مع جائزة اليونسكو */}
-      <section style={wrap("80px 32px 40px")}>
-        <div data-reveal="1">
-          <Head eyebrow="الموقع الاستراتيجي والتمايز" title="التكامل مع الجائزة العالمية للجودة والتميّز في التعليم" />
-          <p style={{ ...lede, marginBottom: 28 }}>أطلق المركز الإقليمي لليونسكو للجودة والتميّز في التعليم، ومقرّه الرياض، «الجائزة العالمية للجودة والتميّز في التعليم» بقيمة مليون دولار أمريكي، وأُعلن عنها رسمياً بمناسبة اليوم الدولي للتعليم لعام 2026 تحت شعار «معلّم مُتمكّن ومُمكِّن». والجائزتان لا تتنافسان بل تتكاملان:</p>
-          <div style={{ overflowX: "auto", border: "1px solid var(--hairline)", borderRadius: 16, background: "var(--canvas)" }}>
-            <table style={{ width: "100%", minWidth: 560, borderCollapse: "collapse", fontSize: 15 }}>
-              <thead>
-                <tr style={{ background: "var(--surface-1)" }}>
-                  <th style={th}>وجه المقارنة</th>
-                  <th style={th}>الجائزة الوطنية للمعلّم</th>
-                  <th style={th}>الجائزة العالمية لليونسكو</th>
-                </tr>
-              </thead>
-              <tbody>
+          {/* 04 — التكامل مع اليونسكو */}
+          <section id="unesco" className="aw-ch" data-reveal="1">
+            <ChapterHead n={4} eyebrow="الموقع الاستراتيجي والتمايز" title="التكامل مع الجائزة العالمية للجودة والتميّز في التعليم" />
+            <p className="aw-p">أطلق المركز الإقليمي لليونسكو للجودة والتميّز في التعليم، ومقرّه الرياض، «الجائزة العالمية للجودة والتميّز في التعليم» بقيمة مليون دولار أمريكي، وأُعلن عنها رسمياً بمناسبة اليوم الدولي للتعليم لعام 2026 تحت شعار «معلّم مُتمكّن ومُمكِّن». والجائزتان لا تتنافسان بل تتكاملان:</p>
+            <div className="aw-versus">
+              <div className="aw-versus-col is-ours">
+                <div className="aw-versus-head">الجائزة الوطنية للمعلّم</div>
                 {COMPARE.map((r) => (
-                  <tr key={r.k}>
-                    <td style={{ ...td, color: "var(--text-muted)" }}>{r.k}</td>
-                    <td style={{ ...td, fontWeight: 600 }}>{r.a}</td>
-                    <td style={td}>{r.b}</td>
-                  </tr>
+                  <div key={r.k} className="aw-versus-row"><span>{r.k}</span><strong>{r.a}</strong></div>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </section>
-
-      {/* النطاق */}
-      <section style={wrap("40px 32px")}>
-        <div data-reveal="1">
-          <Head eyebrow="الجائزة الوطنية للمعلّم" title="نطاق الجائزة وحدودها" />
-          <div style={grid(280)}>
-            <div style={card}>
-              <h4 style={{ ...cardTitle, color: "var(--olive-600)" }}>تستهدف</h4>
-              <p style={{ ...cardBody, color: "var(--ink)", fontSize: 17 }}>المعلّمين والمعلّمات الممارسين للتدريس حصراً.</p>
-            </div>
-            <div style={{ ...card, background: "var(--surface-1)" }}>
-              <h4 style={{ ...cardTitle, color: "var(--text-subtle)" }}>لا تشمل</h4>
-              <p style={cardBody}>الطلاب، والمشرفين التربويين، والموجّهين الطلابيين، والقيادات المدرسية، والإدارات.</p>
-            </div>
-          </div>
-          <p style={{ ...lede, marginTop: 22 }}>هذا التضييق المتعمّد في النطاق لا يمثّل تقليصاً لأثر الجائزة، بل وسيلة لتعزيز هويتها ومكانتها لدى المعلّمين، وتركيز مواردها على اكتشاف التميّز في الممارسة التعليمية وإبرازه وتوسيع أثره.</p>
-        </div>
-      </section>
-
-      {/* الغاية */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 40 }}>
-        <div style={wrap("80px 32px")}>
-          <div data-reveal="1">
-            <Head eyebrow="غاية الجائزة" title="ثلاث وظائف متكاملة" />
-          </div>
-          <div data-reveal-group style={grid(260)}>
-            {FUNCTIONS.map((f, i) => (
-              <div key={f.t} style={card}>
-                <div style={num}>{String(i + 1).padStart(2, "0")}</div>
-                <h4 style={{ ...cardTitle, color: "var(--olive-600)" }}>{f.t}</h4>
-                <p style={cardBody}>{f.d}</p>
               </div>
-            ))}
-          </div>
-          <p data-reveal="1" style={{ ...lede, marginTop: 22, fontSize: 15 }}>وتركّز الجائزة على تقدير التميّز المهني للمعلّمين وتعزيز أثره في الميدان التعليمي، دون أن تحلّ محلّ أنظمة تقويم الأداء أو الترقيات، أو تمتدّ لتكريم الجهات والمؤسسات.</p>
-        </div>
-      </section>
-
-      {/* بنية القيمة */}
-      <section style={wrap("80px 32px 40px")}>
-        <div data-reveal="1">
-          <Head eyebrow="بنية القيمة" title="ما يحصل عليه الفائز" />
-          <p style={{ ...lede, marginBottom: 28 }}>تُثبَّت في وثيقة التأسيس بنية ما يحصل عليه الفائز، لأن البنية هي ما يحدّد ماهية الجائزة، والمقدار مسألة ميزانية تُحسم لاحقاً.</p>
-        </div>
-        <div data-reveal-group style={grid(260)}>
-          {REWARD.map((r) => (
-            <div key={r.t} style={card}>
-              <h4 style={cardTitle}>{r.t}</h4>
-              <p style={cardBody}>{r.d}</p>
-            </div>
-          ))}
-        </div>
-        <p data-reveal="1" style={{ ...lede, marginTop: 22, fontSize: 15 }}>وإفراد هذه البنية في الوثيقة يمنع انحدار الجائزة في الدورات اللاحقة إلى مبلغ نقدي يُصرف مرة واحدة، وهو انحدارٌ قد يُبطل وظيفة التمكين.</p>
-      </section>
-
-      {/* الحوكمة */}
-      <section style={wrap("40px 32px")}>
-        <div data-reveal="1">
-          <Head eyebrow="نموذج الحوكمة" title="تبنّي مؤسسة الأستاذ للجائزة في مرحلتها الحالية" />
-          <p style={{ ...lede, marginBottom: 28 }}>بناءً على التطابق شبه التام بين غاية الجائزة ورسالة مؤسسة الأستاذ، يُقترح أن تتبنّى المؤسسة إدارة الجائزة والعناية بها، تجنّباً لتأخير الانطلاق بعامل الوقت اللازم لتأسيس كيان مستقل وتسجيله رسمياً.</p>
-        </div>
-        <div data-reveal-group style={grid(260)}>
-          {GOVERNANCE.map((g) => (
-            <div key={g.t} style={card}>
-              <h4 style={cardTitle}>{g.t}</h4>
-              <p style={cardBody}>{g.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* التمويل */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 40 }}>
-        <div style={wrap("80px 32px")}>
-          <div data-reveal="1">
-            <Head eyebrow="التمويل" title="ثلاثة مسارات لبناء قاعدة أصول مدرّة للدخل" />
-            <p style={{ ...lede, marginBottom: 28 }}>لا يُبنى تمويل الجائزة على مخصّص سنوي معتمد وحده، لأن الاعتماد على بند سنوي قابل للإيقاف هو أحد أوجه الهشاشة التي أوقفت الجائزة السابقة. والمسارات قابلة للتطبيق منفردة أو مجتمعة.</p>
-          </div>
-          <div data-reveal-group style={grid(280)}>
-            {FUNDING.map((f, i) => (
-              <div key={f.t} style={card}>
-                <div style={num}>{String(i + 1).padStart(2, "0")}</div>
-                <h4 style={cardTitle}>{f.t}</h4>
-                <p style={{ ...cardBody, marginBottom: 14 }}>{f.d}</p>
-                <p style={{ ...cardBody, fontSize: 14, color: "var(--text-subtle)" }}>{f.note}</p>
+              <span className="aw-versus-vs" title="تتكاملان">⇄</span>
+              <div className="aw-versus-col">
+                <div className="aw-versus-head">الجائزة العالمية لليونسكو</div>
+                {COMPARE.map((r) => (
+                  <div key={r.k} className="aw-versus-row"><span>{r.k}</span><strong>{r.b}</strong></div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
+            </div>
+          </section>
 
-      {/* تصور مستقبلي */}
-      <section style={wrap("80px 32px 40px")}>
-        <div data-reveal="1">
-          <Head eyebrow="تصوّر مستقبلي" title="تطوّر الجائزة إلى كيان مستقل بشخصية اعتبارية" />
-          <p style={lede}>يُقترح له مبدئياً اسم «مؤسسة جائزة خادم الحرمين الشريفين للمعلّم» — اسمٌ مقترح رهن الاعتماد ومسار الهوية — وتكون مؤسسة الأستاذ أحد أعضاء مجلس أمنائه. ويُؤسَّس منذ نشأته بأهلية قبول الأوقاف والهبات والوصايا وتملّك الأصول الاستثمارية، حتى لا يُضطر لاحقاً لتعديل وثيقته لاستقبال هذا النوع من الموارد.</p>
-        </div>
-      </section>
+          {/* 05 — النطاق */}
+          <section id="scope" className="aw-ch" data-reveal="1">
+            <ChapterHead n={5} eyebrow="الجائزة الوطنية للمعلّم" title="نطاق الجائزة وحدودها" />
+            <div className="aw-scope">
+              <div className="is-in">
+                <span className="aw-scope-ico" aria-hidden>✓</span>
+                <h4>تستهدف</h4>
+                <p>المعلّمين والمعلّمات الممارسين للتدريس حصراً.</p>
+              </div>
+              <div className="is-out">
+                <span className="aw-scope-ico" aria-hidden>✕</span>
+                <h4>لا تشمل</h4>
+                <p>الطلاب، والمشرفين التربويين، والموجّهين الطلابيين، والقيادات المدرسية، والإدارات.</p>
+              </div>
+            </div>
+            <p className="aw-p aw-note">هذا التضييق المتعمّد في النطاق لا يمثّل تقليصاً لأثر الجائزة، بل وسيلة لتعزيز هويتها ومكانتها لدى المعلّمين، وتركيز مواردها على اكتشاف التميّز في الممارسة التعليمية وإبرازه وتوسيع أثره.</p>
+          </section>
 
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)", color: "var(--ink-inverse)", marginTop: 40 }}>
-        <div data-reveal="1" style={{ position: "relative", maxWidth: 920, margin: "0 auto", padding: "84px 32px", textAlign: "center" }}>
-          <p className="txt-justify is-center" style={{ fontSize: "clamp(22px,3vw,32px)", fontWeight: 700, lineHeight: 1.6, margin: "0 0 20px" }}>«أهم ما يمكن أن تثبته الجائزة في عامها الأول أنها ستظل قائمة في عامها السادس.»</p>
-          <p className="txt-justify is-center" style={{ fontSize: 15, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 auto", maxWidth: "62ch" }}>الشريك المعرفي الذي أعدّ الدراسة المعيارية والإطار المرجعي: شركة تام للتطوير، بالتنسيق مع المعهد الوطني للتطوير المهني التعليمي ومؤسسة الأستاذ.</p>
-        </div>
-      </section>
+          {/* 06 — الغاية */}
+          <section id="purpose" className="aw-ch" data-reveal="1">
+            <ChapterHead n={6} eyebrow="غاية الجائزة" title="ثلاث وظائف متكاملة" />
+            <ol className="aw-chain">
+              {FUNCTIONS.map((f, i) => (
+                <li key={f.t}>
+                  <span className="aw-chain-n">{i + 1}</span>
+                  <h4>{f.t}</h4>
+                  <p>{f.d}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="aw-p aw-note">وتركّز الجائزة على تقدير التميّز المهني للمعلّمين وتعزيز أثره في الميدان التعليمي، دون أن تحلّ محلّ أنظمة تقويم الأداء أو الترقيات، أو تمتدّ لتكريم الجهات والمؤسسات.</p>
+          </section>
 
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "84px 32px" }}>
-        <div data-reveal="1" style={{ textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px" }}>شريكٌ في صناعة جائزةٍ تبقى؟</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 auto 32px", maxWidth: "56ch" }}>نرحّب بالجهات والمانحين والمستثمرين الراغبين في دعم الجائزة الوطنية للمعلّم. وإن كنت معلّماً، سجّل اهتمامك ليصلك إشعار فور فتح باب الترشّح.</p>
-          <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <button type="button" {...regProps} className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
-            <Link href="/contact" className="btn btn-primary btn-lg">تواصل معنا للشراكة</Link>
+          {/* 07 — بنية القيمة */}
+          <section id="reward" className="aw-ch" data-reveal="1">
+            <ChapterHead n={7} eyebrow="بنية القيمة" title="ما يحصل عليه الفائز" />
+            <p className="aw-p">تُثبَّت في وثيقة التأسيس بنية ما يحصل عليه الفائز، لأن البنية هي ما يحدّد ماهية الجائزة، والمقدار مسألة ميزانية تُحسم لاحقاً.</p>
+            <ol className="aw-layers">
+              {REWARD.map((r, i) => (
+                <li key={r.t} style={{ "--i": i } as React.CSSProperties}>
+                  <span className="aw-layers-n">الطبقة {i + 1}</span>
+                  <h4>{r.t}</h4>
+                  <p>{r.d}</p>
+                </li>
+              ))}
+            </ol>
+            <p className="aw-p aw-note">وإفراد هذه البنية في الوثيقة يمنع انحدار الجائزة في الدورات اللاحقة إلى مبلغ نقدي يُصرف مرة واحدة، وهو انحدارٌ قد يُبطل وظيفة التمكين.</p>
+          </section>
+
+          {/* 08 — الحوكمة */}
+          <section id="governance" className="aw-ch" data-reveal="1">
+            <ChapterHead n={8} eyebrow="نموذج الحوكمة" title="تبنّي مؤسسة الأستاذ للجائزة في مرحلتها الحالية" />
+            <p className="aw-p">بناءً على التطابق شبه التام بين غاية الجائزة ورسالة مؤسسة الأستاذ، يُقترح أن تتبنّى المؤسسة إدارة الجائزة والعناية بها، تجنّباً لتأخير الانطلاق بعامل الوقت اللازم لتأسيس كيان مستقل وتسجيله رسمياً.</p>
+            <div className="aw-org">
+              <div className="aw-org-root">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/alostath-logo-inverse.png" alt="" aria-hidden />
+                <strong>مؤسسة الأستاذ</strong>
+                <span>الجهة المتبنّية للجائزة</span>
+              </div>
+              <ul>
+                {GOVERNANCE.map((g) => (
+                  <li key={g.t}>
+                    <h4>{g.t}</h4>
+                    <p>{g.d}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* 09 — التمويل */}
+          <section id="funding" className="aw-ch" data-reveal="1">
+            <ChapterHead n={9} eyebrow="التمويل" title="ثلاثة مسارات لبناء قاعدة أصول مدرّة للدخل" />
+            <p className="aw-p">لا يُبنى تمويل الجائزة على مخصّص سنوي معتمد وحده، لأن الاعتماد على بند سنوي قابل للإيقاف هو أحد أوجه الهشاشة التي أوقفت الجائزة السابقة. والمسارات قابلة للتطبيق منفردة أو مجتمعة.</p>
+            <div className="aw-funding">
+              {FUNDING.map((f, i) => (
+                <article key={f.t}>
+                  <span className="aw-funding-n">المسار {i + 1}</span>
+                  <h4>{f.t}</h4>
+                  <p>{f.d}</p>
+                  <p className="aw-funding-note">{f.note}</p>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          {/* 10 — تصور مستقبلي */}
+          <section id="future" className="aw-ch" data-reveal="1">
+            <ChapterHead n={10} eyebrow="تصوّر مستقبلي" title="تطوّر الجائزة إلى كيان مستقل بشخصية اعتبارية" />
+            <div className="aw-future">
+              <span className="aw-future-k">الاسم المقترح · رهن الاعتماد</span>
+              <p className="aw-future-name">مؤسسة جائزة خادم الحرمين الشريفين للمعلّم</p>
+              <p>تكون مؤسسة الأستاذ أحد أعضاء مجلس أمنائه. ويُؤسَّس منذ نشأته بأهلية قبول الأوقاف والهبات والوصايا وتملّك الأصول الاستثمارية، حتى لا يُضطر لاحقاً لتعديل وثيقته لاستقبال هذا النوع من الموارد.</p>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      {/* QUOTE + CTA — one closing stage */}
+      <section className="aw-close">
+        <div className="aw-close-in" data-reveal="1">
+          <blockquote>
+            <p>«أهم ما يمكن أن تثبته الجائزة في عامها الأول أنها ستظل قائمة في عامها السادس.»</p>
+            <footer>الشريك المعرفي الذي أعدّ الدراسة المعيارية والإطار المرجعي: شركة تام للتطوير، بالتنسيق مع المعهد الوطني للتطوير المهني التعليمي ومؤسسة الأستاذ.</footer>
+          </blockquote>
+          <div className="aw-close-cta">
+            <h2>شريكٌ في صناعة جائزةٍ تبقى؟</h2>
+            <p>نرحّب بالجهات والمانحين والمستثمرين الراغبين في دعم الجائزة الوطنية للمعلّم. وإن كنت معلّماً، سجّل اهتمامك ليصلك إشعار فور فتح باب الترشّح.</p>
+            <div className="aw-close-actions">
+              <button type="button" {...regProps} className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
+              <Link href="/contact" className="btn btn-outline btn-on-dark btn-lg">تواصل معنا للشراكة</Link>
+            </div>
           </div>
         </div>
       </section>
@@ -305,38 +297,56 @@ export default function AwardsPage() {
   );
 }
 
-function Head({ eyebrow, title }: { eyebrow: string; title: string }) {
+const CHAPTERS = [
+  { id: "overview", t: "عن الجائزة" },
+  { id: "history", t: "التجربة السابقة" },
+  { id: "benchmark", t: "الدراسة المعيارية" },
+  { id: "unesco", t: "التكامل مع اليونسكو" },
+  { id: "scope", t: "النطاق والحدود" },
+  { id: "purpose", t: "الغاية" },
+  { id: "reward", t: "بنية القيمة" },
+  { id: "governance", t: "الحوكمة" },
+  { id: "funding", t: "التمويل" },
+  { id: "future", t: "تصوّر مستقبلي" },
+];
+
+function ChapterHead({ n, eyebrow, title }: { n: number; eyebrow: string; title: string }) {
   return (
-    <>
-      <div style={eyebrowStyle}>{eyebrow}</div>
-      <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 18px", lineHeight: 1.35 }}>{title}</h2>
-    </>
+    <header className="aw-ch-head">
+      <span className="aw-ch-n" aria-hidden>{String(n).padStart(2, "0")}</span>
+      <div>
+        <div className="kicker">{eyebrow}</div>
+        <h2>{title}</h2>
+      </div>
+    </header>
   );
 }
 
+/** A benchmark list, read as a chronology: oldest first, the year set large. */
 function BenchList({ title, items }: { title: string; items: { t: string; y: string; muted?: boolean }[] }) {
+  const rows = items
+    .map((it) => {
+      const parts = it.y.split("·").map((x) => x.trim());
+      const year = parts[parts.length - 1];
+      const place = parts.length > 1 ? parts.slice(0, -1).join(" · ") : null;
+      const [where, name] = it.t.includes("·") ? it.t.split("·").map((x) => x.trim()) : [place, it.t];
+      return { name, where: where ?? place, year, muted: it.muted };
+    })
+    .sort((a, b) => Number(a.year) - Number(b.year));
   return (
-    <div>
-      <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 14px" }}>{title}</h3>
-      <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 10 }}>
-        {items.map((it) => (
-          <li key={it.t} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, background: it.muted ? "var(--surface-2, var(--surface-1))" : "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: "14px 18px", fontSize: 15 }}>
-            <span style={{ fontWeight: 600, color: it.muted ? "var(--text-muted)" : "var(--ink)" }}>{it.t}</span>
-            <span style={{ fontSize: 13, color: "var(--text-subtle)", whiteSpace: "nowrap" }}>{it.y}</span>
+    <div className="aw-bench-col">
+      <h3>{title}</h3>
+      <ul>
+        {rows.map((r) => (
+          <li key={r.name} className={r.muted ? "is-muted" : undefined}>
+            <span className="aw-bench-y">{r.year}</span>
+            <span className="aw-bench-t">
+              <strong>{r.name}</strong>
+              {r.where && <span>{r.where}</span>}
+            </span>
           </li>
         ))}
       </ul>
     </div>
   );
 }
-
-const wrap = (padding: string) => ({ maxWidth: "var(--container-max)", margin: "0 auto", padding }) as const;
-const grid = (min: number) => ({ display: "grid", gridTemplateColumns: `repeat(auto-fit,minmax(${min}px,1fr))`, gap: 20 }) as const;
-const eyebrowStyle = { fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 } as const;
-const lede = { fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: 0, maxWidth: "80ch" } as const;
-const card = { background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 16, padding: 28 } as const;
-const cardTitle = { fontSize: 19, fontWeight: 700, margin: "0 0 10px", color: "var(--ink)", lineHeight: 1.5 } as const;
-const cardBody = { fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 } as const;
-const num = { fontFamily: "var(--font-mono)", fontSize: 22, fontWeight: 600, color: "var(--sage-500)", marginBottom: 12 } as const;
-const th = { textAlign: "right", padding: "16px 20px", fontWeight: 700, borderBottom: "1px solid var(--hairline)" } as const;
-const td = { padding: "16px 20px", borderBottom: "1px solid var(--hairline)", lineHeight: 1.7 } as const;
