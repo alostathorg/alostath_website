@@ -182,18 +182,20 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* NEWS — hidden until something is published, so the home page never
-          shows an empty strip. */}
-      {latestNews.length > 0 && (
-        <section id="news" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 0" }}>
-          <SectionHead eyebrow="المركز الإعلامي" title="آخر الأخبار" href={NEWS_PATH} cta="كل الأخبار ←" />
+      {/* NEWS — always present so the section is discoverable; before the
+          first item is published it says so instead of disappearing. */}
+      <section id="news" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 0" }}>
+        <SectionHead eyebrow="المركز الإعلامي" title="آخر الأخبار" href={NEWS_PATH} cta="كل الأخبار ←" />
+        {latestNews.length > 0 ? (
           <div className="news-grid is-fit" data-reveal-group>
             {latestNews.map((n) => (
               <NewsCard key={n.id} item={n} />
             ))}
           </div>
-        </section>
-      )}
+        ) : (
+          <p className="news-empty">لا توجد أخبار منشورة بعد.</p>
+        )}
+      </section>
 
       {/* BLOG */}
       <section id="blog" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
