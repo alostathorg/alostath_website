@@ -31,7 +31,7 @@ export default function NewsCard({ item, wide = false }: { item: NewsItem; wide?
           <span>{formatArabicDate(item.published_at)}</span>
           {source && (
             <>
-              <span className="post-meta-dot" aria-hidden />
+              <span className="bl-dot" aria-hidden />
               <span>{source}</span>
             </>
           )}

@@ -106,6 +106,13 @@ export function formatArabicDate(iso: string | null): string {
   return isNaN(d.getTime()) ? "" : toLatinDigits(AR_DATE.format(d));
 }
 
+/** The parts of a date a dateline or a dated row needs: day, month name, year. */
+export function dateParts(iso: string | null): { day: string; month: string; year: string } | null {
+  const full = formatArabicDate(iso);
+  const [day, month, year] = full.split(" ");
+  return day && month && year ? { day, month, year } : null;
+}
+
 /**
  * Reading time, in the Arabic a reader would say it: دقيقة واحدة، دقيقتان،
  * ثلاث→عشر دقائق، then back to the singular for eleven and up. 180 words a

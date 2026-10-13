@@ -8,6 +8,7 @@
 @import "./design-system.css";
 @import "./pages/about.css";
 @import "./pages/blog.css";
+@import "./pages/news.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -143,14 +144,11 @@ section[id] {
 .c-pill .c-dot { transition: transform 0.2s ease, box-shadow 0.2s ease; }
 .c-pill:hover .c-dot { transform: scale(1.35); }
 
-/* ── News — /news, /news/[slug] and the home page strip ─────────────────────
-   Same card material as .blog-card so the two sections read as one family; the
-   type badge (olive news · gold announcement · sage media) is what tells them
-   apart. The pinned item gets the wide variant: image beside the text. */
-.news-section { max-width: var(--container-max); margin: 0 auto; padding: 64px 32px 96px; }
+/* ── News cards — the home page strip and the pinned lead on /news ──────────
+   The type badge (olive news · gold announcement · sage media) tells items
+   apart. The pinned item gets the wide variant: image beside the text. The
+   /news feed itself lives in pages/news.css. */
 .news-empty { font-size: 18px; color: var(--text-muted); text-align: center; }
-.news-lead { margin-bottom: 40px; }
-.news-filter { margin-bottom: 28px; }
 .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
 .news-grid.is-fit { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 .news-card {
@@ -188,62 +186,13 @@ section[id] {
 }
 @media (max-width: 620px) {
   .news-grid { grid-template-columns: 1fr; }
-  .news-section { padding: 48px 16px 72px; }
 }
-/* Media coverage: the hand-off to the original story. */
-.news-source { margin-top: clamp(32px,4vw,44px); display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; background: var(--sage-50); border: 1px solid var(--sage-100); border-radius: 16px; padding: 22px 26px; }
-.news-source-k { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
-.news-source-v { font-size: 18px; font-weight: 700; color: var(--ink); }
 @media (prefers-reduced-motion: reduce) { .news-card, .news-card-media img { transition: none; } }
 
-/* ── Article — /blog/[slug] ────────────────────────────────────────────────
-   The page used to be a hero, three paragraphs and a text link. What was
-   missing was everything around the prose: who wrote when, how long the read
-   is, a way to pass it on, and somewhere to go next. */
-.post-wrap { max-width: 760px; margin: 0 auto; padding: clamp(44px,5.6vw,64px) clamp(20px,4vw,32px) clamp(56px,7vw,80px); }
-
-.post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-.post-meta-chip { font-size: 13px; font-weight: 600; color: var(--olive-700); background: var(--olive-50); border: 1px solid var(--olive-100); border-radius: var(--radius-round); padding: 6px 14px; }
-.post-meta-item { font-size: 14px; color: var(--ink-subtle); }
-.post-meta-dot { width: 4px; height: 4px; border-radius: var(--radius-round); background: var(--hairline-strong); flex: none; }
-.post-meta-share { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
-.post-share-btn {
-  width: 36px;
-  height: 36px;
-  flex: none;
-  border-radius: var(--radius-round);
-  border: 1px solid var(--hairline);
-  background: var(--canvas);
-  color: var(--ink-subtle);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  transition: color .18s ease, background .18s ease, border-color .18s ease, transform .18s ease;
-}
-.post-share-btn:hover { color: var(--olive-700); background: var(--surface-1); border-color: var(--hairline-strong); transform: translateY(-2px); }
-
-/* A gold tick between the meta rail and the first line — the article opens on
-   a mark rather than simply starting. */
-.post-rule { width: 64px; height: 3px; border-radius: 3px; background: var(--gold-500); margin: 30px 0 32px; }
-
-/* Article body. The opening paragraph is set larger and darker so the piece has
-   a lede; Arabic sets no versal, so the emphasis is the block's, never a
-   drop-capped letter's. */
-.post-body p { font-size: 18px; line-height: 1.95; color: var(--text-body); margin: 0 0 24px; }
-.post-body > p:first-child { font-size: clamp(19px,2.1vw,22px); line-height: 1.9; font-weight: 500; color: var(--ink); }
-.post-body p:last-child { margin-bottom: 0; }
-
-.post-end { margin-top: clamp(36px,4.6vw,52px); padding-top: 26px; border-top: 1px solid var(--hairline); display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
-.post-end .post-meta-share { margin-inline-start: 0; }
-
-/* Reading progress. Sits on the very top edge, above the sticky header, and is
-   driven from SiteChrome — scroll-driven CSS animations are still Chromium-only.
-   The site is RTL, so the line grows from the right. */
+/* Reading progress under the header edge (article pages; wired in SiteChrome). */
 .read-bar { position: fixed; z-index: 60; top: 0; inset-inline: 0; height: 3px; pointer-events: none; background: rgba(35,39,26,.05); }
 .read-bar > span { display: block; height: 100%; transform: scaleX(var(--read, 0)); transform-origin: right center; background: linear-gradient(to left, var(--gold-500), var(--olive-500)); }
 
-@media (prefers-reduced-motion: reduce) { .post-share-btn { transition: none; } }
 
 /* Press page */
 .press-section { max-width: var(--container-max); margin: 0 auto; padding: clamp(56px, 9vw, 88px) 32px; }
