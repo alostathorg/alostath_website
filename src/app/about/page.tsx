@@ -103,7 +103,7 @@ export default function AboutPage() {
           <Head kicker="لماذا الأستاذ؟" title="حجمٌ غير مسبوق، وتوقيتٌ استراتيجي" />
           <div className="ab-ledger" data-reveal-group>
             {SCALE.map((s) => (
-              <div key={s.u} className={`ab-figure${s.accent ? " is-accent" : ""}`}>
+              <div key={s.u} className="ab-figure">
                 <div className="ab-figure-n">{s.n}</div>
                 <div className="ab-figure-u">{s.u}</div>
                 <div className="ab-figure-d">{s.d}</div>

@@ -43,11 +43,10 @@
 .ab-mission p { font-size: clamp(16px,1.4vw,18px); line-height: 2; color: rgba(244,246,238,.82); margin: 0; }
 
 /* ── Ledger of figures ───────────────────────────────────────── */
-.ab-ledger { display: grid; grid-template-columns: repeat(4, 1fr); border-block: 1px solid var(--hairline-strong); }
+.ab-ledger { display: grid; grid-template-columns: repeat(2, 1fr); border-block: 1px solid var(--hairline-strong); }
 .ab-figure { padding: clamp(28px,3.4vw,44px) clamp(18px,2.4vw,32px); border-inline-start: 1px solid var(--hairline); }
 .ab-figure:first-child { border-inline-start: none; padding-inline-start: 0; }
 .ab-figure-n { font-size: clamp(48px,6vw,84px); font-weight: 700; line-height: 1; letter-spacing: -.02em; color: var(--olive-700); margin-bottom: 18px; font-variant-numeric: tabular-nums; }
-.ab-figure.is-accent .ab-figure-n { color: var(--gold-600); }
 .ab-figure-u { font-size: 18px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
 .ab-figure-d { font-size: 14.5px; line-height: 1.7; color: var(--text-muted); }
 
@@ -172,9 +171,6 @@
 @media (max-width: 900px) {
   .ab-manifesto-grid, .ab-vision-grid, .ab-research, .ab-licence-grid { grid-template-columns: 1fr; }
   .ab-portrait { max-width: 520px; margin-inline: auto 28px; }
-  .ab-ledger { grid-template-columns: 1fr 1fr; }
-  .ab-figure:nth-child(3) { border-inline-start: none; padding-inline-start: 0; }
-  .ab-figure:nth-child(n+3) { border-top: 1px solid var(--hairline); }
   .ab-values { grid-template-columns: 1fr 1fr; }
   .ab-value:nth-child(n) { border-inline-start: 1px solid var(--hairline); border-top: 1px solid var(--hairline); }
   .ab-value:nth-child(2n+1) { border-inline-start: none; }
