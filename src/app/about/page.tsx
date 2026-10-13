@@ -48,14 +48,6 @@ const AREAS = [
   },
 ];
 
-// The dates the profile itself gives, read as a short rail under the intro.
-const MILESTONES = [
-  { y: "2023", t: "الانطلاق", d: "تأسيس مؤسسة الأستاذ من إيمانٍ بأن المعلّم ركيزة التعليم" },
-  { y: "2024", t: "الترخيص الرسمي", d: "من المركز الوطني لتنمية القطاع غير الربحي في 20 أبريل" },
-  { y: "اليوم", t: "تحت إشراف وزارة التعليم", d: "ضمن المجموعة الثانية: التعليم والأبحاث" },
-  { y: "2030", t: "رؤية المملكة", d: "شريكٌ فاعل في بناء جيلٍ يحقق مستهدفاتها" },
-];
-
 const IMPACT = [
   "تعزيز مكانة المعلّم المهنية والمجتمعية، عبر مبادرات ومنصات تبرز دوره وتحتفي بأثره.",
   "رفع جودة التعليم، من خلال تطوير قدرات المعلّم وربطه بأدوات وشراكات نوعية.",
@@ -74,7 +66,7 @@ export default function AboutPage() {
         lede="مرخّصة من المركز الوطني لتنمية القطاع غير الربحي، وتعمل تحت إشراف وزارة التعليم — لتعزيز مكانة المعلّم وخدمة رؤية المملكة 2030."
       />
 
-      {/* MANIFESTO — who we are, and the dates that made it official */}
+      {/* MANIFESTO — who we are */}
       <section className="ab-manifesto">
         <div className="ab-wrap ab-manifesto-grid" data-reveal="1">
           <div className="ab-manifesto-text">
@@ -89,15 +81,6 @@ export default function AboutPage() {
             <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى مدرسي" />
           </figure>
         </div>
-        <ol className="ab-wrap ab-milestones" data-reveal-group>
-          {MILESTONES.map((m) => (
-            <li key={m.y}>
-              <span className="ab-ms-year">{m.y}</span>
-              <span className="ab-ms-t">{m.t}</span>
-              <span className="ab-ms-d">{m.d}</span>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* VISION / MISSION — the one line the foundation stands on */}

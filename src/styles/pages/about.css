@@ -20,7 +20,7 @@
 .ab-head.is-center .kicker::after { content: ""; width: 28px; height: 1px; background: currentColor; }
 
 /* ── Manifesto ───────────────────────────────────────────────── */
-.ab-manifesto { padding-block: clamp(72px,9vw,128px) clamp(56px,6vw,88px); }
+.ab-manifesto { padding-block: clamp(72px,9vw,128px); }
 .ab-manifesto-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px,6vw,96px); align-items: center; }
 .ab-display { font-size: clamp(40px,5.6vw,80px); font-weight: 700; line-height: 1.08; letter-spacing: -.01em; margin: 0 0 clamp(24px,3vw,36px); color: var(--ink); }
 .ab-display em { font-style: normal; color: var(--gold-600); }
@@ -32,14 +32,6 @@
 .ab-portrait::before { content: ""; position: absolute; inset: 28px -28px -28px 28px; border: 1px solid var(--gold-500); border-radius: 28px; opacity: .55; }
 .ab-portrait img { position: relative; display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 28px; box-shadow: 0 40px 80px -40px rgba(30,40,20,.55); }
 
-.ab-milestones { list-style: none; margin-top: clamp(64px,7vw,104px); padding-block: 0; display: grid; grid-template-columns: repeat(4, 1fr); position: relative; }
-.ab-milestones::before { content: ""; position: absolute; top: 9px; inset-inline: clamp(20px,5vw,56px); height: 1px; background: linear-gradient(to left, var(--gold-500), var(--hairline-strong) 60%, transparent); }
-.ab-milestones li { position: relative; padding-top: 34px; padding-inline-end: 24px; display: flex; flex-direction: column; gap: 6px; }
-.ab-milestones li::before { content: ""; position: absolute; top: 3px; right: 0; width: 13px; height: 13px; border-radius: 50%; background: var(--canvas); border: 2px solid var(--gold-500); }
-.ab-milestones li:first-child::before { background: var(--gold-500); }
-.ab-ms-year { font-family: var(--font-mono); font-size: 22px; font-weight: 500; color: var(--olive-700); }
-.ab-ms-t { font-size: 17px; font-weight: 700; color: var(--ink); }
-.ab-ms-d { font-size: 14.5px; line-height: 1.7; color: var(--text-muted); }
 
 /* ── Vision band ─────────────────────────────────────────────── */
 .ab-vision { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); padding-block: clamp(72px,9vw,128px); }
@@ -180,8 +172,6 @@
 @media (max-width: 900px) {
   .ab-manifesto-grid, .ab-vision-grid, .ab-research, .ab-licence-grid { grid-template-columns: 1fr; }
   .ab-portrait { max-width: 520px; margin-inline: auto 28px; }
-  .ab-milestones { grid-template-columns: 1fr 1fr; row-gap: 36px; }
-  .ab-milestones::before { display: none; }
   .ab-ledger { grid-template-columns: 1fr 1fr; }
   .ab-figure:nth-child(3) { border-inline-start: none; padding-inline-start: 0; }
   .ab-figure:nth-child(n+3) { border-top: 1px solid var(--hairline); }
@@ -196,7 +186,6 @@
 }
 @media (max-width: 600px) {
   .ab-portrait::before { inset: 16px -14px -16px 14px; }
-  .ab-milestones { grid-template-columns: 1fr; }
   .ab-why { grid-template-columns: 1fr; }
   .ab-values { grid-template-columns: 1fr; }
   .ab-value:nth-child(n) { border-inline-start: none; border-top: 1px solid var(--hairline); }
