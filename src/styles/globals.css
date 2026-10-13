@@ -6,6 +6,7 @@
 @import "./tokens/spacing.css";
 @import "./tokens/elevation.css";
 @import "./design-system.css";
+@import "./pages/about.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,

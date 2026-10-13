@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { BOARD, LICENSE, PARTNERS, SCALE, TEAM } from "@/lib/org";
+import { BOARD, LICENSE, PARTNERS, SCALE, TEAM, monogram } from "@/lib/org";
 
 export const revalidate = 300;
 export const metadata: Metadata = { title: "من نحن" };
@@ -48,6 +48,14 @@ const AREAS = [
   },
 ];
 
+// The dates the profile itself gives, read as a short rail under the intro.
+const MILESTONES = [
+  { y: "2023", t: "الانطلاق", d: "تأسيس مؤسسة الأستاذ من إيمانٍ بأن المعلّم ركيزة التعليم" },
+  { y: "2024", t: "الترخيص الرسمي", d: "من المركز الوطني لتنمية القطاع غير الربحي في 20 أبريل" },
+  { y: "اليوم", t: "تحت إشراف وزارة التعليم", d: "ضمن المجموعة الثانية: التعليم والأبحاث" },
+  { y: "2030", t: "رؤية المملكة", d: "شريكٌ فاعل في بناء جيلٍ يحقق مستهدفاتها" },
+];
+
 const IMPACT = [
   "تعزيز مكانة المعلّم المهنية والمجتمعية، عبر مبادرات ومنصات تبرز دوره وتحتفي بأثره.",
   "رفع جودة التعليم، من خلال تطوير قدرات المعلّم وربطه بأدوات وشراكات نوعية.",
@@ -66,224 +74,250 @@ export default function AboutPage() {
         lede="مرخّصة من المركز الوطني لتنمية القطاع غير الربحي، وتعمل تحت إشراف وزارة التعليم — لتعزيز مكانة المعلّم وخدمة رؤية المملكة 2030."
       />
 
-      {/* عن المؤسسة */}
-      <section style={wrap("96px 32px 56px")}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 56, alignItems: "center" }}>
-          <div>
-            <div style={eyebrowStyle}>عن المؤسسة</div>
-            <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: "0 0 22px" }}>المعلّم ركيزةُ التعليم</h2>
-            <p style={{ ...prose, margin: "0 0 18px" }}>مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
-            <p style={{ ...prose, margin: 0 }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها، من خلال مبادرات خلّاقة وفعّالة وذات أثر، بالتكامل مع وزارة التعليم والمؤسسات العامة المختصة.</p>
+      {/* MANIFESTO — who we are, and the dates that made it official */}
+      <section className="ab-manifesto">
+        <div className="ab-wrap ab-manifesto-grid" data-reveal="1">
+          <div className="ab-manifesto-text">
+            <div className="ab-kicker">عن المؤسسة</div>
+            <h2 className="ab-display">المعلّم <em>ركيزةُ</em> التعليم</h2>
+            <p className="ab-lead">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية.</p>
+            <p className="ab-prose">ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
+            <p className="ab-prose">وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها، من خلال مبادرات خلّاقة وفعّالة وذات أثر، بالتكامل مع وزارة التعليم والمؤسسات العامة المختصة.</p>
           </div>
-          <div style={{ position: "relative" }}>
+          <figure className="ab-portrait">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" style={{ width: "100%", height: "auto", borderRadius: 16, display: "block", border: "1px solid var(--hairline)" }} />
-          </div>
+            <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى مدرسي" />
+            <figcaption className="ab-portrait-seal">
+              <span>منذ</span>
+              <strong>2023</strong>
+            </figcaption>
+          </figure>
         </div>
-      </section>
-
-      {/* رؤية / رسالة */}
-      <section style={wrap("0 32px 56px")}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 24 }}>
-          <div style={{ background: "var(--olive-900)", color: "var(--ink-inverse)", borderRadius: 18, padding: 44 }}>
-            <div style={{ ...eyebrowStyle, color: "var(--gold-500)", marginBottom: 16 }}>رؤيتنا</div>
-            <p style={{ fontSize: "clamp(22px,2.6vw,30px)", fontWeight: 600, lineHeight: 1.55, margin: 0 }}>الريادة في تعزيز مكانة المعلّم.</p>
-          </div>
-          <div style={{ background: "var(--surface-1)", border: "1px solid var(--hairline)", borderRadius: 18, padding: 44 }}>
-            <div style={{ ...eyebrowStyle, marginBottom: 16 }}>رسالتنا</div>
-            <p style={{ fontSize: 18, lineHeight: 1.9, color: "var(--text-muted)", margin: 0 }}>مؤسسة الأستاذ كيانٌ غير ربحي مستقل في تقديم خدمات ومنتجات نوعية ومبتكرة في تعزيز مكانة المعلّم، بالشراكة مع المجتمع والجهات المعنية، من خلال قنوات خدمة مباشرة وغير مباشرة، في سبيل تحقيق قيمة نوعية مستدامة.</p>
-          </div>
-        </div>
-      </section>
-
-      {/* لماذا الأستاذ؟ */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div style={wrap("84px 32px")}>
-          <div data-reveal="1" style={{ marginBottom: 32 }}>
-            <div style={eyebrowStyle}>لماذا الأستاذ؟</div>
-            <h2 style={h2}>حجمٌ غير مسبوق، وتوقيتٌ استراتيجي</h2>
-          </div>
-          <div data-reveal-group style={{ ...grid(220), marginBottom: 24 }}>
-            {SCALE.map((s) => (
-              <div key={s.u} style={card}>
-                <div style={{ fontSize: "clamp(36px,4.4vw,50px)", fontWeight: 700, lineHeight: 1, color: s.accent ? "var(--gold-600)" : "var(--olive-600)", marginBottom: 12 }}>{s.n}</div>
-                <div style={{ fontSize: 17, fontWeight: 700, marginBottom: 6 }}>{s.u}</div>
-                <div style={cardBody}>{s.d}</div>
-              </div>
-            ))}
-          </div>
-          <div data-reveal="1" style={grid(300)}>
-            <div style={card}>
-              <h3 style={cardTitle}>نضوج البنية المؤسسية</h3>
-              <p style={cardBody}>صدور نظام التعليم العام، وإنشاء مجلس التعليم العام، ونضج البنية المؤسسية لقطاع التعليم (هيئة تقويم التعليم والتدريب، والمعهد الوطني للتطوير المهني التعليمي)، يجعل المرحلة الحالية الأنسب لبناء لبنة جديدة تُعنى بمكانة المعلّم نفسه.</p>
-            </div>
-            <div style={{ ...card, background: "var(--olive-900)", borderColor: "transparent" }}>
-              <h3 style={{ ...cardTitle, color: "var(--ink-inverse)" }}>انسجام تام مع رؤية 2030</h3>
-              <p style={{ ...cardBody, color: "var(--inverse-muted)" }}>كل مبادرة من مبادرات المؤسسة تصبّ في تنمية رأس المال البشري، وتنويع مسارات المعلّم المهنية، والتنويع الاقتصادي، والمشاركة المجتمعية.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* VALUES */}
-      <section style={wrap("96px 32px 56px")}>
-        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 48 }}>
-          <div style={eyebrowStyle}>ما يحرّكنا</div>
-          <h2 style={{ fontSize: "clamp(28px,3.8vw,46px)", fontWeight: 700, margin: 0 }}>قيمنا</h2>
-        </div>
-        <div data-reveal="1" className="values-grid">
-          {VALUES.map((v) => (
-            <div key={v.t} className="value-card">
-              <div className="value-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{v.ico}</svg></div>
-              <h3 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px", color: "var(--ink)" }}>{v.t}</h3>
-              <p style={{ fontSize: 14, lineHeight: 1.75, color: "var(--text-muted)", margin: 0 }}>{v.d}</p>
-            </div>
+        <ol className="ab-wrap ab-milestones" data-reveal-group>
+          {MILESTONES.map((m) => (
+            <li key={m.y}>
+              <span className="ab-ms-year">{m.y}</span>
+              <span className="ab-ms-t">{m.t}</span>
+              <span className="ab-ms-d">{m.d}</span>
+            </li>
           ))}
-        </div>
+        </ol>
       </section>
 
-      {/* المجالات الاستراتيجية */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div style={wrap("84px 32px")}>
-          <div data-reveal="1" style={{ marginBottom: 32 }}>
-            <div style={eyebrowStyle}>التطلّعات الاستراتيجية</div>
-            <h2 style={h2}>ثلاثة مجالات استراتيجية</h2>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
-            {AREAS.map((a) => (
-              <div key={a.n} data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(260px,1fr))", gap: 20, alignItems: "start" }}>
-                <div>
-                  <div style={{ fontFamily: "var(--font-mono)", fontSize: 26, fontWeight: 600, color: "var(--sage-500)", marginBottom: 8 }}>{a.n}</div>
-                  <h3 style={{ fontSize: 22, fontWeight: 700, margin: 0, lineHeight: 1.45 }}>{a.t}</h3>
-                </div>
-                {a.goals.map((g) => (
-                  <div key={g.t} style={card}>
-                    <h4 style={cardTitle}>{g.t}</h4>
-                    <p style={cardBody}>{g.d}</p>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* مركز الأستاذ للتطوير والأبحاث */}
-      <section style={wrap("84px 32px 40px")}>
-        <div data-reveal="1" style={{ background: "var(--olive-900)", color: "var(--ink-inverse)", borderRadius: 22, padding: "clamp(36px,5vw,56px)" }}>
-          <div style={{ ...eyebrowStyle, color: "var(--gold-500)" }}>القطب البحثي والمعرفي</div>
-          <h2 style={{ ...h2, color: "var(--ink-inverse)" }}>مركز الأستاذ للتطوير والأبحاث</h2>
-          <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--inverse-muted)", margin: "0 0 16px", maxWidth: "80ch" }}>يعمل المركز بالتوازي مع مكوّنات منظومة الأستاذ لتحقيق أهدافها الاستراتيجية، ويتخصّص في رصد ودراسة الميدان التعليمي من منظور المعلّم، وإجراء الدراسات والأبحاث التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة.</p>
-          <p style={{ fontSize: 16, lineHeight: 1.9, color: "var(--inverse-muted)", margin: 0, maxWidth: "80ch" }}>وهو ما انعكس فعلياً في دراسات ومقترحات صادرة عن المؤسسة، من بينها الدراسة التي بُني عليها مقترح «المرجعية المهنية الوطنية للمعلّم» المرفوع لولي العهد. ويتولّى المركز أيضاً توثيق أثر المبادرات والبرامج، وتطوير الأدلّة والآليات التي تسهم في التوسّع المستمر لمنظومة الأستاذ وتعزيز أثرها على المعلّم والمنظومة التعليمية والوطن.</p>
-        </div>
-      </section>
-
-      {/* الأثر الاجتماعي */}
-      <section style={wrap("40px 32px 56px")}>
-        <div data-reveal="1" style={{ marginBottom: 28 }}>
-          <div style={eyebrowStyle}>الأثر</div>
-          <h2 style={h2}>الأثر الاجتماعي</h2>
-        </div>
-        <div data-reveal-group style={grid(300)}>
-          {IMPACT.map((t, i) => (
-            <div key={i} style={{ ...card, display: "flex", gap: 14, alignItems: "flex-start" }}>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: 15, fontWeight: 600, color: "var(--gold-600)", flex: "none", marginTop: 3 }}>{String(i + 1).padStart(2, "0")}</span>
-              <p style={{ ...cardBody, color: "var(--text-body, var(--ink))" }}>{t}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* بيانات الترخيص + الملف التعريفي */}
-      <section style={wrap("40px 32px 56px")}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(320px,1fr))", gap: 28, alignItems: "stretch" }}>
+      {/* VISION / MISSION — the one line the foundation stands on */}
+      <section className="ab-vision">
+        <div className="ab-wrap ab-vision-grid" data-reveal="1">
           <div>
-            <div style={eyebrowStyle}>المؤسسة</div>
-            <h2 style={h2}>بيانات الترخيص</h2>
-            <dl style={{ margin: 0, border: "1px solid var(--hairline)", borderRadius: 16, overflow: "hidden", background: "var(--canvas)" }}>
-              {LICENSE.map((r, i) => (
-                <div key={r.k} style={{ display: "flex", justifyContent: "space-between", gap: 16, padding: "14px 20px", borderTop: i ? "1px solid var(--hairline)" : "none", fontSize: 15 }}>
-                  <dt style={{ color: "var(--text-muted)" }}>{r.k}</dt>
-                  <dd style={{ margin: 0, fontWeight: 600, fontFamily: r.mono ? "var(--font-mono)" : undefined }}>{r.v}</dd>
+            <div className="ab-kicker is-gold">رؤيتنا</div>
+            <p className="ab-vision-q">الريادة في تعزيز مكانة <em>المعلّم.</em></p>
+          </div>
+          <div className="ab-mission">
+            <div className="ab-kicker is-gold">رسالتنا</div>
+            <p>مؤسسة الأستاذ كيانٌ غير ربحي مستقل في تقديم خدمات ومنتجات نوعية ومبتكرة في تعزيز مكانة المعلّم، بالشراكة مع المجتمع والجهات المعنية، من خلال قنوات خدمة مباشرة وغير مباشرة، في سبيل تحقيق قيمة نوعية مستدامة.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY — the scale, set as a ledger of figures */}
+      <section className="ab-sec">
+        <div className="ab-wrap">
+          <Head kicker="لماذا الأستاذ؟" title="حجمٌ غير مسبوق، وتوقيتٌ استراتيجي" />
+          <div className="ab-ledger" data-reveal-group>
+            {SCALE.map((s) => (
+              <div key={s.u} className={`ab-figure${s.accent ? " is-accent" : ""}`}>
+                <div className="ab-figure-n">{s.n}</div>
+                <div className="ab-figure-u">{s.u}</div>
+                <div className="ab-figure-d">{s.d}</div>
+              </div>
+            ))}
+          </div>
+          <div className="ab-why" data-reveal-group>
+            <article>
+              <span className="ab-why-tag">التوقيت</span>
+              <h3>نضوج البنية المؤسسية</h3>
+              <p>صدور نظام التعليم العام، وإنشاء مجلس التعليم العام، ونضج البنية المؤسسية لقطاع التعليم (هيئة تقويم التعليم والتدريب، والمعهد الوطني للتطوير المهني التعليمي)، يجعل المرحلة الحالية الأنسب لبناء لبنة جديدة تُعنى بمكانة المعلّم نفسه.</p>
+            </article>
+            <article className="is-dark">
+              <span className="ab-why-tag">الاتجاه</span>
+              <h3>انسجام تام مع رؤية 2030</h3>
+              <p>كل مبادرة من مبادرات المؤسسة تصبّ في تنمية رأس المال البشري، وتنويع مسارات المعلّم المهنية، والتنويع الاقتصادي، والمشاركة المجتمعية.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* VALUES — six cells of one ruled sheet */}
+      <section className="ab-sec is-shade">
+        <div className="ab-wrap">
+          <Head kicker="ما يحرّكنا" title="قيمنا" center />
+          <div className="ab-values" data-reveal-group>
+            {VALUES.map((v, i) => (
+              <div key={v.t} className="ab-value">
+                <span className="ab-value-n">{String(i + 1).padStart(2, "0")}</span>
+                <div className="ab-value-ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{v.ico}</svg></div>
+                <h3>{v.t}</h3>
+                <p>{v.d}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* STRATEGY — three pillars, each with its goals */}
+      <section className="ab-sec">
+        <div className="ab-wrap">
+          <Head kicker="التطلّعات الاستراتيجية" title="ثلاثة مجالات استراتيجية" />
+          <div className="ab-pillars">
+            {AREAS.map((a) => (
+              <article key={a.n} className="ab-pillar" data-reveal="1">
+                <header>
+                  <span className="ab-pillar-n">{a.n}</span>
+                  <h3>{a.t}</h3>
+                </header>
+                <ul>
+                  {a.goals.map((g) => (
+                    <li key={g.t}>
+                      <h4>{g.t}</h4>
+                      <p>{g.d}</p>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* RESEARCH CENTRE */}
+      <section className="ab-wrap ab-research-wrap">
+        <div className="ab-research" data-reveal="1">
+          <div className="ab-research-main">
+            <div className="ab-kicker is-gold">القطب البحثي والمعرفي</div>
+            <h2>مركز الأستاذ للتطوير والأبحاث</h2>
+            <p>يعمل المركز بالتوازي مع مكوّنات منظومة الأستاذ لتحقيق أهدافها الاستراتيجية، ويتخصّص في رصد ودراسة الميدان التعليمي من منظور المعلّم، وإجراء الدراسات والأبحاث التطبيقية التي تخدم المؤسسة وشركاءها في اتخاذ قراراتٍ مستنيرة.</p>
+            <p>ويتولّى المركز أيضاً توثيق أثر المبادرات والبرامج، وتطوير الأدلّة والآليات التي تسهم في التوسّع المستمر لمنظومة الأستاذ وتعزيز أثرها على المعلّم والمنظومة التعليمية والوطن.</p>
+          </div>
+          <aside className="ab-research-note">
+            <span className="ab-research-tag">من أعمال المركز</span>
+            <p>الدراسة التي بُني عليها مقترح <strong>«المرجعية المهنية الوطنية للمعلّم»</strong> المرفوع لولي العهد.</p>
+          </aside>
+        </div>
+      </section>
+
+      {/* IMPACT */}
+      <section className="ab-sec">
+        <div className="ab-wrap">
+          <Head kicker="الأثر" title="الأثر الاجتماعي" />
+          <ol className="ab-impact" data-reveal-group>
+            {IMPACT.map((t, i) => {
+              const [lead, ...rest] = t.split("،");
+              return (
+                <li key={i}>
+                  <span className="ab-impact-n">{String(i + 1).padStart(2, "0")}</span>
+                  <p><strong>{lead}</strong>{rest.length ? `،${rest.join("،")}` : ""}</p>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      {/* LICENCE — set as a certificate, beside the profile download */}
+      <section className="ab-sec is-shade">
+        <div className="ab-wrap ab-licence-grid" data-reveal="1">
+          <div className="ab-cert">
+            <div className="ab-cert-head">
+              <span className="ab-cert-seal" aria-hidden>
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="6" /><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11" /></svg>
+              </span>
+              <div>
+                <div className="ab-kicker">المؤسسة</div>
+                <h2>بيانات الترخيص</h2>
+              </div>
+            </div>
+            <dl className="ab-cert-list">
+              {LICENSE.map((r) => (
+                <div key={r.k}>
+                  <dt>{r.k}</dt>
+                  <dd className={r.mono ? "is-mono" : undefined}>{r.v}</dd>
                 </div>
               ))}
             </dl>
           </div>
-          <div style={{ position: "relative", overflow: "hidden", borderRadius: 22, background: "var(--olive-900)", color: "var(--ink-inverse)", display: "flex" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/assets/alostath-logo-inverse.png" alt="" style={{ position: "absolute", bottom: -30, left: -40, width: "min(320px,60%)", height: "auto", opacity: 0.06, pointerEvents: "none" }} />
-            <div style={{ position: "relative", padding: "clamp(32px,4vw,48px)", display: "flex", flexDirection: "column", justifyContent: "center", gap: 14 }}>
-              <div style={{ display: "inline-flex", alignItems: "center", gap: 9, fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)" }}>
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>
-                الملف التعريفي
-              </div>
-              <h2 style={{ fontSize: "clamp(24px,3vw,32px)", fontWeight: 700, lineHeight: 1.4, margin: 0 }}>تعرّف على المؤسسة عن قرب</h2>
-              <p style={{ fontSize: 16, lineHeight: 1.85, color: "var(--inverse-muted)", margin: 0 }}>حمّل الملف التعريفي المفصّل لمؤسسة الأستاذ: التطلّعات الاستراتيجية، ومنصات الحضور والمحتوى، والجائزة الوطنية للمعلّم، والمبادرات، والأثر والفريق.</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center", marginTop: 6 }}>
-                <a href="/assets/alostath-profile.pdf" download className="btn btn-secondary btn-lg" style={{ display: "inline-flex", alignItems: "center", gap: 10 }}>
-                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
-                  تحميل الملف التعريفي (PDF)
-                </a>
-                <Link href="/press" style={{ fontSize: 15, fontWeight: 500, color: "var(--gold-500)", textDecoration: "none" }}>الهوية البصرية: الملف الإعلامي ←</Link>
-              </div>
+          <div className="ab-profile">
+            <div className="ab-profile-doc" aria-hidden>
+              <span>PDF</span>
+            </div>
+            <div className="ab-kicker is-gold">الملف التعريفي</div>
+            <h2>تعرّف على المؤسسة عن قرب</h2>
+            <p>حمّل الملف التعريفي المفصّل لمؤسسة الأستاذ: التطلّعات الاستراتيجية، ومنصات الحضور والمحتوى، والجائزة الوطنية للمعلّم، والمبادرات، والأثر والفريق.</p>
+            <div className="ab-profile-actions">
+              <a href="/assets/alostath-profile.pdf" download className="btn btn-secondary btn-lg">
+                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" /></svg>
+                تحميل الملف التعريفي (PDF)
+              </a>
+              <Link href="/press" className="ab-profile-link">الهوية البصرية: الملف الإعلامي ←</Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* شركاء النجاح */}
-      <section style={wrap("40px 32px 84px")}>
-        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 32 }}>
-          <div style={eyebrowStyle}>الشراكات</div>
-          <h2 style={{ ...h2, margin: 0 }}>شركاء النجاح</h2>
-        </div>
-        <div data-reveal-group style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 16 }}>
-          {PARTNERS.map((p) => (
-            <div key={p} style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 14, padding: "20px 28px", fontSize: 17, fontWeight: 700, textAlign: "center" }}>{p}</div>
-          ))}
+      {/* PARTNERS */}
+      <section className="ab-sec">
+        <div className="ab-wrap">
+          <Head kicker="الشراكات" title="شركاء النجاح" center />
+          <ul className="ab-partners" data-reveal-group>
+            {PARTNERS.map((p) => (
+              <li key={p}>{p}</li>
+            ))}
+          </ul>
         </div>
       </section>
 
       {/* BOARD + TEAM */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div data-reveal="1" style={{ ...wrap("96px 32px"), textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: "0 0 48px" }}>مجــلس أمـــناء المــؤسسة</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 28, maxWidth: 1140, margin: "0 auto" }}>
-            {BOARD.map((m) => (
-              <div key={m.name} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
-                <PersonAvatar person={m} size={144} radius={16} />
-                <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.5 }}>{m.name}</div>
-                <div style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text-subtle)", marginTop: -10 }}>{m.role}</div>
-              </div>
+      <section className="ab-sec is-shade">
+        <div className="ab-wrap">
+          <Head kicker="قيادة المؤسسة" title="مجلس أمناء المؤسسة" center />
+          <div className="ab-board" data-reveal-group>
+            {BOARD.map((m, i) => (
+              <figure key={m.name} className={`ab-member${i === 0 ? " is-chair" : ""}`}>
+                <div className="ab-member-frame">
+                  <PersonAvatar person={m} size={i === 0 ? 168 : 140} radius="var(--radius-round)" />
+                </div>
+                <figcaption>
+                  <strong>{m.name}</strong>
+                  <span>{m.role}</span>
+                </figcaption>
+              </figure>
             ))}
           </div>
-
-          <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "72px 0 28px" }}>فريق الأستاذ</h2>
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 14, maxWidth: 980, margin: "0 auto" }}>
-            {TEAM.map((n) => (
-              <div key={n} style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: "14px 24px", fontSize: 16, fontWeight: 600 }}>{n}</div>
-            ))}
+          <div className="ab-team" data-reveal="1">
+            <h3>فريق الأستاذ</h3>
+            <ul>
+              {TEAM.map((n) => (
+                <li key={n}><span aria-hidden>{monogram(n)}</span>{n}</li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
       {/* NEWSLETTER */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "96px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب.</p>
+      <section className="ab-news">
+        <div className="ab-news-in" data-reveal="1">
+          <div className="ab-kicker is-gold">النشرة البريدية</div>
+          <h2>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
+          <p>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب.</p>
           <form data-newsletter-form>
-            <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
-              <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
+            <div data-nl-success-state hidden className="ab-news-ok">
+              <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
             </div>
             <div data-nl-form-state>
-              <div style={{ display: "flex", gap: 12, maxWidth: 520, margin: "0 auto", flexWrap: "wrap" }}>
-                <input type="email" required dir="ltr" placeholder="name@example.com" style={{ flex: "1 1 240px", fontFamily: "var(--font-sans)", fontSize: 16, color: "var(--ink)", background: "var(--canvas)", border: "1px solid transparent", borderRadius: 8, padding: "14px 16px", textAlign: "left" }} />
+              <div className="ab-news-field">
+                <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
                 <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
               </div>
-              <div style={{ fontSize: 13, color: "var(--inverse-subtle)", marginTop: 16 }}>نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
+              <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
             </div>
           </form>
         </div>
@@ -292,11 +326,11 @@ export default function AboutPage() {
   );
 }
 
-const wrap = (padding: string) => ({ maxWidth: "var(--container-max)", margin: "0 auto", padding }) as const;
-const grid = (min: number) => ({ display: "grid", gridTemplateColumns: `repeat(auto-fit,minmax(${min}px,1fr))`, gap: 20 }) as const;
-const eyebrowStyle = { fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-600)", textTransform: "uppercase", marginBottom: 14 } as const;
-const h2 = { fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 18px", lineHeight: 1.35 } as const;
-const prose = { fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)" } as const;
-const card = { background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 16, padding: 26 } as const;
-const cardTitle = { fontSize: 18, fontWeight: 700, margin: "0 0 10px", color: "var(--ink)", lineHeight: 1.5 } as const;
-const cardBody = { fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 } as const;
+function Head({ kicker, title, center = false }: { kicker: string; title: string; center?: boolean }) {
+  return (
+    <div className={`ab-head${center ? " is-center" : ""}`} data-reveal="1">
+      <div className="ab-kicker">{kicker}</div>
+      <h2>{title}</h2>
+    </div>
+  );
+}
