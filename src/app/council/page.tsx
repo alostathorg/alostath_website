@@ -128,11 +128,6 @@ export default async function CouncilPage() {
             </li>
           ))}
         </ol>
-        <div className="cn-siblings" data-reveal="1">
-          <span>ويكمّل المجلسَ ضمن منصات الحضور والمحتوى:</span>
-          <Link href="/initiatives/yawmiyat-muallim">يوميات معلّم ←</Link>
-          <Link href="/initiatives/hadith-alostath">بودكاست حديث الأستاذ ←</Link>
-        </div>
       </section>
 
       {/* CLOSE — register for the next session, or bring an issue to it */}

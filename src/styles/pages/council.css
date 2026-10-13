@@ -63,9 +63,6 @@
 .cn-flow li:nth-child(3) > span { background: var(--olive-900); color: var(--gold-500); }
 .cn-flow h3 { font-size: 22px; font-weight: 700; margin: 0 0 8px; color: var(--ink); }
 .cn-flow p { font-size: 15.5px; line-height: 1.85; color: var(--text-muted); margin: 0; text-align: start; }
-.cn-siblings { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: clamp(40px,5vw,64px); padding: 18px 22px; border-radius: 18px; background: var(--surface-1); border: 1px solid var(--hairline); font-size: 15px; color: var(--text-muted); }
-.cn-siblings a { font-weight: 700; color: var(--olive-700); text-decoration: none; }
-.cn-siblings a:hover { color: var(--gold-700); }
 
 /* ── Close ───────────────────────────────────────────────────── */
 .cn-close { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; padding-bottom: clamp(72px,9vw,120px); scroll-margin-top: 100px; }
