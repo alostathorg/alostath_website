@@ -25,7 +25,7 @@
 
 /* ── The table ───────────────────────────────────────────────── */
 .cn-table-sec { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); padding-block: clamp(72px,9vw,120px); }
-.cn-table-sec::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px; opacity: .1; -webkit-mask-image: radial-gradient(50% 80% at 25% 50%, #000, transparent 75%); mask-image: radial-gradient(50% 80% at 25% 50%, #000, transparent 75%); }
+.cn-table-sec::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(50% 80% at 25% 50%, #000, transparent 75%); mask-image: radial-gradient(50% 80% at 25% 50%, #000, transparent 75%); }
 .cn-table-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: clamp(32px,5vw,80px); align-items: center; }
 .cn-table-text h2 { font-size: clamp(30px,3.6vw,48px); font-weight: 700; line-height: 1.25; margin: 0 0 16px; }
 .cn-table-text p { font-size: 17px; line-height: 1.95; color: var(--inverse-muted); margin: 0; text-align: start; }

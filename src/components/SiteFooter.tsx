@@ -35,6 +35,8 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
   const c = { ...DEFAULTS, ...((settings?.contact as Record<string, string>) ?? {}) };
   return (
     <footer style={{ background: "var(--olive-900)", color: "var(--inverse-muted)" }}>
+      {/* The identity's four-triangle colour band, as the footer's top edge. */}
+      <div aria-hidden style={{ height: 10, background: 'url("/assets/alostath-triangles.svg") 0 0 / 100% 100% no-repeat' }} />
       <div
         style={{
           maxWidth: "var(--container-max)",
