@@ -151,17 +151,12 @@
 .ab-partners li:hover { background: var(--olive-900); color: var(--ink-inverse); }
 
 /* ── Board + team ────────────────────────────────────────────── */
-.ab-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; align-items: end; }
-.ab-member { margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 18px; padding: 32px 18px 28px; border-radius: 24px; background: var(--canvas); border: 1px solid var(--hairline); transition: transform .25s cubic-bezier(.22,.7,.25,1), box-shadow .25s ease; }
-.ab-member:hover { transform: translateY(-6px); box-shadow: 0 30px 60px -36px rgba(30,40,20,.45); }
-.ab-member.is-chair { background: var(--olive-900); border-color: transparent; color: var(--ink-inverse); }
-.ab-member-frame { padding: 6px; border-radius: 50%; background: conic-gradient(from 200deg, var(--gold-500), transparent 40%, var(--gold-500) 80%); }
-.ab-member-frame > * { border-color: var(--canvas) !important; box-shadow: none !important; }
-.ab-member.is-chair .ab-member-frame > * { border-color: var(--olive-900) !important; }
+/* Same card as the homepage board: every member framed alike, no one singled out. */
+.ab-board { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 22px; max-width: 1140px; margin: 0 auto; }
+.ab-member { margin: 0; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 28px 18px; border-radius: 18px; background: var(--canvas); border: 1px solid var(--hairline); }
 .ab-member figcaption { display: flex; flex-direction: column; gap: 6px; }
-.ab-member strong { font-size: 17px; font-weight: 700; line-height: 1.5; }
+.ab-member strong { font-size: 17px; font-weight: 600; line-height: 1.5; }
 .ab-member span { font-size: 14px; line-height: 1.6; color: var(--text-subtle); }
-.ab-member.is-chair span { color: var(--gold-500); }
 
 .ab-team { margin-top: clamp(48px,6vw,80px); text-align: center; }
 .ab-team h3 { font-size: clamp(22px,2.4vw,30px); font-weight: 700; margin: 0 0 28px; }
@@ -190,7 +185,6 @@
   .ab-partners { grid-template-columns: repeat(3, 1fr); }
   .ab-partners li:nth-child(n+4) { border-top: 1px solid var(--hairline); }
   .ab-partners li:nth-child(4) { border-inline-start: none; }
-  .ab-board { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 900px) {
   .ab-manifesto-grid, .ab-vision-grid, .ab-research, .ab-licence-grid { grid-template-columns: 1fr; }
@@ -224,11 +218,6 @@
   .ab-partners li:nth-child(odd) { border-inline-start: none; }
   .ab-partners li:nth-child(-n+2) { border-top: none; }
   .ab-partners li:last-child:nth-child(odd) { grid-column: span 2; }
-  .ab-board { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .ab-member { padding: 22px 10px; }
-  .ab-member-frame > * { width: 104px !important; height: 104px !important; }
-  .ab-member strong { font-size: 15px; }
-  .ab-member span { font-size: 12.5px; }
   .ab-team ul { grid-template-columns: 1fr; }
   .ab-news-field { flex-direction: column; background: transparent; border: none; padding: 0; }
   .ab-news-field input { background: rgba(244,246,238,.08); border: 1px solid rgba(244,246,238,.2); border-radius: 12px; }

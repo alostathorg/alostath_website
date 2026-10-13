@@ -279,11 +279,9 @@ export default function AboutPage() {
         <div className="ab-wrap">
           <Head kicker="قيادة المؤسسة" title="مجلس أمناء المؤسسة" center />
           <div className="ab-board" data-reveal-group>
-            {BOARD.map((m, i) => (
-              <figure key={m.name} className={`ab-member${i === 0 ? " is-chair" : ""}`}>
-                <div className="ab-member-frame">
-                  <PersonAvatar person={m} size={i === 0 ? 168 : 140} radius="var(--radius-round)" />
-                </div>
+            {BOARD.map((m) => (
+              <figure key={m.name} className="ab-member card-lift">
+                <PersonAvatar person={m} size={124} radius="var(--radius-round)" />
                 <figcaption>
                   <strong>{m.name}</strong>
                   <span>{m.role}</span>
