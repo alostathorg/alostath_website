@@ -124,7 +124,9 @@ export default function PageHero({
 
           <h1 className="ph-title" style={titleMax ? { maxWidth: titleMax } : undefined}>
             {title}
-            {accent && <span className="ph-accent">{accent}</span>}
+            {/* The space keeps the words apart when the full stage sets the
+                accent inline on the title's own line. */}
+            {accent && <>{" "}<span className="ph-accent">{accent}</span></>}
           </h1>
 
           <div className="ph-rule" />

@@ -38,13 +38,13 @@ export default async function HomePage() {
   const featuredInitiatives = initiatives.slice(0, 3);
 
   return (
-    <PageShell active="home">
+    <PageShell active="home" overlayHeader>
       <PageHero
         id="hero"
         size="xl"
         full
         image={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`}
-        imageOpacity={0.5}
+        imageOpacity={1}
         eyebrow="مؤسسة الأستاذ"
         title="المعلم"
         accent="ناظر القيم"

@@ -565,6 +565,212 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 }
 
 /* ============================================================
+   Full-bleed stage — the home page hero (PageHero `full`)
+
+   Edge to edge and the full viewport tall, with the header floating
+   over it. The photograph runs at full strength under a cinematic
+   scrim: dark at the reading edge (inline-start in RTL = right), a
+   head band so the transparent header stays legible, and a floor the
+   copy settles onto. The copy sits low on the stage, title on one
+   line, with the lede and the buttons sharing the row beneath it.
+   Rules are keyed on [data-hero] so they outrank the xl density's
+   title and padding without !important.
+   ============================================================ */
+
+.ph-full {
+  min-height: 100vh;
+  min-height: 100svh;
+  align-items: flex-end;
+  background: #10160a;
+}
+.ph-full[data-hero] .ph-photo {
+  transform-origin: 30% 40%;
+  animation: phDrift 22s cubic-bezier(.25,.6,.3,1) both;
+}
+@keyframes phDrift { from { transform: scale(1.12); } to { transform: scale(1.02); } }
+.ph-full[data-photo]::before {
+  background:
+    linear-gradient(to bottom, rgba(12,17,7,.72) 0%, rgba(12,17,7,.28) 16%, rgba(12,17,7,0) 30%),
+    linear-gradient(to left, rgba(12,17,7,.86) 0%, rgba(12,17,7,.55) 34%, rgba(12,17,7,.12) 68%, rgba(12,17,7,0) 100%),
+    linear-gradient(to top, rgba(12,17,7,.94) 0%, rgba(12,17,7,.62) 26%, rgba(12,17,7,0) 58%);
+}
+/* A whisper of film grain so the darkened photo reads as image, not mud. */
+.ph-full[data-photo] .ph-mark {
+  display: block;
+  inset: 0;
+  width: auto;
+  aspect-ratio: auto;
+  z-index: 1;
+  opacity: .07;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  -webkit-mask-image: none;
+  mask-image: none;
+  mix-blend-mode: overlay;
+}
+.ph-full[data-hero] .ph-orb-sage { display: none; }
+
+.ph-full[data-hero] .ph-inner {
+  max-width: 1440px;
+  padding: calc(74px + 48px) clamp(20px,5vw,72px) clamp(104px,15vh,148px);
+}
+.ph-full[data-hero] .ph-col {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    "eyebrow eyebrow"
+    "title   title"
+    "rule    rule"
+    "lede    actions";
+  column-gap: clamp(32px,5vw,80px);
+  align-items: end;
+}
+.ph-full[data-hero] .ph-eyebrow { grid-area: eyebrow; justify-self: start; }
+.ph-full[data-hero] .ph-title   { grid-area: title; }
+.ph-full[data-hero] .ph-rule    { grid-area: rule; }
+.ph-full[data-hero] .ph-lede    { grid-area: lede; }
+.ph-full[data-hero] .ph-actions { grid-area: actions; }
+
+.ph-full[data-hero] .ph-eyebrow {
+  gap: 14px;
+  font-size: 14px;
+  letter-spacing: .4px;
+  margin-bottom: clamp(14px,2.4vh,22px);
+  text-shadow: 0 1px 12px rgba(0,0,0,.4);
+}
+.ph-full[data-hero] .ph-eyebrow::before {
+  content: "";
+  width: 36px;
+  height: 1px;
+  background: currentColor;
+  opacity: .8;
+}
+
+/* One line, always: the size tracks the viewport width so «المعلم ناظر
+   القيم» fills the stage on a desktop and still fits a 320px phone. */
+.ph-full[data-hero] .ph-title {
+  font-size: clamp(38px, 8vw, 132px);
+  line-height: 1.05;
+  max-width: none;
+  white-space: nowrap;
+  letter-spacing: -.01em;
+  text-shadow: 0 2px 30px rgba(0,0,0,.35);
+}
+.ph-full[data-hero] .ph-accent {
+  display: inline;
+  background: linear-gradient(180deg, #E2C46A 0%, var(--gold-500) 55%, #A9851F 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+  filter: drop-shadow(0 2px 18px rgba(0,0,0,.35));
+}
+
+.ph-full[data-hero] .ph-rule {
+  width: 100%;
+  height: 1px;
+  border-radius: 0;
+  margin-block: clamp(22px,3.6vh,36px) 0;
+  background: linear-gradient(to left, var(--gold-500) 0, rgba(191,155,47,.55) 96px, rgba(244,246,238,.18) 96px, rgba(244,246,238,.18) 70%, transparent);
+}
+
+.ph-full[data-hero] .ph-lede {
+  max-width: 64ch;
+  font-size: clamp(16px,1.35vw,19px);
+  line-height: 1.95;
+  color: rgba(244,246,238,.86);
+  margin-top: clamp(20px,3vh,30px);
+}
+.ph-full[data-hero] .ph-actions {
+  margin-top: clamp(20px,3vh,30px);
+  flex-wrap: nowrap;
+}
+.ph-full[data-hero] .btn-outline.btn-on-dark {
+  background: rgba(244,246,238,.06);
+  border-color: rgba(244,246,238,.38);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.ph-full[data-hero] .btn-outline.btn-on-dark:hover { background: rgba(244,246,238,.14); border-color: rgba(244,246,238,.6); }
+
+.ph-full[data-hero] .scroll-cue { bottom: clamp(22px,4vh,36px); color: rgba(244,246,238,.62); }
+.ph-full::after { opacity: .7; }
+
+/* Staged entrance: the photo settles while the copy rises in order (the
+   column's own one-piece .hero-in rise is switched off for this). */
+.ph-full[data-hero] .hero-in { animation: none; }
+.ph-full[data-hero] .hero-in > .ph-col > * { animation: ostRiseSoft .9s cubic-bezier(.22,.7,.25,1) both; }
+.ph-full[data-hero] .hero-in > .ph-col > .ph-eyebrow { animation-delay: .15s; }
+.ph-full[data-hero] .hero-in > .ph-col > .ph-title   { animation-delay: .25s; }
+.ph-full[data-hero] .hero-in > .ph-col > .ph-rule    { animation-delay: .4s; }
+.ph-full[data-hero] .hero-in > .ph-col > .ph-lede    { animation-delay: .5s; }
+.ph-full[data-hero] .hero-in > .ph-col > .ph-actions { animation-delay: .6s; }
+
+@media (max-width: 1100px) {
+  .ph-full[data-hero] .ph-col {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "eyebrow" "title" "rule" "lede" "actions";
+  }
+  .ph-full[data-hero] .ph-actions { flex-wrap: wrap; }
+}
+@media (max-width: 700px) {
+  .ph-full { min-height: 100svh; }
+  .ph-full[data-hero] .ph-inner { padding: calc(64px + 32px) 20px clamp(92px,14vh,120px); }
+  .ph-full[data-hero] .ph-title { font-size: clamp(28px, 10.2vw, 64px); }
+  .ph-full[data-photo]::before {
+    background:
+      linear-gradient(to bottom, rgba(12,17,7,.7) 0%, rgba(12,17,7,0) 24%),
+      linear-gradient(to top, rgba(12,17,7,.95) 0%, rgba(12,17,7,.78) 42%, rgba(12,17,7,.25) 78%, rgba(12,17,7,.15) 100%);
+  }
+  .ph-full[data-hero] .ph-actions .btn { flex: 1 1 0; justify-content: center; }
+  .ph-full[data-hero] .ph-rule { background: linear-gradient(to left, var(--gold-500) 0, var(--gold-500) 72px, rgba(244,246,238,.18) 72px, transparent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ph-full[data-hero] .ph-photo, .ph-full[data-hero] .hero-in > .ph-col > * { animation: none; }
+}
+
+/* ── Overlay header (home) ────────────────────────────────────────
+   Transparent with light ink over the hero; turns into the regular
+   frosted white bar once the page scrolls or the phone menu opens. */
+header[data-overlay] {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: 50;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background .3s ease, border-color .3s ease, box-shadow .3s ease, -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease;
+}
+header[data-overlay] > div { max-width: 1440px !important; padding-inline: clamp(20px,5vw,72px) !important; }
+header[data-overlay] .logo-inverse { display: none; }
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .logo-ink { display: none; }
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .logo-inverse { display: block; }
+header[data-overlay].is-scrolled,
+header[data-overlay]:has(nav.is-open) {
+  background: rgba(255,255,255,.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border-bottom-color: var(--hairline);
+}
+@media (min-width: 981px) {
+  header[data-overlay]:not(.is-scrolled) .nav-a { color: rgba(244,246,238,.82); }
+  header[data-overlay]:not(.is-scrolled) .nav-a:hover,
+  header[data-overlay]:not(.is-scrolled) .nav-a[data-active="true"] { color: #fff; background: rgba(244,246,238,.12); }
+  header[data-overlay]:not(.is-scrolled) .header-cta .btn {
+    background: rgba(244,246,238,.1);
+    color: #fff;
+    border: 1px solid rgba(244,246,238,.42);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  header[data-overlay]:not(.is-scrolled) .header-cta .btn:hover { background: var(--gold-500); border-color: var(--gold-500); color: var(--ink); }
+}
+header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .nav-toggle {
+  background: rgba(244,246,238,.08);
+  border-color: rgba(244,246,238,.32);
+  color: #fff;
+}
+
+/* ============================================================
    Detail-page body kit (initiatives / awards / council / partners).
    The hero these pages open with lives in the .ph-* block above.
    ============================================================ */

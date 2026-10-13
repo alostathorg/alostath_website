@@ -1,17 +1,25 @@
 import Link from "next/link";
 import { HOME, NAV_PRIMARY, NAV_SECONDARY } from "@/lib/nav";
 
-export default function SiteHeader({ active }: { active?: string }) {
+export default function SiteHeader({ active, overlay = false }: { active?: string; overlay?: boolean }) {
   return (
     <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        background: "rgba(255,255,255,0.92)",
-        backdropFilter: "blur(12px)",
-        borderBottom: "1px solid var(--hairline)",
-      }}
+      {...(overlay ? { "data-overlay": "" } : {})}
+      // The overlay header's surface lives in design-system.css: it has to
+      // change with scroll state and with the phone menu, and an inline style
+      // would always win.
+      style={
+        overlay
+          ? undefined
+          : {
+              position: "sticky",
+              top: 0,
+              zIndex: 50,
+              background: "rgba(255,255,255,0.92)",
+              backdropFilter: "blur(12px)",
+              borderBottom: "1px solid var(--hairline)",
+            }
+      }
     >
       <div
         style={{
@@ -31,7 +39,11 @@ export default function SiteHeader({ active }: { active?: string }) {
           style={{ display: "flex", alignItems: "center", textDecoration: "none", flex: "none" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" style={{ height: 46, width: "auto" }} />
+          <img className="logo-ink" src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" style={{ height: 46, width: "auto" }} />
+          {overlay && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img className="logo-inverse" src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ height: 46, width: "auto" }} />
+          )}
         </Link>
         {/* gap/align-items live in design-system.css, not here: the <980px panel
             needs to override them and an inline style would always win. */}
