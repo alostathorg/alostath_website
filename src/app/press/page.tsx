@@ -1,16 +1,44 @@
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { getPressAssets } from "@/lib/queries";
+import { getPressAssets, getSettings } from "@/lib/queries";
+import { LICENSE } from "@/lib/org";
+import CopyButton from "./CopyButton";
 
 export const revalidate = 60;
 export const metadata: Metadata = { title: "الملف الإعلامي" };
 
-// Fixed light/dark preview backdrops for logo cards, matched to the original.
-const LOGO_BG = ["var(--surface-1)", "var(--olive-900)", "var(--gold-50)"];
+// The backdrop each logo version is meant for, in asset order.
+const LOGO_STAGE = ["light", "dark", "gold"];
+
+// The boilerplate a journalist can paste as-is — the foundation's own words.
+const BOILERPLATE =
+  "مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م، ومرخّصة من المركز الوطني لتنمية القطاع غير الربحي، وتعمل تحت إشراف وزارة التعليم. تسعى إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، وشريكاً فاعلاً لمنظومة التعليم والمجتمع في تحقيق رؤية المملكة 2030، عبر الجائزة الوطنية للمعلّم ومبادرات الأستاذ ومنصات الحضور والمحتوى ومجلس الأستاذ.";
+
+const SHEET = [
+  ...LICENSE.filter((r) => ["اسم المنظمة", "نوع المنظمة", "جهة الإشراف", "رقم الترخيص"].includes(r.k)),
+  { k: "سنة الانطلاق", v: "2023", mono: true },
+  { k: "المقر", v: "الرياض، المملكة العربية السعودية" },
+];
+
+/** Light swatches get dark ink. */
+function isLight(hex: string) {
+  const n = parseInt(hex.replace("#", ""), 16);
+  const r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+  return 0.299 * r + 0.587 * g + 0.114 * b > 170;
+}
+
+function DownloadIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" y1="15" x2="12" y2="3" />
+    </svg>
+  );
+}
 
 export default async function PressPage() {
-  const assets = await getPressAssets();
+  const [assets, settings] = await Promise.all([getPressAssets(), getSettings()]);
+  const email = (settings.contact as Record<string, string> | undefined)?.email ?? "contact@ostath.sa";
   const logos = assets.filter((a) => a.kind === "logo");
   const colors = assets.filter((a) => a.kind === "color");
   const pdf = assets.find((a) => a.kind === "pdf");
@@ -30,48 +58,88 @@ export default async function PressPage() {
         }
       />
 
+      {/* FACT SHEET — what a journalist needs first, ready to copy */}
+      <section className="pr-wrap pr-facts-sec">
+        <div className="pr-facts" data-reveal="1">
+          <div className="pr-boiler">
+            <div className="kicker">نبذة جاهزة للنشر</div>
+            <p>{BOILERPLATE}</p>
+            <CopyButton text={BOILERPLATE} label="نسخ النبذة" />
+          </div>
+          <dl className="pr-sheet">
+            {SHEET.map((r) => (
+              <div key={r.k}>
+                <dt>{r.k}</dt>
+                <dd className={r.mono ? "is-mono" : undefined}>{r.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
+
       {/* LOGOS */}
-      <section id="logos" className="press-section">
-        <div className="press-head" data-reveal="1">
-          <div className="eyebrow">الشعار</div>
-          <h2 className="h-accent" style={{ display: "inline-block" }}>شعار المؤسسة</h2>
+      <section id="logos" className="pr-wrap pr-sec">
+        <div className="pr-head" data-reveal="1">
+          <div className="kicker">الشعار</div>
+          <h2>شعار المؤسسة</h2>
           <p>استخدم الشعار وفق المساحات الآمنة المحيطة به، ولا تُعِد تلوينه أو تشويهه أو تغيير نسبه. اختر النسخة المناسبة حسب خلفية التصميم.</p>
         </div>
-        <div className="logo-grid" data-reveal="1">
+        <div className="pr-logos" data-reveal-group>
           {logos.map((logo, i) => (
-            <div key={logo.id} className="logo-card">
-              <div className="logo-preview" style={{ background: LOGO_BG[i % LOGO_BG.length] }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={logo.file_url ?? "/assets/alostath-logo.png"} alt={logo.title} />
+            <article key={logo.id} className="pr-logo">
+              <div className={`pr-logo-stage is-${LOGO_STAGE[i % LOGO_STAGE.length]}`}>
+                <span className="pr-logo-safe">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={logo.file_url ?? "/assets/alostath-logo.png"} alt={logo.title} />
+                </span>
               </div>
-              <div className="logo-meta">
-                <h3>{logo.title}</h3>
-                <p>{logo.description}</p>
-                <div className="dl-row">
-                  <a className="dl-btn" href={logo.file_url ?? "#"} download>⬇ تحميل</a>
+              <div className="pr-logo-meta">
+                <div>
+                  <h3>{logo.title}</h3>
+                  <p>{logo.description}</p>
                 </div>
+                <a className="pr-dl" href={logo.file_url ?? "#"} download aria-label={`تحميل ${logo.title}`}>
+                  <DownloadIcon />
+                </a>
               </div>
-            </div>
+            </article>
           ))}
+        </div>
+        <div className="pr-rules" data-reveal="1">
+          <div className="is-do">
+            <h3>افعل</h3>
+            <ul>
+              <li>اترك مساحةً آمنة حول الشعار</li>
+              <li>استخدم النسخة المعكوسة على الخلفيات الداكنة</li>
+              <li>حافظ على نسب الشعار الأصلية</li>
+            </ul>
+          </div>
+          <div className="is-dont">
+            <h3>لا تفعل</h3>
+            <ul>
+              <li>لا تُعِد تلوين الشعار</li>
+              <li>لا تمدّه أو تضغطه أو تميله</li>
+              <li>لا تضعه على خلفيةٍ مزدحمة تُضعف وضوحه</li>
+            </ul>
+          </div>
         </div>
       </section>
 
       {/* COLORS */}
-      <section id="colors" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div className="press-section">
-          <div className="press-head" data-reveal="1">
-            <div className="eyebrow">الألوان</div>
-            <h2 className="h-accent" style={{ display: "inline-block" }}>لوحة الألوان الرسمية</h2>
-            <p>تعتمد هوية الأستاذ على تدرّجات الزيتوني والذهبي والمريمي. استخدم القيم التالية لضمان اتساق الهوية عبر المواد المطبوعة والرقمية.</p>
+      <section id="colors" className="pr-colors-sec">
+        <div className="pr-wrap pr-sec">
+          <div className="pr-head" data-reveal="1">
+            <div className="kicker">الألوان</div>
+            <h2>لوحة الألوان الرسمية</h2>
+            <p>تعتمد هوية الأستاذ على تدرّجات الزيتوني والذهبي والمريمي. انقر على اللون لنسخ قيمته.</p>
           </div>
-          <div className="swatch-grid" data-reveal="1">
+          <div className="pr-palette" data-reveal-group>
             {colors.map((c) => {
-              const hex = String((c.meta as { hex?: string })?.hex ?? "#000000");
-              const light = hex.toUpperCase() === "#F4F6EE";
+              const hex = String((c.meta as { hex?: string })?.hex ?? "#000000").toUpperCase();
               return (
-                <div key={c.id} className="swatch">
-                  <div className="swatch-chip" style={{ background: hex, ...(light ? { borderBottom: "1px solid var(--hairline)" } : {}) }} />
-                  <div className="swatch-info"><p className="nm txt-plain">{c.title}</p><p className="hx">{hex}</p></div>
+                <div key={c.id} className={`pr-swatch${isLight(hex) ? " is-light" : ""}`} style={{ "--sw": hex } as React.CSSProperties}>
+                  <span className="pr-swatch-nm">{c.title}</span>
+                  <CopyButton text={hex} label={hex} className="pr-swatch-hex" />
                 </div>
               );
             })}
@@ -79,33 +147,46 @@ export default async function PressPage() {
         </div>
       </section>
 
-      {/* TYPOGRAPHY + GUIDELINES */}
-      <section className="press-section">
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 0.8fr", gap: 28 }} data-reveal="1">
-          <div style={{ border: "1px solid var(--hairline)", borderRadius: 20, padding: "clamp(28px,4vw,44px)", background: "var(--canvas)" }}>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>الخطوط</div>
-            <div style={{ fontSize: "clamp(40px,6vw,72px)", fontWeight: 700, lineHeight: 1.1, color: "var(--ink)", marginBottom: 8 }}>الأستاذ</div>
-            <div style={{ fontSize: 18, color: "var(--text-muted)", marginBottom: 14 }}>أ ب ت ث ج ح خ &nbsp; ABCD &nbsp; 0123456789</div>
-            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 14, fontWeight: 600, color: "var(--olive-700)", background: "var(--olive-50)", border: "1px solid var(--olive-100)", borderRadius: 9, padding: "7px 13px", marginBottom: 20 }}>IBM Plex Sans Arabic</div>
-            <p style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 }}>تعتمد هوية المؤسسة على خط <strong style={{ color: "var(--ink)" }}>IBM Plex Sans Arabic</strong> بأوزانه المختلفة، بما يضمن وضوح القراءة واتساق النبرة البصرية في العربية واللاتينية.</p>
+      {/* TYPE + DOWNLOADS */}
+      <section className="pr-wrap pr-sec pr-type-grid">
+        <div className="pr-type" data-reveal="1">
+          <div className="kicker">الخطوط</div>
+          <div className="pr-type-big">الأستاذ</div>
+          <div className="pr-type-weights">
+            {[["Regular", 400], ["Medium", 500], ["SemiBold", 600], ["Bold", 700]].map(([n, w]) => (
+              <span key={n} style={{ fontWeight: w as number }}>أبجد <small>{n}</small></span>
+            ))}
           </div>
-          <div style={{ border: "1px solid var(--hairline)", borderRadius: 20, padding: "clamp(28px,4vw,44px)", background: "var(--olive-900)", color: "var(--ink-inverse)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-            <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", marginBottom: 12 }}>دليل الهوية</div>
-            <h3 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 12px", color: "var(--ink-inverse)" }}>حمّل الدليل الكامل</h3>
-            <p style={{ fontSize: 15, lineHeight: 1.8, color: "var(--inverse-muted)", margin: "0 0 24px" }}>إرشادات الاستخدام، والمساحات الآمنة، والاستخدامات الممنوعة، والشعارات والألوان والخطوط في ملفٍ واحد.</p>
-            <a href={pdf?.file_url ?? "#"} className="btn btn-secondary btn-md" download style={{ alignSelf: "flex-start" }}>{pdf ? "تحميل الدليل (PDF)" : "قريباً"}</a>
-          </div>
+          <p>تعتمد هوية المؤسسة على خط <strong>IBM Plex Sans Arabic</strong> بأوزانه المختلفة، بما يضمن وضوح القراءة واتساق النبرة البصرية في العربية واللاتينية، ويرافقه IBM Plex Mono للأرقام والقيم.</p>
+          <div className="pr-type-glyphs" dir="ltr">ABCD abcd 0123456789</div>
+        </div>
+        <div className="pr-downloads" data-reveal="1">
+          <div className="kicker is-gold">التحميل</div>
+          <h2>كل ما تحتاجه في ملف</h2>
+          <a href={zip?.file_url ?? "#"} download className="pr-file">
+            <span className="pr-file-type">ZIP</span>
+            <span><strong>الحزمة الكاملة</strong>الشعارات بصيغها، والألوان، والخطوط</span>
+            <DownloadIcon />
+          </a>
+          <a href={pdf?.file_url ?? "#"} download={pdf ? true : undefined} className={`pr-file${pdf ? "" : " is-soon"}`} aria-disabled={!pdf || undefined}>
+            <span className="pr-file-type">PDF</span>
+            <span><strong>دليل الهوية</strong>{pdf ? "إرشادات الاستخدام والمساحات الآمنة" : "قريباً"}</span>
+            <DownloadIcon />
+          </a>
         </div>
       </section>
 
       {/* PRESS CONTACT */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)" }}>
-        <div className="press-section" style={{ textAlign: "center" }}>
-          <div data-reveal="1" style={{ maxWidth: 620, margin: "0 auto" }}>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>للتواصل الإعلامي</div>
-            <h2 style={{ fontSize: "clamp(24px,3vw,34px)", fontWeight: 700, margin: "0 0 14px", color: "var(--ink)" }}>طلبات الصحافة والإعلام</h2>
-            <p className="txt-justify is-center" style={{ fontSize: 16, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px" }}>لطلبات المقابلات أو الأصول الإضافية أو الاستفسارات الإعلامية، تواصل مع الفريق مباشرة.</p>
-            <a href="mailto:contact@ostath.sa" className="btn btn-primary btn-md">contact@ostath.sa</a>
+      <section className="pr-wrap">
+        <div className="pr-contact" data-reveal="1">
+          <div>
+            <div className="kicker">للتواصل الإعلامي</div>
+            <h2>طلبات الصحافة والإعلام</h2>
+            <p>لطلبات المقابلات أو الأصول الإضافية أو الاستفسارات الإعلامية، تواصل مع الفريق مباشرة.</p>
+          </div>
+          <div className="pr-contact-mail">
+            <a href={`mailto:${email}`} dir="ltr">{email}</a>
+            <CopyButton text={email} label="نسخ البريد" />
           </div>
         </div>
       </section>
