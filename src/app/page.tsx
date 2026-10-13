@@ -2,7 +2,9 @@ import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import PersonAvatar from "@/components/PersonAvatar";
-import { getInitiatives, getPosts, getSettings } from "@/lib/queries";
+import { getInitiatives, getNews, getPosts, getSettings } from "@/lib/queries";
+import { NEWS_PATH } from "@/lib/news";
+import NewsCard from "./news/NewsCard";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
 import { BOARD } from "@/lib/org";
@@ -23,14 +25,16 @@ const BENTO = [
 ];
 
 export default async function HomePage() {
-  const [initiatives, posts, settings] = await Promise.all([
+  const [initiatives, news, posts, settings] = await Promise.all([
     getInitiatives(),
+    getNews(),
     getPosts(),
     getSettings(),
   ]);
   const council = (settings.council as Record<string, string>) ?? {};
   const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
   const featuredPosts = posts.slice(0, 3);
+  const latestNews = news.slice(0, 3);
   const featuredInitiatives = initiatives.slice(0, 3);
 
   return (
@@ -178,9 +182,22 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* NEWS — hidden until something is published, so the home page never
+          shows an empty strip. */}
+      {latestNews.length > 0 && (
+        <section id="news" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 0" }}>
+          <SectionHead eyebrow="المركز الإعلامي" title="آخر الأخبار" href={NEWS_PATH} cta="كل الأخبار ←" />
+          <div className="news-grid is-fit" data-reveal-group>
+            {latestNews.map((n) => (
+              <NewsCard key={n.id} item={n} />
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* BLOG */}
       <section id="blog" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <SectionHead eyebrow="مقالات وأخبار" title="من مدونة الأستاذ" href="/blog" cta="كل المقالات ←" />
+        <SectionHead eyebrow="مقالات وقراءات" title="من مدونة الأستاذ" href="/blog" cta="كل المقالات ←" />
         <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
           {featuredPosts.map((p) => (
             <Link key={p.id} href={`/blog/${p.slug}`} className="card-lift" style={cardStyle}>

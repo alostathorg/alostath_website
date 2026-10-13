@@ -13,7 +13,7 @@ export default async function BlogPage() {
   return (
     <PageShell active="blog">
       <PageHero
-        eyebrow="مقالات وأخبار"
+        eyebrow="مقالات وقراءات"
         title="مدونة الأستاذ"
         lede="قراءاتٌ وتحليلاتٌ ومستجدّاتٌ حول مكانة المعلّم، ومبادرات المنظومة وأثرها في خدمة التعليم."
       />

@@ -44,6 +44,7 @@ supabase/
   migrations/0001_init.sql schema + enums + RLS + storage bucket
   migrations/0002_community.sql  مجتمع الأستاذ tables, RLS, public write RPCs
   migrations/0003_brand_partners.sql  الإعلامات table + RLS
+  migrations/0004_news.sql  الأخبار table + RLS
   seed.ts                  one‑time seed from the original hardcoded content
 ```
 
@@ -86,8 +87,10 @@ or the Supabase CLI (`supabase db push`):
 - `supabase/migrations/0003_brand_partners.sql` — الإعلامات: the
   `brand_partners` table and its RLS (public read of published rows, admin
   write).
+- `supabase/migrations/0004_news.sql` — الأخبار: the `news` table and its RLS
+  (public read of published rows, admin write).
 
-All three files are idempotent, so re-running them is safe. `0001` and `0002`
+All four files are idempotent, so re-running them is safe. `0001` and `0002`
 have already been applied to the live project — never edit them; add a numbered
 file instead.
 
@@ -236,3 +239,18 @@ program's status (`open` → apply, `soon` → notify‑me, `closed` → waitlis
 `interest` → initiative, `council`) and `POST`s to `/api/register`, which inserts
 into `registrations`. Anonymous inserts are the only write anon may perform;
 reads are admin‑only.
+
+## الأخبار — news (`/news`)
+
+Dated foundation news, kept apart from the blog: an article is an essay, a news
+item is an event. **One table**, `news` (`supabase/migrations/0004_news.sql`),
+edited from **المحتوى → الأخبار**. Like `brand_partners`, `published` defaults
+to **false**, so a new item is a draft until an editor flips `منشور`.
+
+- `kind` is one of `news` (أخبار المؤسسة), `announcement` (إعلانات) or `media`
+  (في الإعلام). Labels live in `src/lib/news.ts`; adding a type is a code change.
+- `pinned` puts an item in the wide card at the top of `/news`.
+- For `media` items, `source_name` / `source_url` show the outlet and a
+  «اقرأ الخبر في مصدره» button that links to the original story.
+- The three latest items appear on the home page above the blog strip; the
+  section is hidden while nothing is published.

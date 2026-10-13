@@ -241,6 +241,57 @@ const posts = [
   },
 ];
 
+// ── NEWS («الأخبار») ─────────────────────────────────────────────────────────
+// One sample per type so the dashboard has a template for each. Every one is a
+// DRAFT (published: false) and inserted with ignoreDuplicates, as the brand
+// partner samples are: they show the shape of an entry and never go live or
+// overwrite an editor's changes on a re-run.
+const news = [
+  {
+    slug: "sample-foundation-news",
+    title: "مؤسسة الأستاذ تُطلق الدورة الجديدة من الجائزة الوطنية للمعلّم",
+    kind: "news",
+    excerpt: "نموذج لخبر من أخبار المؤسسة: ملخّص في سطرين يوضح ما حدث ومتى ولماذا يهمّ المعلّم.",
+    published_at: "2026-10-01",
+    pinned: true,
+    cover_url: `${FRAMER}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`,
+    body: [
+      "الفقرة الأولى تجيب عن الأسئلة الأساسية: ماذا حدث، ومتى، وأين، ومن المعنيّ به.",
+      "الفقرة الثانية تضيف التفاصيل والسياق، مثل الشركاء أو الأرقام أو تصريح من المؤسسة.",
+      "الفقرة الأخيرة تخبر المعلّم بما يمكنه فعله الآن: التسجيل، أو المتابعة، أو التواصل.",
+    ],
+    source_name: null,
+    source_url: null,
+    published: false,
+  },
+  {
+    slug: "sample-announcement",
+    title: "إعلان: فتح باب التسجيل في لقاء مجلس الأستاذ القادم",
+    kind: "announcement",
+    excerpt: "نموذج لإعلان قصير: موعد، ومكان، وطريقة التسجيل.",
+    published_at: "2026-09-20",
+    pinned: false,
+    cover_url: `${FRAMER}/mCslxKkFLteZMFGp4F7hgasq1c.jpg?width=1600&height=900`,
+    body: ["يُكتفى في الإعلان عادةً بفقرة أو فقرتين تحددان الموعد وطريقة المشاركة، مع رابط التسجيل."],
+    source_name: null,
+    source_url: null,
+    published: false,
+  },
+  {
+    slug: "sample-media-coverage",
+    title: "صحيفة محلية تستعرض أثر مبادرة ناصية في تمكين المعلّمين",
+    kind: "media",
+    excerpt: "نموذج لخبر «في الإعلام»: ملخّص لما نُشر عن المؤسسة، مع رابط المصدر الأصلي.",
+    published_at: "2026-09-05",
+    pinned: false,
+    cover_url: `${FRAMER}/v1dJdT3sKhUDYCR574juSpMYW4.jpg?width=1600&height=900`,
+    body: ["اكتب ملخّصاً قصيراً بكلماتك لما تناوله التقرير، ثم أضف اسم الوسيلة الإعلامية ورابط الخبر الأصلي في قسم «الروابط»."],
+    source_name: "اسم الوسيلة الإعلامية",
+    source_url: "https://example.com/news/story",
+    published: false,
+  },
+];
+
 // ── PRESS ASSETS ─────────────────────────────────────────────────────────────
 const pressAssets = [
   { title: "الشعار الأساسي", kind: "logo", description: "للاستخدام على الخلفيات الفاتحة.", file_url: "/assets/alostath-logo.png", sort_order: 1 },
@@ -438,6 +489,15 @@ async function main() {
       .upsert(brandPartners as never, { onConflict: "slug", ignoreDuplicates: true });
     if (error) throw new Error(`brand_partners: ${error.message}`);
     console.log(`✓ brand_partners (${brandPartners.length} drafts, existing rows untouched)`);
+  }
+
+  // News drafts: insert-if-missing only (see the note above the array).
+  {
+    const { error } = await db
+      .from("news")
+      .upsert(news as never, { onConflict: "slug", ignoreDuplicates: true });
+    if (error) throw new Error(`news: ${error.message}`);
+    console.log(`✓ news (${news.length} drafts, existing rows untouched)`);
   }
 
   console.log("\nSeed complete.");

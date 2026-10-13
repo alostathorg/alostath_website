@@ -6,6 +6,7 @@ import type {
   BrandPartner,
   CommunityIdea,
   Initiative,
+  NewsItem,
   Partner,
   PressAsset,
   SiteSettings,
@@ -93,6 +94,32 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
     .eq("published", true)
     .maybeSingle();
   return latinDigitsDeep((data as BlogPost | null) ?? null);
+}
+
+/** Published news, pinned first, then newest first. */
+export async function getNews(): Promise<NewsItem[]> {
+  const supabase = publicClient();
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from("news")
+    .select("*")
+    .eq("published", true)
+    .order("pinned", { ascending: false })
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  return latinDigitsDeep((data as NewsItem[] | null) ?? []);
+}
+
+export async function getNewsItem(slug: string): Promise<NewsItem | null> {
+  const supabase = publicClient();
+  if (!supabase) return null;
+  const { data } = await supabase
+    .from("news")
+    .select("*")
+    .eq("slug", slug)
+    .eq("published", true)
+    .maybeSingle();
+  return latinDigitsDeep((data as NewsItem | null) ?? null);
 }
 
 export async function getPartners(): Promise<Partner[]> {
