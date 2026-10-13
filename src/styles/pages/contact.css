@@ -17,7 +17,7 @@
 .ct-channel strong { font-size: 20px; font-weight: 700; line-height: 1.5; color: var(--ink); text-align: right; }
 .ct-channel-go { margin-top: auto; padding-top: 14px; font-size: 14px; font-weight: 700; color: var(--olive-700); }
 .ct-channel.is-dark { background: var(--olive-900); border-color: transparent; color: var(--ink-inverse); overflow: hidden; isolation: isolate; }
-.ct-channel.is-dark::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 72px 72px; opacity: .12; -webkit-mask-image: radial-gradient(80% 100% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(80% 100% at 0% 0%, #000, transparent 70%); }
+.ct-channel.is-dark::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 72px; opacity: .12; -webkit-mask-image: radial-gradient(80% 100% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(80% 100% at 0% 0%, #000, transparent 70%); }
 .ct-channel.is-dark .ct-channel-ico { background: rgba(244,246,238,.08); color: var(--gold-500); border-color: rgba(244,246,238,.16); }
 .ct-channel.is-dark .ct-channel-k { color: var(--gold-500); }
 .ct-channel.is-dark strong { color: var(--ink-inverse); font-size: 17px; }

@@ -23,7 +23,7 @@
 .in-card:hover { transform: translateY(-6px); border-color: var(--hairline-strong); box-shadow: 0 40px 80px -48px rgba(30,40,20,.6); }
 
 .in-cover { position: relative; overflow: hidden; isolation: isolate; aspect-ratio: 16 / 9; background: var(--stage); display: flex; align-items: center; justify-content: center; }
-.in-cover::before { content: ""; position: absolute; inset: 0; z-index: 0; background: url("/assets/hero-pattern.svg") 0 0 / 80px 80px; opacity: .14; -webkit-mask-image: radial-gradient(90% 120% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(90% 120% at 0% 0%, #000, transparent 70%); transition: opacity .4s ease; }
+.in-cover::before { content: ""; position: absolute; inset: 0; z-index: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 80px; opacity: .14; -webkit-mask-image: radial-gradient(90% 120% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(90% 120% at 0% 0%, #000, transparent 70%); transition: opacity .4s ease; }
 .in-card.is-sage .in-cover::before { filter: hue-rotate(70deg) saturate(.6); }
 .in-cover::after { content: ""; position: absolute; width: 60%; aspect-ratio: 1; top: -30%; left: -15%; border-radius: 50%; background: radial-gradient(circle, var(--tone-soft), transparent 70%); filter: blur(30px); z-index: 0; }
 .in-card:hover .in-cover::before { opacity: .24; }
@@ -61,7 +61,7 @@
 /* ── Propose ─────────────────────────────────────────────────── */
 .in-propose-wrap { padding-bottom: clamp(72px,9vw,120px); }
 .in-propose { position: relative; overflow: hidden; isolation: isolate; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px,5vw,72px); align-items: center; border-radius: 32px; padding: clamp(36px,5vw,72px); color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.in-propose::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); }
+.in-propose::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); }
 .in-propose h2 { font-size: clamp(28px,3.2vw,42px); font-weight: 700; line-height: 1.3; margin: 0 0 14px; }
 .in-propose-text > p { font-size: 16.5px; line-height: 1.9; color: var(--inverse-muted); margin: 0 0 28px; text-align: start; }
 .in-propose-steps { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }

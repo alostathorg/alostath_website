@@ -393,7 +393,7 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
    page opens on its dark stage edge to edge, the way the home page
    does. Three densities share it: md = index pages, lg = detail pages,
    xl = the home page (with `full`, the whole viewport). A page supplies
-   content, never chrome: the stage, its girih lattice, the gold light,
+   content, never chrome: the stage, its brand pattern, the gold light,
    the grain, the title rule and the horizon all live here.
    ============================================================ */
 
@@ -457,21 +457,21 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* Girih lattice: an eight-point star tiling in fine gold line, strongest
-   at the far (left) edge and dissolving before it reaches the text
-   column. It replaces the blurred logo watermark. */
+/* The Alostath brand pattern (the arched line band from the identity) in
+   fine gold, strongest at the far (left) edge and dissolving before it
+   reaches the text column. It drifts sideways one tile per cycle. */
 .ph-mark {
   position: absolute;
   inset: 0;
   z-index: 0;
   opacity: .16;
   pointer-events: none;
-  background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px repeat;
+  background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px repeat;
   -webkit-mask-image: radial-gradient(85% 120% at 0% 30%, #000 0%, rgba(0,0,0,.55) 38%, transparent 70%);
   mask-image: radial-gradient(85% 120% at 0% 30%, #000 0%, rgba(0,0,0,.55) 38%, transparent 70%);
   animation: phLattice 60s linear infinite;
 }
-@keyframes phLattice { to { background-position: 96px 96px; } }
+@keyframes phLattice { to { background-position: 622px 0; } }
 
 /* Photograph + cinematic scrim: a head band so the floating header stays
    legible, dark under the text (right, RTL), and a floor for the copy. */
@@ -992,13 +992,13 @@ header[data-overlay]:not(.is-scrolled):not(:has(nav.is-open)) .nav-toggle {
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(191,155,47,.45) 18%, rgba(191,155,47,.45) 82%, transparent);
 }
-/* The hero's girih lattice, dissolving toward the copy. */
+/* The hero's brand pattern, dissolving toward the copy. */
 .dp-monument::after {
   content: "";
   position: absolute;
   z-index: 0;
   inset: 0;
-  background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px;
+  background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px;
   opacity: .12;
   pointer-events: none;
   -webkit-mask-image: radial-gradient(70% 120% at 0% 100%, #000, transparent 70%);

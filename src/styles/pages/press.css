@@ -79,7 +79,7 @@
 .pr-type-glyphs { font-family: var(--font-mono); font-size: 15px; color: var(--ink-subtle); text-align: right; }
 
 .pr-downloads { position: relative; overflow: hidden; isolation: isolate; display: flex; flex-direction: column; gap: 12px; padding: clamp(28px,3.6vw,48px); border-radius: 28px; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.pr-downloads::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 80px 80px; opacity: .1; -webkit-mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); }
+.pr-downloads::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 80px; opacity: .1; -webkit-mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); mask-image: radial-gradient(70% 100% at 0% 0%, #000, transparent 70%); }
 .pr-downloads h2 { font-size: clamp(24px,2.4vw,30px); font-weight: 700; margin: 0 0 10px; }
 .pr-file { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 16px; padding: 18px 20px; border-radius: 18px; background: rgba(244,246,238,.06); border: 1px solid rgba(244,246,238,.14); color: var(--ink-inverse); text-decoration: none; font-size: 13.5px; color: var(--inverse-muted); transition: background .2s ease, border-color .2s ease; }
 .pr-file strong { display: block; font-size: 16px; color: var(--ink-inverse); margin-bottom: 2px; }

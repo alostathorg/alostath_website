@@ -26,7 +26,7 @@
 
 /* ── Close ───────────────────────────────────────────────────── */
 .aw-close { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.aw-close::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/hero-pattern.svg") 0 0 / 96px 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); }
+.aw-close::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 70%); }
 .aw-close-in { max-width: 760px; margin-inline: auto; padding: clamp(72px,9vw,120px) clamp(20px,5vw,56px); text-align: center; }
 .aw-close-in .kicker { margin-bottom: 12px; }
 .aw-close h2 { font-size: clamp(28px,3.4vw,44px); font-weight: 700; margin: 0 0 14px; }
