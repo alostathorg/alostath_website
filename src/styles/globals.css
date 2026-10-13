@@ -13,6 +13,7 @@
 @import "./pages/initiatives.css";
 @import "./pages/partners.css";
 @import "./pages/awards.css";
+@import "./pages/council.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -77,11 +78,6 @@ section[id] {
 
 /* ── Page-scoped styles that lived in individual pages' <style> blocks ── */
 
-/* Awards + council responsive rows */
-@media (max-width: 880px) {
-  .award-row { grid-template-columns: 1fr !important; }
-  .council-row { grid-template-columns: 1fr !important; }
-}
 
 
 /* Hero jump pill (initiatives index) */
