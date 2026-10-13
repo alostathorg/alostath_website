@@ -254,9 +254,12 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
 }
 .h-accent.is-center::after { margin-inline: auto; }
 
-/* Reusable eyebrow label */
+/* Reusable eyebrow label. Block, not inline-block: centered section heads
+   set the heading itself inline-block (so its gold rule centres under it),
+   and an inline-block eyebrow would then share its line wherever the row
+   had room. */
 .eyebrow {
-  display: inline-block;
+  display: block;
   font-size: 13px;
   font-weight: 600;
   letter-spacing: .5px;
