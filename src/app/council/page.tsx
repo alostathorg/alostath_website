@@ -26,7 +26,6 @@ const PILLS = [
 export default async function CouncilPage() {
   const settings = await getSettings();
   const council = (settings.council as Record<string, string>) ?? {};
-  const nextSession = council.next_session ?? "2026-08-05T19:00:00+03:00";
 
   return (
     <PageShell active="council">
@@ -91,24 +90,17 @@ export default async function CouncilPage() {
         </div>
       </section>
 
-      {/* COUNTDOWN */}
+      {/* REGISTER INTEREST — no date until the next session is announced */}
       <section id="next" style={{ maxWidth: "var(--container-max)", margin: "64px auto 0", padding: "0 32px" }}>
-        <div data-reveal="1" data-countdown-target={nextSession} style={{ position: "relative", overflow: "hidden", borderRadius: 24, background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
+        <div data-reveal="1" style={{ position: "relative", overflow: "hidden", borderRadius: 24, background: "var(--olive-900)", color: "var(--ink-inverse)" }}>
           {council.hero_image && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={council.hero_image} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.2 }} />
           )}
           <div style={{ position: "relative", padding: "clamp(40px,6vw,72px) clamp(28px,5vw,64px)", textAlign: "center" }}>
             <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "0.5px", color: "var(--gold-500)", textTransform: "uppercase", marginBottom: 14 }}>الجلسة القادمة</div>
-            <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 36px" }}>مجلسنا القادم قـــــــــرب</h2>
-            <div style={{ display: "flex", gap: "clamp(10px,2vw,20px)", justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
-              {[["secs", "ثوانٍ"], ["mins", "دقائق"], ["hours", "ساعات"], ["days", "أيام"]].map(([k, label]) => (
-                <div key={k} style={{ background: "rgba(244,246,238,0.06)", border: "1px solid rgba(244,246,238,0.14)", borderRadius: 16, padding: "20px 8px", minWidth: 96 }}>
-                  <div data-countdown={k} style={{ fontFamily: "var(--font-mono)", fontSize: "clamp(32px,5vw,52px)", fontWeight: 500, color: "var(--gold-500)", lineHeight: 1 }}>--</div>
-                  <div style={{ fontSize: 14, color: "var(--inverse-subtle)", marginTop: 8 }}>{label}</div>
-                </div>
-              ))}
-            </div>
+            <h2 style={{ fontSize: "clamp(30px,4.4vw,52px)", fontWeight: 700, margin: "0 0 16px" }}>كن أول من يعلم</h2>
+            <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", maxWidth: "60ch", margin: "0 auto 36px", textWrap: "balance" }}>سجّل اهتمامك بحضور مجلس الأستاذ، وسنُبلغك بموعد الجلسة القادمة فور الإعلان عنه.</p>
             <button type="button" data-register="مجلس الأستاذ" data-register-status="council" className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
           </div>
         </div>
