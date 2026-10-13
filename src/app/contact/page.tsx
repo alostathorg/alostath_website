@@ -7,6 +7,19 @@ import { getSettings } from "@/lib/queries";
 export const revalidate = 60;
 export const metadata: Metadata = { title: "تواصل معنا" };
 
+const MAP_LINK = "https://www.google.com/maps/search/?api=1&query=Prince+Mohammed+Bin+Abdulaziz+Road,+Al+Maather,+Riyadh+12314";
+
+// Sent as the message's subject (program_name), so the team can sort the inbox.
+const SUBJECTS = ["استفسار عام", "شراكة أو رعاية", "الانضمام كمعلّم", "استفسار عن مبادرة", "الجائزة الوطنية للمعلّم", "طلب إعلامي"];
+
+// Requests with a shorter road than the form.
+const ROUTES = [
+  { t: "انضم كمعلّم", d: "سجّل في مجتمع الأستاذ", href: "/community#join" },
+  { t: "عندك فكرة مبادرة؟", d: "شاركها مع فريق المؤسسة", href: "/community#idea" },
+  { t: "الجائزة الوطنية للمعلّم", d: "سجّل اهتمامك بالترشّح", href: "/awards" },
+  { t: "للإعلاميين", d: "الشعار والألوان والهوية البصرية", href: "/press" },
+];
+
 export default async function ContactPage() {
   const settings = await getSettings();
   const c = (settings.contact as Record<string, string>) ?? {};
@@ -22,97 +35,126 @@ export default async function ContactPage() {
         lede="للشراكة، أو الانضمام كمعلّم، أو الاستفسار عن المبادرات والبرامج — فريق الأستاذ في خدمتك."
       />
 
-      {/* BODY */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "80px 32px 56px" }}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 40, alignItems: "start" }}>
-          {/* info */}
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            <InfoCard label="الهاتف" icon={<IconPhone />}>
-              <a href={`tel:${phone.replace(/\s/g, "")}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "right" }}>{phone}</a>
-            </InfoCard>
-            <InfoCard label="البريد الإلكتروني" icon={<IconMail />}>
-              <a href={`mailto:${email}`} dir="ltr" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block", textAlign: "right" }}>{email}</a>
-            </InfoCard>
-            <InfoCard label="العنوان" icon={<IconPin />}>
-              <div style={{ fontSize: 16, fontWeight: 500, color: "var(--text-body)", lineHeight: 1.7 }}>{address}</div>
-            </InfoCard>
-            <InfoCard label="للاستفسارات الإعلامية" icon={<IconFile />}>
-              <Link href="/press" style={{ fontSize: 18, fontWeight: 600, color: "var(--olive-700)", textDecoration: "none", display: "block" }}>الملف الإعلامي</Link>
-              <div style={{ fontSize: 14, color: "var(--text-muted)", lineHeight: 1.7, marginTop: 4 }}>الشعار والألوان والهوية البصرية للتحميل.</div>
-            </InfoCard>
-            <div style={{ borderRadius: 14, overflow: "hidden", border: "1px solid var(--hairline)", height: 240 }}>
-              <iframe title="الموقع على الخريطة" src="https://www.google.com/maps?q=Prince+Mohammed+Bin+Abdulaziz+Road,+Al+Maather,+Riyadh+12314&output=embed" style={{ width: "100%", height: "100%", border: 0, display: "block" }} loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
-            </div>
-          </div>
+      {/* CHANNELS — three ways to reach us, each one tap away */}
+      <section className="ct-wrap ct-channels" data-reveal-group>
+        <a href={`tel:${phone.replace(/\s/g, "")}`} className="ct-channel">
+          <span className="ct-channel-ico"><IconPhone /></span>
+          <span className="ct-channel-k">اتصل بنا</span>
+          <strong dir="ltr">{phone}</strong>
+          <span className="ct-channel-go">اتصال ←</span>
+        </a>
+        <a href={`mailto:${email}`} className="ct-channel">
+          <span className="ct-channel-ico"><IconMail /></span>
+          <span className="ct-channel-k">راسلنا</span>
+          <strong dir="ltr">{email}</strong>
+          <span className="ct-channel-go">كتابة بريد ←</span>
+        </a>
+        <a href={MAP_LINK} target="_blank" rel="noopener noreferrer" className="ct-channel is-dark">
+          <span className="ct-channel-ico"><IconPin /></span>
+          <span className="ct-channel-k">زرنا</span>
+          <strong>{address}</strong>
+          <span className="ct-channel-go">الاتجاهات ↗</span>
+        </a>
+      </section>
 
-          {/* form */}
-          <div style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "clamp(28px,4vw,44px)" }}>
-            <form data-contact-form>
-              <div data-ct-success-state hidden style={{ textAlign: "center", padding: "32px 0" }}>
-                <div style={{ width: 64, height: 64, borderRadius: 9999, background: "var(--sage-100)", color: "var(--sage-700)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px", fontSize: 30, fontWeight: 700 }}>✓</div>
-                <h3 style={{ fontSize: 24, fontWeight: 700, margin: "0 0 10px" }}>وصلتنا رسالتك</h3>
-                <p className="txt-plain" style={{ fontSize: 16, lineHeight: 1.8, color: "var(--text-muted)", margin: 0 }}>شكراً لتواصلك مع مؤسسة الأستاذ — سيردّ عليك فريقنا في أقرب وقت.</p>
-              </div>
-              <div data-ct-form-state>
-                <h2 style={{ fontSize: 26, fontWeight: 700, margin: "0 0 8px" }}>أرسل لنا رسالة</h2>
-                <p style={{ fontSize: 15, lineHeight: 1.7, color: "var(--text-muted)", margin: "0 0 28px" }}>املأ النموذج وسنعاود التواصل معك في أقرب فرصة.</p>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
-                  <Field label="الاسم الأول"><input className="ct-field" name="firstName" placeholder="اكتب اسمك" /></Field>
-                  <Field label="اسم العائلة"><input className="ct-field" name="lastName" placeholder="اسم العائلة" /></Field>
+      {/* FORM + ROUTES */}
+      <section className="ct-wrap ct-main">
+        <div className="ct-form-card" data-reveal="1">
+          <form data-contact-form>
+            <div data-ct-success-state hidden className="ct-done">
+              <span className="ct-done-ico">✓</span>
+              <h3>وصلتنا رسالتك</h3>
+              <p>شكراً لتواصلك مع مؤسسة الأستاذ — سيردّ عليك فريقنا في أقرب وقت.</p>
+            </div>
+            <div data-ct-form-state>
+              <div className="kicker">نموذج التواصل</div>
+              <h2>أرسل لنا رسالة</h2>
+              <p className="ct-form-note">املأ النموذج وسنعاود التواصل معك في أقرب فرصة.</p>
+              <div className="ct-grid">
+                <div className="reg-field is-wide">
+                  <label className="reg-label" htmlFor="ct-subject">موضوع الرسالة</label>
+                  <select className="reg-input" id="ct-subject" name="subject" defaultValue="استفسار عام">
+                    {SUBJECTS.map((t) => <option key={t} value={t}>{t}</option>)}
+                  </select>
                 </div>
-                <Field label="البريد الإلكتروني" mb><input className="ct-field" dir="ltr" type="email" name="email" placeholder="name@example.com" style={{ textAlign: "left" }} /></Field>
-                <Field label="رقم الهاتف" mb><input className="ct-field" dir="ltr" type="tel" name="phone" placeholder="05xxxxxxxx" style={{ textAlign: "left" }} /></Field>
-                <div style={{ marginBottom: 24 }}>
-                  <label style={{ display: "block", fontSize: 14, fontWeight: 500, marginBottom: 6 }}>نص الرسالة</label>
-                  <textarea className="ct-field" rows={5} name="message" placeholder="كيف يمكننا مساعدتك؟" style={{ resize: "vertical", lineHeight: 1.7 }} />
+                <div className="reg-field">
+                  <label className="reg-label" htmlFor="ct-first">الاسم الأول</label>
+                  <input className="reg-input" id="ct-first" name="firstName" placeholder="اكتب اسمك" required />
                 </div>
-                <button type="submit" className="btn btn-primary btn-lg" style={{ width: "100%" }}>إرسال الرسالة</button>
+                <div className="reg-field">
+                  <label className="reg-label" htmlFor="ct-last">اسم العائلة</label>
+                  <input className="reg-input" id="ct-last" name="lastName" placeholder="اسم العائلة" />
+                </div>
+                <div className="reg-field">
+                  <label className="reg-label" htmlFor="ct-email">البريد الإلكتروني</label>
+                  <input className="reg-input" id="ct-email" dir="ltr" type="email" name="email" placeholder="name@example.com" required />
+                </div>
+                <div className="reg-field">
+                  <label className="reg-label" htmlFor="ct-phone">رقم الهاتف <span className="cm-optional">(اختياري)</span></label>
+                  <input className="reg-input" id="ct-phone" dir="ltr" type="tel" name="phone" placeholder="05xxxxxxxx" />
+                </div>
+                <div className="reg-field is-wide">
+                  <label className="reg-label" htmlFor="ct-message">نص الرسالة</label>
+                  <textarea className="reg-input" id="ct-message" rows={5} name="message" placeholder="كيف يمكننا مساعدتك؟" />
+                </div>
               </div>
-            </form>
+              <button type="submit" className="btn btn-primary btn-lg ct-submit">إرسال الرسالة</button>
+            </div>
+          </form>
+        </div>
+
+        <aside className="ct-routes" data-reveal="1">
+          <h2>تبحث عن شيءٍ محدد؟</h2>
+          <p>بعض الطلبات لها طريقٌ أقصر.</p>
+          <ul>
+            {ROUTES.map((r) => (
+              <li key={r.href}>
+                <Link href={r.href}>
+                  <span>
+                    <strong>{r.t}</strong>
+                    {r.d}
+                  </span>
+                  <span aria-hidden>←</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </section>
+
+      {/* MAP */}
+      <section className="ct-wrap ct-map-wrap">
+        <div className="ct-map" data-reveal="1">
+          <iframe title="موقع مؤسسة الأستاذ على الخريطة" src="https://www.google.com/maps?q=Prince+Mohammed+Bin+Abdulaziz+Road,+Al+Maather,+Riyadh+12314&output=embed" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+          <div className="ct-map-card">
+            <span className="kicker">مقرّ المؤسسة</span>
+            <strong>{address}</strong>
+            <a href={MAP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-md">افتح في الخرائط ↗</a>
           </div>
         </div>
       </section>
 
       {/* NEWSLETTER */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src="https://framerusercontent.com/images/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736" alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "88px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
+      <section className="ab-news">
+        <div className="ab-news-in" data-reveal="1">
+          <div className="kicker is-gold is-center">النشرة البريدية</div>
+          <h2>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
+          <p>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
           <form data-newsletter-form>
-            <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
-              <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
+            <div data-nl-success-state hidden className="ab-news-ok">
+              <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
             </div>
             <div data-nl-form-state>
-              <div style={{ display: "flex", gap: 12, maxWidth: 520, margin: "0 auto", flexWrap: "wrap" }}>
-                <input type="email" required dir="ltr" placeholder="name@example.com" style={{ flex: "1 1 240px", fontFamily: "var(--font-sans)", fontSize: 16, color: "var(--ink)", background: "var(--canvas)", border: "1px solid transparent", borderRadius: 8, padding: "14px 16px", textAlign: "left" }} />
+              <div className="ab-news-field">
+                <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
                 <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
               </div>
-              <div style={{ fontSize: 13, color: "var(--inverse-subtle)", marginTop: 16 }}>نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
+              <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
             </div>
           </form>
         </div>
       </section>
     </PageShell>
-  );
-}
-
-function InfoCard({ label, icon, children }: { label: string; icon: React.ReactNode; children: React.ReactNode }) {
-  return (
-    <div style={{ background: "var(--surface-1)", border: "1px solid var(--hairline)", borderRadius: 14, padding: 24, display: "flex", gap: 16, alignItems: "flex-start" }}>
-      <div style={{ width: 44, height: 44, borderRadius: 10, background: "var(--olive-50)", color: "var(--olive-600)", display: "flex", alignItems: "center", justifyContent: "center", flex: "none" }}>{icon}</div>
-      <div><div style={{ fontSize: 13, fontWeight: 600, color: "var(--ink-subtle)", marginBottom: 4 }}>{label}</div>{children}</div>
-    </div>
-  );
-}
-
-function Field({ label, mb, children }: { label: string; mb?: boolean; children: React.ReactNode }) {
-  return (
-    <div style={mb ? { marginBottom: 16 } : undefined}>
-      <label style={{ display: "block", fontSize: 14, fontWeight: 500, marginBottom: 6 }}>{label}</label>
-      {children}
-    </div>
   );
 }
 
@@ -124,7 +166,4 @@ function IconMail() {
 }
 function IconPin() {
   return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z" /><circle cx="12" cy="10" r="3" /></svg>;
-}
-function IconFile() {
-  return <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /></svg>;
 }
