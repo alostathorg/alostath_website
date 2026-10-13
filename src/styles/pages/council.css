@@ -65,21 +65,17 @@
 .cn-flow p { font-size: 15.5px; line-height: 1.85; color: var(--text-muted); margin: 0; text-align: start; }
 
 /* ── Close ───────────────────────────────────────────────────── */
-.cn-close { display: grid; grid-template-columns: 1.6fr 1fr; gap: 20px; padding-bottom: clamp(72px,9vw,120px); scroll-margin-top: 100px; }
+.cn-close { padding-bottom: clamp(72px,9vw,120px); scroll-margin-top: 100px; }
 .cn-close-main { position: relative; overflow: hidden; isolation: isolate; display: flex; align-items: flex-end; min-height: 360px; border-radius: 32px; padding: clamp(32px,4vw,56px); color: var(--ink-inverse); background: var(--olive-900); }
 .cn-close-main > img { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
 .cn-close-main::before { content: ""; position: absolute; inset: 0; z-index: -1; background: linear-gradient(to top, rgba(12,17,7,.95) 10%, rgba(12,17,7,.55) 60%, rgba(12,17,7,.35)); }
 .cn-close-main h2 { font-size: clamp(32px,4vw,52px); font-weight: 700; line-height: 1.2; margin: 0 0 12px; }
 .cn-close-main p { font-size: 17px; line-height: 1.85; color: rgba(244,246,238,.82); margin: 0 0 26px; max-width: 52ch; text-align: start; }
-.cn-close-side { display: flex; flex-direction: column; justify-content: center; align-items: flex-start; border-radius: 32px; padding: clamp(28px,3.4vw,44px); background: var(--gold-50); border: 1px solid var(--gold-100); }
-.cn-close-ico { width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; background: var(--canvas); color: var(--gold-700); border: 1px solid var(--gold-100); margin-bottom: 20px; }
-.cn-close-side h3 { font-size: 24px; font-weight: 700; margin: 0 0 8px; color: var(--ink); }
-.cn-close-side p { font-size: 15.5px; line-height: 1.85; color: var(--text-muted); margin: 0 0 22px; text-align: start; }
 
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 1080px) { .cn-cards { grid-template-columns: repeat(2, 1fr); } }
 @media (max-width: 900px) {
-  .cn-intro, .cn-table-grid, .cn-close { grid-template-columns: 1fr; }
+  .cn-intro, .cn-table-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   .cn-cards { grid-template-columns: 1fr; }

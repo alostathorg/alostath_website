@@ -1,4 +1,3 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
@@ -130,7 +129,7 @@ export default async function CouncilPage() {
         </ol>
       </section>
 
-      {/* CLOSE — register for the next session, or bring an issue to it */}
+      {/* CLOSE — register for the next session */}
       <section id="next" className="cn-wrap cn-close">
         <div className="cn-close-main" data-reveal="1">
           {council.hero_image && (
@@ -143,14 +142,6 @@ export default async function CouncilPage() {
             <p>سجّل اهتمامك بحضور مجلس الأستاذ، وسنُبلغك بموعد الجلسة القادمة فور الإعلان عنه.</p>
             <button type="button" data-register="مجلس الأستاذ" data-register-status="council" className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
           </div>
-        </div>
-        <div className="cn-close-side" data-reveal="1">
-          <span className="cn-close-ico" aria-hidden>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" /></svg>
-          </span>
-          <h3>صوتك جزءٌ من الحوار</h3>
-          <p>رشّح قضيّةً من الميدان تستحقّ النقاش في جلستنا القادمة.</p>
-          <Link href="/contact" className="btn btn-primary btn-md">رشّح قضيّة</Link>
         </div>
       </section>
     </PageShell>
