@@ -42,6 +42,7 @@ export default async function HomePage() {
         eyebrow="مؤسسة الأستاذ"
         title="المعلم"
         accent="ناظر القيم"
+        lede="نسعى لأن نكون مرجعاً وطنياً في خدمة المعلّم والتعليم، وشريكاً فاعلاً لمنظومة التعليم والمجتمع في تحقيق رؤية المملكة 2030."
         actions={
           <>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
@@ -51,8 +52,8 @@ export default async function HomePage() {
         scrollCue="#about"
       />
 
-      {/* ABOUT — the foundation's introduction lives here, not in the hero (the
-          hero carries only the headline). The photo sits in a gold offset frame
+      {/* ABOUT — the foundation's introduction lives here; the hero carries only
+          its aspiration, in one line, so the two never say the same thing. The photo sits in a gold offset frame
           with a «since» seal; the founding facts are set as a ledger. */}
       <section id="about" className="home-about">
         <div className="home-about-in">
