@@ -42,7 +42,6 @@ export default async function HomePage() {
         eyebrow="مؤسسة الأستاذ"
         title="المعلم"
         accent="ناظر القيم"
-        lede="مؤسسة أهلية سعودية غير ربحية لتعزيز مكانة المعلّم، تسعى لأن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، وشريكاً فاعلاً لمنظومة التعليم والمجتمع في تحقيق رؤية المملكة 2030، من خلال مبادرات خلّاقة وفعّالة وذات أثر بالتكامل مع وزارة التعليم والمؤسسات العامة المختصة."
         actions={
           <>
             <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
@@ -52,8 +51,9 @@ export default async function HomePage() {
         scrollCue="#about"
       />
 
-      {/* ABOUT — the photo in a gold offset frame with a «since» seal, the
-          founding facts set as a ledger instead of a second paragraph. */}
+      {/* ABOUT — the foundation's introduction lives here, not in the hero (the
+          hero carries only the headline). The photo sits in a gold offset frame
+          with a «since» seal; the founding facts are set as a ledger. */}
       <section id="about" className="home-about">
         <div className="home-about-in">
           <figure className="home-about-media" data-reveal="1">
