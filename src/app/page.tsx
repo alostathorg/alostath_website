@@ -52,8 +52,9 @@ export default async function HomePage() {
         scrollCue="#about"
       />
 
-      {/* ABOUT — the photo in a gold offset frame with a «since» seal, the
-          founding facts set as a ledger instead of a second paragraph. */}
+      {/* ABOUT — the photo in a gold offset frame with a «since» seal. The hero
+          already says what the foundation is, so this says why it exists and
+          why now (from «من نحن»), and the licence facts sit in the ledger. */}
       <section id="about" className="home-about">
         <div className="home-about-in">
           <figure className="home-about-media" data-reveal="1">
@@ -69,7 +70,7 @@ export default async function HomePage() {
           <div data-reveal="1">
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
             <h2 className="h-accent home-about-title">عن الأستاذ</h2>
-            <p className="home-about-lede">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
+            <p className="home-about-lede">انطلقت مؤسسة الأستاذ من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ومع صدور نظام التعليم العام، وإنشاء مجلس التعليم العام، ونضج البنية المؤسسية لقطاع التعليم، جاءت المؤسسة لبنةً جديدة تُعنى بمكانة المعلّم نفسه.</p>
             <dl className="home-facts">
               {ABOUT_FACTS.map((f) => (
                 <div key={f.k}>
@@ -300,11 +301,12 @@ export default async function HomePage() {
   );
 }
 
-// The founding facts, from the licence (lib/org LICENSE) — set as a ledger.
+// The licence facts (lib/org LICENSE), set as a ledger. The founding year is
+// the photo's seal, so it isn't repeated here.
 const ABOUT_FACTS = [
-  { k: "الانطلاقة", v: "2023م" },
   { k: "الترخيص الرسمي", v: "20/04/2024م" },
   { k: "جهة الإشراف", v: "وزارة التعليم" },
+  { k: "التصنيف", v: "التعليم والأبحاث" },
 ];
 
 function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
