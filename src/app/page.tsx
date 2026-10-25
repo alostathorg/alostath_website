@@ -242,46 +242,31 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* JOIN — one closing band instead of two back-to-back asks: membership
-          is the main offer (it takes a teacher), the newsletter beside it is the
-          lighter option (it takes only an email). */}
+      {/* JOIN — one quiet, centred closing ask: membership is the offer (it
+          takes a teacher); the newsletter is a single slim row beneath it for
+          those who only want the email. */}
       <section id="join" className="home-join">
-        <span className="home-join-orb" aria-hidden />
-        <div className="home-join-in">
-          <div data-reveal="1">
-            <div className="home-join-kicker">مجتمع الأستاذ</div>
-            <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
-            <p className="home-join-lede">
-              انضمّ إلى مجتمع الأستاذ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، ولتشارك
-              بأفكارك في تطوير ما نعمل عليه. العضوية مجانية، والانسحاب بضغطةٍ واحدة.
-            </p>
-            <ul className="home-join-perks">
-              {["أخبار الجوائز والمبادرات أولاً", "صوتك في تطوير المبادرات", "دعوات جلسات المجلس", "فرص التطوّع والتحكيم"].map((t) => (
-                <li key={t}>{t}</li>
-              ))}
-            </ul>
-            <div className="home-join-actions">
-              <Link href="/community#join" className="btn btn-secondary btn-lg">انضمّ إلى المجتمع</Link>
-              <Link href="/community#idea" className="btn btn-outline btn-on-dark btn-lg">شارك فكرتك</Link>
-            </div>
+        <div className="home-join-in" data-reveal="1">
+          <div className="home-join-kicker">مجتمع الأستاذ</div>
+          <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
+          <p className="home-join-lede">انضمّ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، وشارك بأفكارك في تطوير ما نعمل عليه. العضوية مجانية.</p>
+          <div className="home-join-actions">
+            <Link href="/community#join" className="btn btn-secondary btn-lg">انضمّ إلى المجتمع</Link>
+            <Link href="/community#idea" className="btn btn-outline btn-on-dark btn-lg">شارك فكرتك</Link>
           </div>
 
-          <div className="home-nl" data-reveal="1">
-            <h3>أو اكتفِ بالنشرة البريدية</h3>
-            <p>أحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب، في بريدك.</p>
-            <form data-newsletter-form>
-              <div data-nl-success-state hidden className="ab-news-ok">
-                <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
+          <form data-newsletter-form className="home-nl">
+            <div data-nl-success-state hidden className="ab-news-ok">
+              <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
+            </div>
+            <div data-nl-form-state className="home-nl-row">
+              <label htmlFor="home-nl-email">أو اكتفِ بالنشرة البريدية</label>
+              <div className="ab-news-field">
+                <input id="home-nl-email" type="email" required dir="ltr" placeholder="name@example.com" />
+                <button type="submit" className="btn btn-secondary btn-md">اشترك</button>
               </div>
-              <div data-nl-form-state>
-                <div className="ab-news-field">
-                  <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
-                  <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
-                </div>
-                <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </section>
     </PageShell>

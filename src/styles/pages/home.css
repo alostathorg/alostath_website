@@ -13,38 +13,27 @@
 
 .home-empty { font-size: 18px; color: var(--text-muted); text-align: center; margin: 0; }
 
-/* ── Closing band: membership first, newsletter as the lighter option ── */
+/* ── Closing band: one centred ask, the newsletter as a slim row beneath ── */
 .home-join { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.home-join::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .08; -webkit-mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 75%); mask-image: radial-gradient(60% 100% at 100% 0%, #000, transparent 75%); }
-.home-join-in { max-width: var(--container-max); margin: 0 auto; padding: clamp(72px, 9vw, 120px) 32px; display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 80px); align-items: center; }
+.home-join::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .08; -webkit-mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); }
+.home-join-in { max-width: 760px; margin: 0 auto; padding: clamp(80px, 10vw, 128px) 32px; text-align: center; }
+.home-join-kicker { font-size: 14px; font-weight: 600; color: var(--gold-500); margin-bottom: 16px; }
+.home-join h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 700; line-height: 1.35; margin: 0 0 18px; text-wrap: balance; }
+.home-join-lede { font-size: 17px; line-height: 1.9; color: var(--inverse-muted); margin: 0 auto 34px; max-width: 54ch; text-align: center; text-align-last: center; }
+.home-join-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
 
-.home-join-kicker { font-size: 14px; font-weight: 600; color: var(--gold-500); margin-bottom: 14px; }
-.home-join h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; line-height: 1.3; margin: 0 0 18px; }
-.home-join-lede { font-size: 17px; line-height: 1.9; color: var(--inverse-muted); margin: 0 0 28px; max-width: 58ch; }
+/* Newsletter: below a hairline, label beside a compact field. */
+.home-nl { margin: clamp(48px, 6vw, 64px) auto 0; padding-top: 32px; border-top: 1px solid rgba(244, 246, 238, .14); max-width: 620px; }
+.home-nl-row { display: flex; align-items: center; justify-content: center; gap: 20px; }
+.home-nl-row label { font-size: 15px; color: var(--inverse-muted); white-space: nowrap; }
+.home-nl .ab-news-field { flex: 1 1 auto; max-width: 380px; margin: 0; padding: 6px; border-radius: 14px; }
+.home-nl .ab-news-field input { padding: 10px 12px; font-size: 15px; }
 
-.home-join-perks { list-style: none; margin: 0 0 34px; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px 24px; }
-.home-join-perks li { display: flex; align-items: center; gap: 12px; font-size: 15.5px; font-weight: 600; }
-.home-join-perks li::before { content: ""; width: 8px; height: 8px; border-radius: 9999px; background: var(--gold-500); flex: none; }
-
-.home-join-actions { display: flex; gap: 12px; flex-wrap: wrap; }
-
-/* Newsletter panel: a quieter glass card beside the membership pitch. */
-.home-nl { background: rgba(244, 246, 238, .06); border: 1px solid rgba(244, 246, 238, .16); border-radius: 22px; padding: clamp(28px, 4vw, 40px); }
-.home-nl h3 { font-size: clamp(20px, 2.2vw, 24px); font-weight: 700; margin: 0 0 10px; }
-.home-nl p { font-size: 15.5px; line-height: 1.85; color: var(--inverse-muted); margin: 0 0 24px; }
-.home-nl .ab-news-field { max-width: none; }
-.home-nl .ab-news-fine { margin-top: 14px; }
-
-@media (max-width: 900px) {
-  .home-join-in { grid-template-columns: minmax(0, 1fr); }
-}
-@media (max-width: 520px) {
+@media (max-width: 620px) {
   .home-join-in { padding-inline: 20px; }
-  .home-join-perks { grid-template-columns: 1fr; }
   .home-join-actions .btn { flex: 1 1 auto; }
-  /* The field stacks so the email has the full width to itself. */
-  .home-nl .ab-news-field { flex-direction: column; }
-  .home-nl .ab-news-field .btn { width: 100%; }
+  .home-nl-row { flex-direction: column; gap: 14px; }
+  .home-nl .ab-news-field { width: 100%; max-width: none; }
 }
 
 /* ── About: photo in a gold offset frame ── */
@@ -199,8 +188,6 @@
   .home-news-lead:not(.has-cover) .home-news-lead-body { min-height: 0; }
 }
 
-/* Closing band glow, matching the award stage. */
-.home-join-orb { position: absolute; z-index: -1; width: 520px; height: 520px; inset-inline-start: -160px; bottom: -220px; border-radius: 50%; filter: blur(90px); background: radial-gradient(circle, rgba(191, 155, 47, .22), transparent 70%); pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
   .home-init-row, .home-init-row::before, .home-init-num, .home-init-thumb img, .home-init-arrow,
