@@ -242,11 +242,13 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* JOIN — one quiet, centred closing ask: membership is the offer (it
+      {/* JOIN — a contained dark card on the white page, so it reads as its own
+          moment rather than the top of the (equally dark) footer. One centred ask: membership is the offer (it
           takes a teacher); the newsletter is a single slim row beneath it for
           those who only want the email. */}
       <section id="join" className="home-join">
-        <div className="home-join-in" data-reveal="1">
+        <div className="home-join-card" data-reveal="1">
+        <div className="home-join-in">
           <div className="home-join-kicker">مجتمع الأستاذ</div>
           <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
           <p className="home-join-lede">انضمّ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، وشارك بأفكارك في تطوير ما نعمل عليه. العضوية مجانية.</p>
@@ -267,6 +269,7 @@ export default async function HomePage() {
               </div>
             </div>
           </form>
+        </div>
         </div>
       </section>
     </PageShell>

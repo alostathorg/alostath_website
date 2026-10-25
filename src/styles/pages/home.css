@@ -14,9 +14,12 @@
 .home-empty { font-size: 18px; color: var(--text-muted); text-align: center; margin: 0; }
 
 /* ── Closing band: one centred ask, the newsletter as a slim row beneath ── */
-.home-join { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.home-join::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .08; -webkit-mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); }
-.home-join-in { max-width: 760px; margin: 0 auto; padding: clamp(80px, 10vw, 128px) 32px; text-align: center; }
+.home-join { padding: 0 32px clamp(80px, 9vw, 112px); }
+.home-join-card { position: relative; overflow: hidden; isolation: isolate; max-width: var(--container-max); margin: 0 auto; border-radius: 28px; color: var(--ink-inverse); background: linear-gradient(150deg, #2B361C 0%, #1E2814 55%, #141B0C 100%); }
+/* Brand pattern from the top, a gold glow rising from the bottom. */
+.home-join-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 90% at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(60% 90% at 50% 0%, #000, transparent 75%); }
+.home-join-card::after { content: ""; position: absolute; z-index: -1; left: 50%; bottom: -260px; width: 760px; height: 420px; transform: translateX(-50%); border-radius: 50%; filter: blur(80px); background: radial-gradient(circle, rgba(191, 155, 47, .32), transparent 70%); pointer-events: none; }
+.home-join-in { position: relative; max-width: 760px; margin: 0 auto; padding: clamp(64px, 8vw, 104px) 32px; text-align: center; }
 .home-join-kicker { font-size: 14px; font-weight: 600; color: var(--gold-500); margin-bottom: 16px; }
 .home-join h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 700; line-height: 1.35; margin: 0 0 18px; text-wrap: balance; }
 .home-join-lede { font-size: 17px; line-height: 1.9; color: var(--inverse-muted); margin: 0 auto 34px; max-width: 54ch; text-align: center; text-align-last: center; }
@@ -30,6 +33,8 @@
 .home-nl .ab-news-field input { padding: 10px 12px; font-size: 15px; }
 
 @media (max-width: 620px) {
+  .home-join { padding-inline: 16px; }
+  .home-join-card { border-radius: 22px; }
   .home-join-in { padding-inline: 20px; }
   .home-join-actions .btn { flex: 1 1 auto; }
   .home-nl-row { flex-direction: column; gap: 14px; }
