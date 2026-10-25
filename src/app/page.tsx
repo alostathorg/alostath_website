@@ -53,8 +53,7 @@ export default async function HomePage() {
       />
 
       {/* ABOUT — the foundation's introduction lives here; the hero carries only
-          its aspiration, in one line, so the two never say the same thing. The photo sits in a gold offset frame
-          with a «since» seal; the founding facts are set as a ledger. */}
+          its aspiration, in one line, so the two never say the same thing. The photo sits in a gold offset frame. */}
       <section id="about" className="home-about">
         <div className="home-about-in">
           <figure className="home-about-media" data-reveal="1">
@@ -62,23 +61,11 @@ export default async function HomePage() {
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" />
             </div>
-            <figcaption className="home-about-seal">
-              <span>منذ</span>
-              <strong>2023</strong>
-            </figcaption>
           </figure>
           <div data-reveal="1">
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
             <h2 className="h-accent home-about-title">عن الأستاذ</h2>
             <p className="home-about-lede">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
-            <dl className="home-facts">
-              {ABOUT_FACTS.map((f) => (
-                <div key={f.k}>
-                  <dt>{f.k}</dt>
-                  <dd>{f.v}</dd>
-                </div>
-              ))}
-            </dl>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
         </div>
@@ -300,13 +287,6 @@ export default async function HomePage() {
     </PageShell>
   );
 }
-
-// The founding facts, from the licence (lib/org LICENSE) — set as a ledger.
-const ABOUT_FACTS = [
-  { k: "الانطلاقة", v: "2023م" },
-  { k: "الترخيص الرسمي", v: "20/04/2024م" },
-  { k: "جهة الإشراف", v: "وزارة التعليم" },
-];
 
 function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
   return (

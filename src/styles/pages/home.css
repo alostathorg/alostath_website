@@ -47,7 +47,7 @@
   .home-nl .ab-news-field .btn { width: 100%; }
 }
 
-/* ── About: photo in a gold offset frame, a «منذ 2023» seal, a facts ledger ── */
+/* ── About: photo in a gold offset frame ── */
 .home-about { max-width: var(--container-max); margin: 0 auto; padding: clamp(80px, 9vw, 120px) 32px clamp(24px, 3vw, 40px); }
 .home-about-in { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: clamp(48px, 7vw, 96px); align-items: center; }
 .home-about-media { position: relative; margin: 0; padding: 0 0 22px 22px; }
@@ -56,12 +56,9 @@
 .home-about-media::after { content: ""; position: absolute; z-index: 0; width: 46%; height: 52%; inset-inline-end: 0; bottom: 0; border-radius: 22px; background: url("/assets/alostath-pattern.svg") 0 0 / auto 64px; opacity: .14; }
 .home-about-frame { position: relative; z-index: 1; border-radius: 20px; overflow: hidden; box-shadow: 0 30px 60px -36px rgba(30, 40, 20, .55); }
 .home-about-frame img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
-.home-about-seal { position: absolute; z-index: 2; top: -26px; inset-inline-start: -26px; width: 112px; height: 112px; border-radius: 50%; background: var(--olive-900); color: var(--ink-inverse); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; box-shadow: 0 0 0 6px var(--canvas), 0 18px 36px -18px rgba(30, 40, 20, .6); }
-.home-about-seal::before { content: ""; position: absolute; inset: 7px; border-radius: 50%; border: 1px dashed rgba(191, 155, 47, .55); }
-.home-about-seal span { font-size: 13px; color: var(--inverse-muted); }
-.home-about-seal strong { font-size: 28px; font-weight: 700; color: var(--gold-500); line-height: 1; letter-spacing: .5px; }
 .home-about-title { font-size: clamp(30px, 4vw, 46px); font-weight: 700; margin: 0 0 22px; color: var(--color-primary); }
 .home-about-lede { font-size: 17px; line-height: 1.95; color: var(--text-muted); margin: 0 0 30px; }
+/* Facts ledger, used by the award panel. */
 .home-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 0 32px; border-block: 1px solid var(--hairline); }
 .home-facts > div { padding: 18px 0; padding-inline-start: 18px; border-inline-start: 1px solid var(--hairline); }
 .home-facts > div:first-child { border-inline-start: none; padding-inline-start: 0; }
@@ -73,8 +70,6 @@
 }
 @media (max-width: 520px) {
   .home-about { padding-inline: 20px; }
-  .home-about-seal { width: 88px; height: 88px; top: -18px; inset-inline-start: -8px; }
-  .home-about-seal strong { font-size: 22px; }
   .home-facts { grid-template-columns: minmax(0, 1fr); }
   .home-facts > div, .home-facts > div:first-child { padding: 14px 0; border-inline-start: none; border-top: 1px solid var(--hairline); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
   .home-facts > div:first-child { border-top: none; }
