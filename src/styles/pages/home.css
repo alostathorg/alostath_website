@@ -81,40 +81,34 @@
   .home-facts dt { margin: 0; }
 }
 
-/* ── Award: a dark stage with a pattern emblem ─────────────────────────── */
-.home-award { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(150deg, #263018 0%, #1A2311 50%, #10160A 100%); margin-top: clamp(56px, 7vw, 96px); }
-.home-award::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .09; -webkit-mask-image: radial-gradient(55% 90% at 0% 50%, #000, transparent 75%); mask-image: radial-gradient(55% 90% at 0% 50%, #000, transparent 75%); }
-.home-award-orb { position: absolute; z-index: -1; width: 560px; height: 560px; inset-inline-end: -120px; top: 50%; transform: translateY(-50%); border-radius: 50%; filter: blur(90px); background: radial-gradient(circle, rgba(191, 155, 47, .28), transparent 70%); pointer-events: none; }
-.home-award-in { max-width: var(--container-max); margin: 0 auto; padding: clamp(80px, 10vw, 128px) 32px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(40px, 6vw, 88px); align-items: center; }
-.home-award-status { display: inline-flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600; color: var(--gold-500); background: rgba(191, 155, 47, .12); border: 1px solid rgba(191, 155, 47, .35); border-radius: var(--radius-round); padding: 8px 16px; margin-bottom: 26px; }
-.home-award-status span { width: 8px; height: 8px; border-radius: 50%; background: var(--gold-500); box-shadow: 0 0 0 0 rgba(191, 155, 47, .6); animation: homePulse 2.2s ease-out infinite; }
-@keyframes homePulse { 0% { box-shadow: 0 0 0 0 rgba(191, 155, 47, .6); } 80%, 100% { box-shadow: 0 0 0 12px rgba(191, 155, 47, 0); } }
-.home-award-kicker { font-size: 15px; color: var(--inverse-muted); margin-bottom: 10px; }
-.home-award h2 { font-size: clamp(34px, 5vw, 60px); font-weight: 700; line-height: 1.2; margin: 0 0 22px; background: linear-gradient(180deg, #F4F6EE 30%, #E3CF8E 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.home-award-copy > p { font-size: 17px; line-height: 1.95; color: var(--inverse-muted); margin: 0 0 32px; max-width: 60ch; }
-.home-award-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 0 0 36px; }
-.home-award-facts > div { background: rgba(244, 246, 238, .05); border: 1px solid rgba(244, 246, 238, .12); border-radius: 14px; padding: 16px 18px; }
-.home-award-facts dt { font-size: 12.5px; color: var(--gold-500); margin-bottom: 6px; font-weight: 600; }
-.home-award-facts dd { margin: 0; font-size: 14.5px; line-height: 1.6; font-weight: 600; color: var(--ink-inverse); }
+/* ── Award: a gold-tinted panel, in the same language as the sections around it ── */
+.home-award { max-width: var(--container-max); margin: 0 auto; padding: clamp(32px, 4vw, 56px) 32px clamp(80px, 9vw, 112px); }
+.home-award-panel { position: relative; overflow: hidden; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(36px, 5vw, 72px); align-items: center; background: var(--gold-50); border: 1px solid var(--gold-100); border-radius: 24px; padding: clamp(32px, 5vw, 64px); }
+/* The brand pattern, dissolving in from the emblem's side. */
+.home-award-panel::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 88px; opacity: .1; -webkit-mask-image: radial-gradient(55% 100% at 0% 50%, #000, transparent 75%); mask-image: radial-gradient(55% 100% at 0% 50%, #000, transparent 75%); }
+.home-award-copy h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 700; margin: 0 0 22px; display: inline-block; }
+.home-award-status { display: table; margin-bottom: 18px; }
+.home-award-copy > p { font-size: 17px; line-height: 1.95; color: var(--text-muted); margin: 0 0 28px; max-width: 60ch; }
+.home-award .home-facts { border-color: var(--gold-100); }
+.home-award .home-facts > div { border-color: var(--gold-100); }
 
-/* The emblem: two rings (one slowly turning, dashed) around a patterned core. */
-.home-award-emblem { position: relative; width: min(100%, 420px); aspect-ratio: 1; justify-self: center; }
+/* The emblem: two still rings around a dark patterned core — the page's one
+   dark accent here, as the research cell is in the bento. */
+.home-award-emblem { position: relative; width: min(100%, 360px); aspect-ratio: 1; justify-self: center; }
 .home-award-emblem .ring { position: absolute; border-radius: 50%; }
-.home-award-emblem .ring.is-outer { inset: 0; border: 1px solid rgba(191, 155, 47, .35); }
-.home-award-emblem .ring.is-dash { inset: 7%; border: 2px dashed rgba(191, 155, 47, .5); animation: homeSpin 60s linear infinite; }
-@keyframes homeSpin { to { transform: rotate(360deg); } }
-.home-award-emblem .core { position: absolute; inset: 15%; border-radius: 50%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: radial-gradient(circle at 50% 35%, #3A4624 0%, #1E2814 70%); box-shadow: inset 0 0 0 1px rgba(191, 155, 47, .45), 0 40px 80px -30px rgba(0, 0, 0, .7), 0 0 80px -10px rgba(191, 155, 47, .25); }
-.home-award-emblem .core::before { content: ""; position: absolute; inset: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 60px; opacity: .16; }
+.home-award-emblem .ring.is-outer { inset: 0; border: 1px solid var(--gold-100); background: var(--canvas); }
+.home-award-emblem .ring.is-dash { inset: 6%; border: 1.5px dashed rgba(191, 155, 47, .55); }
+.home-award-emblem .core { position: absolute; inset: 14%; border-radius: 50%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--olive-900); box-shadow: 0 30px 60px -34px rgba(30, 40, 20, .7); }
+.home-award-emblem .core::before { content: ""; position: absolute; inset: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 56px; opacity: .14; }
 .home-award-emblem .core img { position: relative; width: 52%; height: auto; }
-.home-award-emblem .core em { position: relative; font-style: normal; font-size: 14px; font-weight: 600; color: var(--gold-500); border-top: 1px solid rgba(191, 155, 47, .45); padding-top: 12px; }
+.home-award-emblem .core em { position: relative; font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--gold-500); border-top: 1px solid rgba(191, 155, 47, .45); padding-top: 11px; }
 @media (max-width: 900px) {
-  .home-award-in { grid-template-columns: minmax(0, 1fr); }
-  .home-award-emblem { order: -1; width: min(70%, 300px); }
+  .home-award-panel { grid-template-columns: minmax(0, 1fr); }
+  .home-award-emblem { order: -1; width: min(60%, 240px); }
 }
 @media (max-width: 620px) {
-  .home-award-in { padding-inline: 20px; }
-  .home-award-facts { grid-template-columns: minmax(0, 1fr); }
-  .home-award .btn { width: 100%; }
+  .home-award { padding-inline: 20px; }
+  .home-award-panel { padding: 28px 22px; }
 }
 
 /* ── Initiatives: a numbered editorial index ─────────────────────────── */
@@ -207,7 +201,6 @@
 .home-join-orb { position: absolute; z-index: -1; width: 520px; height: 520px; inset-inline-start: -160px; bottom: -220px; border-radius: 50%; filter: blur(90px); background: radial-gradient(circle, rgba(191, 155, 47, .22), transparent 70%); pointer-events: none; }
 
 @media (prefers-reduced-motion: reduce) {
-  .home-award-status span, .home-award-emblem .ring.is-dash { animation: none; }
   .home-init-row, .home-init-row::before, .home-init-num, .home-init-thumb img, .home-init-arrow,
   .home-post-lead img, .home-post-mini, .home-post-mini-media img { transition: none; }
 }

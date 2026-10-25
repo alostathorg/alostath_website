@@ -107,25 +107,25 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* AWARD — a dark stage between two light sections. The award has no
-          photo of its own (its image is the hero's), so the visual is an emblem
-          built from the brand pattern rather than a repeated picture. */}
+      {/* AWARD — a light panel in the award's gold tint (the same pairing as
+          its bento cell), set in the page's own heading, ledger and button.
+          The award has no photo of its own (its image is the hero's), so the
+          visual is a still emblem built from the brand pattern. */}
       <section id="awards" className="home-award">
-        <span className="home-award-orb" aria-hidden />
-        <div className="home-award-in">
-          <div className="home-award-copy" data-reveal="1">
-            <div className="home-award-status"><span aria-hidden /> {NATIONAL_AWARD.statusLabel}</div>
-            <div className="home-award-kicker">تقديرٌ يتحوّل إلى تمكين</div>
-            <h2>{NATIONAL_AWARD.name}</h2>
+        <div className="home-award-panel" data-reveal="1">
+          <div className="home-award-copy">
+            <div className="eyebrow" style={{ marginBottom: 14 }}>تقديرٌ يتحوّل إلى تمكين</div>
+            <h2 className="h-accent">{NATIONAL_AWARD.name}</h2>
+            <span className="badge badge-gold home-award-status">{NATIONAL_AWARD.statusLabel}</span>
             <p>{NATIONAL_AWARD.goal}</p>
-            <dl className="home-award-facts">
-              <div><dt>المستهدفون</dt><dd>{NATIONAL_AWARD.beneficiaries}</dd></div>
+            <dl className="home-facts">
+              <div><dt>المستهدفون</dt><dd>المعلّمون الممارسون</dd></div>
               <div><dt>النطاق</dt><dd>{NATIONAL_AWARD.scope}</dd></div>
-              <div><dt>معيار النجاح</dt><dd>الأثر في المهنة، لا عدد المكرَّمين</dd></div>
+              <div><dt>معيار النجاح</dt><dd>الأثر في المهنة</dd></div>
             </dl>
-            <Link href={AWARD_PATH} className="btn btn-secondary btn-lg">تعرّف على الجائزة</Link>
+            <Link href={AWARD_PATH} className="btn btn-primary btn-md">تعرّف على الجائزة</Link>
           </div>
-          <div className="home-award-emblem" data-reveal="1" aria-hidden>
+          <div className="home-award-emblem" aria-hidden>
             <span className="ring is-outer" />
             <span className="ring is-dash" />
             <span className="core">
