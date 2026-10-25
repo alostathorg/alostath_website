@@ -109,8 +109,8 @@ export default async function HomePage() {
 
       {/* AWARD — a light panel in the award's gold tint (the same pairing as
           its bento cell), set in the page's own heading, ledger and button.
-          The award has no photo of its own (its image is the hero's), so the
-          visual is a still emblem built from the brand pattern. */}
+          The photo is NATIONAL_AWARD.image, so the award page and this panel
+          change together. */}
       <section id="awards" className="home-award">
         <div className="home-award-panel" data-reveal="1">
           <div className="home-award-copy">
@@ -125,15 +125,17 @@ export default async function HomePage() {
             </dl>
             <Link href={AWARD_PATH} className="btn btn-primary btn-md">تعرّف على الجائزة</Link>
           </div>
-          <div className="home-award-emblem" aria-hidden>
-            <span className="ring is-outer" />
-            <span className="ring is-dash" />
-            <span className="core">
+          <figure className="home-award-photo">
+            <div className="home-award-photo-frame media-zoom">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} />
+            </div>
+            <figcaption className="home-award-tag">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" />
-              <em>{NATIONAL_AWARD.badge}</em>
-            </span>
-          </div>
+              <span>{NATIONAL_AWARD.badge}</span>
+            </figcaption>
+          </figure>
         </div>
       </section>
 

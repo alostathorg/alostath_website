@@ -84,7 +84,7 @@
 /* ── Award: a gold-tinted panel, in the same language as the sections around it ── */
 .home-award { max-width: var(--container-max); margin: 0 auto; padding: clamp(32px, 4vw, 56px) 32px clamp(80px, 9vw, 112px); }
 .home-award-panel { position: relative; overflow: hidden; isolation: isolate; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: clamp(36px, 5vw, 72px); align-items: center; background: var(--gold-50); border: 1px solid var(--gold-100); border-radius: 24px; padding: clamp(32px, 5vw, 64px); }
-/* The brand pattern, dissolving in from the emblem's side. */
+/* The brand pattern, dissolving in from the photo's side. */
 .home-award-panel::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 88px; opacity: .1; -webkit-mask-image: radial-gradient(55% 100% at 0% 50%, #000, transparent 75%); mask-image: radial-gradient(55% 100% at 0% 50%, #000, transparent 75%); }
 .home-award-copy h2 { font-size: clamp(28px, 3.8vw, 46px); font-weight: 700; margin: 0 0 22px; display: inline-block; }
 .home-award-status { display: table; margin-bottom: 18px; }
@@ -92,19 +92,18 @@
 .home-award .home-facts { border-color: var(--gold-100); }
 .home-award .home-facts > div { border-color: var(--gold-100); }
 
-/* The emblem: two still rings around a dark patterned core — the page's one
-   dark accent here, as the research cell is in the bento. */
-.home-award-emblem { position: relative; width: min(100%, 360px); aspect-ratio: 1; justify-self: center; }
-.home-award-emblem .ring { position: absolute; border-radius: 50%; }
-.home-award-emblem .ring.is-outer { inset: 0; border: 1px solid var(--gold-100); background: var(--canvas); }
-.home-award-emblem .ring.is-dash { inset: 6%; border: 1.5px dashed rgba(191, 155, 47, .55); }
-.home-award-emblem .core { position: absolute; inset: 14%; border-radius: 50%; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; background: var(--olive-900); box-shadow: 0 30px 60px -34px rgba(30, 40, 20, .7); }
-.home-award-emblem .core::before { content: ""; position: absolute; inset: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 56px; opacity: .14; }
-.home-award-emblem .core img { position: relative; width: 52%; height: auto; }
-.home-award-emblem .core em { position: relative; font-style: normal; font-size: 13.5px; font-weight: 600; color: var(--gold-500); border-top: 1px solid rgba(191, 155, 47, .45); padding-top: 11px; }
+/* The photo, framed like «عن الأستاذ», with a dark tag naming the award. */
+.home-award-photo { position: relative; margin: 0; }
+.home-award-photo-frame { border-radius: 20px; overflow: hidden; border: 6px solid var(--canvas); box-shadow: 0 30px 60px -34px rgba(30, 40, 20, .6); }
+.home-award-photo-frame img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+.home-award-tag { position: absolute; bottom: 22px; inset-inline-start: -18px; display: flex; align-items: center; gap: 12px; background: var(--olive-900); color: var(--gold-500); border-radius: 14px; padding: 12px 16px; font-size: 13.5px; font-weight: 600; box-shadow: 0 18px 36px -18px rgba(30, 40, 20, .7); }
+.home-award-tag img { width: 64px; height: auto; display: block; }
+.home-award-tag span { border-inline-start: 1px solid rgba(191, 155, 47, .45); padding-inline-start: 12px; }
 @media (max-width: 900px) {
   .home-award-panel { grid-template-columns: minmax(0, 1fr); }
-  .home-award-emblem { order: -1; width: min(60%, 240px); }
+  .home-award-photo { order: -1; }
+  .home-award-photo-frame img { aspect-ratio: 16 / 10; }
+  .home-award-tag { inset-inline-start: 12px; bottom: 12px; }
 }
 @media (max-width: 620px) {
   .home-award { padding-inline: 20px; }
