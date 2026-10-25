@@ -17,6 +17,7 @@
 @import "./pages/community.css";
 @import "./pages/contact.css";
 @import "./pages/press.css";
+@import "./pages/home.css";
 
 /* Base resets that lived inline in every page's <style> block. */
 *,
@@ -305,7 +306,6 @@ a.bp-domain:hover { color: var(--olive-700); text-decoration: underline; }
 .cm-voice p { font-size: 14.5px; line-height: 1.8; color: var(--text-muted); margin: 0 0 16px; }
 .cm-voice-by { font-size: 13px; color: var(--ink-subtle); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .cm-voice-tag { font-size: 12px; font-weight: 600; color: var(--olive-700); background: var(--olive-50); border-radius: 9999px; padding: 4px 11px; }
-@media (max-width: 820px) { .home-community { grid-template-columns: 1fr !important; } }
 /* Numbered kicker above each community benefit card. The Arabic-Indic numeral
    matches how the site numbers content elsewhere (.dp-step). */
 .cm-benefit-kicker { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 600; color: var(--ink-subtle); margin-bottom: 9px; }

@@ -1,13 +1,11 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import PersonAvatar from "@/components/PersonAvatar";
 import { getInitiatives, getNews, getPosts } from "@/lib/queries";
 import { NEWS_PATH } from "@/lib/news";
 import NewsCard from "./news/NewsCard";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
-import { BOARD } from "@/lib/org";
 
 export const revalidate = 60;
 
@@ -56,7 +54,7 @@ export default async function HomePage() {
       />
 
       {/* ABOUT */}
-      <section id="about" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
+      <section id="about" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 24px" }}>
         <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 56, alignItems: "center" }}>
           <div className="media-zoom" style={{ position: "relative", borderRadius: 16, border: "1px solid var(--hairline)" }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -68,25 +66,6 @@ export default async function HomePage() {
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
             <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها.</p>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
-          </div>
-        </div>
-      </section>
-
-      {/* BOARD */}
-      <section style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)" }}>
-        <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px", textAlign: "center" }}>
-          <div data-reveal="1" style={{ marginBottom: 48 }}>
-            <div className="eyebrow" style={{ marginBottom: 14 }}>قيادة المؤسسة</div>
-            <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 700, margin: 0, display: "inline-block" }}>مجــلس أمـــناء المــؤسسة</h2>
-          </div>
-          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(190px,1fr))", gap: 22, maxWidth: 1140, margin: "0 auto" }}>
-            {BOARD.map((m) => (
-              <div key={m.name} className="card-lift" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14, background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 18, padding: "28px 18px" }}>
-                <PersonAvatar person={m} size={124} radius="var(--radius-round)" />
-                <div style={{ fontSize: 17, fontWeight: 600, lineHeight: 1.5 }}>{m.name}</div>
-                <div style={{ fontSize: 14, lineHeight: 1.6, color: "var(--text-subtle)", marginTop: -8 }}>{m.role}</div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
@@ -117,7 +96,8 @@ export default async function HomePage() {
 
       {/* AWARDS */}
       <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title={NATIONAL_AWARD.name} href={AWARD_PATH} cta="عن الجائزة ←" />
+        {/* The card below is the link; a second "عن الجائزة" button would point to the same page. */}
+        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title={NATIONAL_AWARD.name} />
         <div data-reveal="1">
           <Link href={AWARD_PATH} className="card-lift" style={{ ...cardStyle, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))" }}>
             <div className="media-zoom">
@@ -137,6 +117,7 @@ export default async function HomePage() {
       <section id="initiatives" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 56 }}>
         <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
           <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
+          {featuredInitiatives.length > 0 ? (
           <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
             {featuredInitiatives.map((it) => (
               <Link key={it.id} href={`/initiatives/${it.slug}`} className="card-lift" style={cardStyle}>
@@ -152,6 +133,9 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
+          ) : (
+            <p className="home-empty">تُنشر المبادرات هنا قريباً.</p>
+          )}
         </div>
       </section>
 
@@ -173,6 +157,7 @@ export default async function HomePage() {
       {/* BLOG */}
       <section id="blog" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
         <SectionHead eyebrow="مقالات وقراءات" title="من مدونة الأستاذ" href="/blog" cta="كل المقالات ←" />
+        {featuredPosts.length > 0 ? (
         <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
           {featuredPosts.map((p) => (
             <Link key={p.id} href={`/blog/${p.slug}`} className="card-lift" style={cardStyle}>
@@ -189,69 +174,50 @@ export default async function HomePage() {
             </Link>
           ))}
         </div>
+        ) : (
+          <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
+        )}
       </section>
 
-      {/* COMMUNITY — the richer counterpart to the newsletter band below:
-          the newsletter takes an email, this takes a teacher. */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "0 32px 96px" }}>
-        <div
-          data-reveal="1"
-          className="home-community"
-          style={{
-            background: "var(--surface-1)",
-            border: "1px solid var(--hairline)",
-            borderRadius: 24,
-            padding: "clamp(36px,5vw,60px)",
-            display: "grid",
-            gridTemplateColumns: "1.25fr 1fr",
-            gap: 40,
-            alignItems: "center",
-          }}
-        >
-          <div>
-            <div className="eyebrow" style={{ color: "var(--gold-600)", marginBottom: 14 }}>مجتمع الأستاذ</div>
-            <h2 style={{ fontSize: "clamp(26px,3.4vw,40px)", fontWeight: 700, margin: "0 0 14px", lineHeight: 1.3 }}>
-              كن جزءاً من صناعة القرار، لا متابعاً له فقط
-            </h2>
-            <p style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 28px", maxWidth: "58ch" }}>
+      {/* JOIN — one closing band instead of two back-to-back asks: membership
+          is the main offer (it takes a teacher), the newsletter beside it is the
+          lighter option (it takes only an email). */}
+      <section id="join" className="home-join">
+        <div className="home-join-in">
+          <div data-reveal="1">
+            <div className="home-join-kicker">مجتمع الأستاذ</div>
+            <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
+            <p className="home-join-lede">
               انضمّ إلى مجتمع الأستاذ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، ولتشارك
               بأفكارك في تطوير ما نعمل عليه. العضوية مجانية، والانسحاب بضغطةٍ واحدة.
             </p>
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-              <Link href="/community#join" className="btn btn-primary btn-lg">انضمّ إلى المجتمع</Link>
-              <Link href="/community#idea" className="btn btn-outline btn-lg">شارك فكرتك</Link>
+            <ul className="home-join-perks">
+              {["أخبار الجوائز والمبادرات أولاً", "صوتك في تطوير المبادرات", "دعوات جلسات المجلس", "فرص التطوّع والتحكيم"].map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
+            <div className="home-join-actions">
+              <Link href="/community#join" className="btn btn-secondary btn-lg">انضمّ إلى المجتمع</Link>
+              <Link href="/community#idea" className="btn btn-outline btn-on-dark btn-lg">شارك فكرتك</Link>
             </div>
           </div>
-          <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 12 }}>
-            {["أخبار الجوائز والمبادرات أولاً", "صوتك في تطوير المبادرات", "دعوات جلسات المجلس", "فرص التطوّع والتحكيم"].map((t) => (
-              <li key={t} className="c-pill" style={{ background: "var(--canvas)", border: "1px solid var(--hairline)", borderRadius: 12, padding: "16px 20px", display: "flex", alignItems: "center", gap: 12, fontSize: 15.5, fontWeight: 600 }}>
-                <span className="c-dot" style={{ width: 9, height: 9, borderRadius: 9999, background: "var(--gold-500)", flex: "none" }} />
-                {t}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
 
-      {/* NEWSLETTER */}
-      <section style={{ position: "relative", overflow: "hidden", background: "var(--olive-900)" }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={`${FR}/5tFDyWZl3YM715jhXBbKzLNeJw.jpeg?width=1408&height=736`} alt="" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", opacity: 0.18 }} />
-        <div data-reveal="1" style={{ position: "relative", maxWidth: 760, margin: "0 auto", padding: "96px 32px", textAlign: "center", color: "var(--ink-inverse)" }}>
-          <h2 style={{ fontSize: "clamp(26px,3.6vw,40px)", fontWeight: 700, lineHeight: 1.35, margin: "0 0 18px" }}>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--inverse-muted)", margin: "0 0 36px" }}>انضمّ إلى النشرة البريدية لمؤسسة الأستاذ وكن على اطّلاعٍ دائم بأحدث المبادرات التعليمية، والبرامج التطويرية، والفرص المخصّصة للمعلّمين والطلاب. نشاركك كلّ جديدٍ يصنع أثراً في مستقبل التعليم.</p>
-          <form data-newsletter-form>
-            <div data-nl-success-state hidden style={{ gap: 12, alignItems: "center", background: "rgba(120,161,131,0.18)", border: "1px solid rgba(120,161,131,0.4)", color: "var(--ink-inverse)", borderRadius: 12, padding: "18px 28px", fontSize: 17, fontWeight: 600 }}>
-              <span style={{ width: 30, height: 30, borderRadius: 9999, background: "var(--sage-500)", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center" }}>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
-            </div>
-            <div data-nl-form-state>
-              <div style={{ display: "flex", gap: 12, maxWidth: 520, margin: "0 auto", flexWrap: "wrap" }}>
-                <input type="email" required dir="ltr" placeholder="name@example.com" style={{ flex: "1 1 240px", fontFamily: "var(--font-sans)", fontSize: 16, color: "var(--ink)", background: "var(--canvas)", border: "1px solid transparent", borderRadius: 8, padding: "14px 16px", textAlign: "left" }} />
-                <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
+          <div className="home-nl" data-reveal="1">
+            <h3>أو اكتفِ بالنشرة البريدية</h3>
+            <p>أحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب، في بريدك.</p>
+            <form data-newsletter-form>
+              <div data-nl-success-state hidden className="ab-news-ok">
+                <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
               </div>
-              <div style={{ fontSize: 13, color: "var(--inverse-subtle)", marginTop: 16 }}>نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
-            </div>
-          </form>
+              <div data-nl-form-state>
+                <div className="ab-news-field">
+                  <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
+                  <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
+                </div>
+                <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </PageShell>
@@ -269,14 +235,14 @@ const cardStyle = {
   color: "inherit",
 } as const;
 
-function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href: string; cta: string }) {
+function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
   return (
-    <div data-reveal="1" style={{ display: "flex", alignItems: "flex-end", justifyContent: "space-between", gap: 24, flexWrap: "wrap", marginBottom: 48 }}>
+    <div data-reveal="1" className="home-head">
       <div>
         <div className="eyebrow" style={{ marginBottom: 14 }}>{eyebrow}</div>
-        <h2 className="h-accent" style={{ fontSize: "clamp(28px,3.8vw,46px)", fontWeight: 700, margin: 0, display: "inline-block" }}>{title}</h2>
+        <h2 className="h-accent">{title}</h2>
       </div>
-      <Link href={href} className="btn btn-secondary btn-md">{cta}</Link>
+      {href && cta && <Link href={href} className="btn btn-secondary btn-md">{cta}</Link>}
     </div>
   );
 }
