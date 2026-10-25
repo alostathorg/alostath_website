@@ -2,8 +2,7 @@ import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import { getInitiatives, getNews, getPosts } from "@/lib/queries";
-import { NEWS_PATH } from "@/lib/news";
-import NewsCard from "./news/NewsCard";
+import { NEWS_PATH, newsKindLabel } from "@/lib/news";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
 
@@ -28,9 +27,9 @@ export default async function HomePage() {
     getNews(),
     getPosts(),
   ]);
-  const featuredPosts = posts.slice(0, 3);
-  const latestNews = news.slice(0, 3);
-  const featuredInitiatives = initiatives.slice(0, 3);
+  const [leadPost, ...morePosts] = posts.slice(0, 3);
+  const latestNews = news.slice(0, 4);
+  const featuredInitiatives = initiatives.slice(0, 5);
 
   return (
     <PageShell active="home">
@@ -53,18 +52,32 @@ export default async function HomePage() {
         scrollCue="#about"
       />
 
-      {/* ABOUT */}
-      <section id="about" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 24px" }}>
-        <div data-reveal="1" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 56, alignItems: "center" }}>
-          <div className="media-zoom" style={{ position: "relative", borderRadius: 16, border: "1px solid var(--hairline)" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" style={{ width: "100%", height: "auto", borderRadius: 16, display: "block" }} />
-          </div>
-          <div>
+      {/* ABOUT — the photo in a gold offset frame with a «since» seal, the
+          founding facts set as a ledger instead of a second paragraph. */}
+      <section id="about" className="home-about">
+        <div className="home-about-in">
+          <figure className="home-about-media" data-reveal="1">
+            <div className="home-about-frame media-zoom">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" />
+            </div>
+            <figcaption className="home-about-seal">
+              <span>منذ</span>
+              <strong>2023</strong>
+            </figcaption>
+          </figure>
+          <div data-reveal="1">
             <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
-            <h2 className="h-accent" style={{ fontSize: "clamp(30px,4vw,46px)", fontWeight: 700, margin: "0 0 22px", color: "var(--color-primary)" }}>عن الأستاذ</h2>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 18px" }}>مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
-            <p style={{ fontSize: 17, lineHeight: 1.9, color: "var(--text-muted)", margin: "0 0 28px" }}>وتسعى المؤسسة إلى أن تكون مرجعاً وطنياً في خدمة المعلّم والتعليم، ومركز خبرةٍ وشريكاً فاعلاً لمنظومة التعليم والمجتمع في بناء جيلٍ من المتعلّمين يحققون رؤية المملكة 2030 ومستهدفاتها.</p>
+            <h2 className="h-accent home-about-title">عن الأستاذ</h2>
+            <p className="home-about-lede">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
+            <dl className="home-facts">
+              {ABOUT_FACTS.map((f) => (
+                <div key={f.k}>
+                  <dt>{f.k}</dt>
+                  <dd>{f.v}</dd>
+                </div>
+              ))}
+            </dl>
             <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
         </div>
@@ -94,95 +107,148 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* AWARDS */}
-      <section id="awards" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        {/* The card below is the link; a second "عن الجائزة" button would point to the same page. */}
-        <SectionHead eyebrow="تقديرٌ يتحوّل إلى تمكين" title={NATIONAL_AWARD.name} />
-        <div data-reveal="1">
-          <Link href={AWARD_PATH} className="card-lift" style={{ ...cardStyle, display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))" }}>
-            <div className="media-zoom">
+      {/* AWARD — a dark stage between two light sections. The award has no
+          photo of its own (its image is the hero's), so the visual is an emblem
+          built from the brand pattern rather than a repeated picture. */}
+      <section id="awards" className="home-award">
+        <span className="home-award-orb" aria-hidden />
+        <div className="home-award-in">
+          <div className="home-award-copy" data-reveal="1">
+            <div className="home-award-status"><span aria-hidden /> {NATIONAL_AWARD.statusLabel}</div>
+            <div className="home-award-kicker">تقديرٌ يتحوّل إلى تمكين</div>
+            <h2>{NATIONAL_AWARD.name}</h2>
+            <p>{NATIONAL_AWARD.goal}</p>
+            <dl className="home-award-facts">
+              <div><dt>المستهدفون</dt><dd>{NATIONAL_AWARD.beneficiaries}</dd></div>
+              <div><dt>النطاق</dt><dd>{NATIONAL_AWARD.scope}</dd></div>
+              <div><dt>معيار النجاح</dt><dd>الأثر في المهنة، لا عدد المكرَّمين</dd></div>
+            </dl>
+            <Link href={AWARD_PATH} className="btn btn-secondary btn-lg">تعرّف على الجائزة</Link>
+          </div>
+          <div className="home-award-emblem" data-reveal="1" aria-hidden>
+            <span className="ring is-outer" />
+            <span className="ring is-dash" />
+            <span className="core">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} style={{ width: "100%", height: "100%", minHeight: 260, objectFit: "cover", display: "block" }} />
-            </div>
-            <div style={{ padding: "clamp(28px,4vw,44px)", display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <span className="badge badge-gold" style={{ alignSelf: "flex-start", marginBottom: 16 }}>{NATIONAL_AWARD.statusLabel}</span>
-              <p style={{ fontSize: 17, lineHeight: 1.95, color: "var(--text-muted)", margin: 0 }}>{NATIONAL_AWARD.overview}</p>
-              <span className="arrow-link" style={{ marginTop: 20, fontSize: 15 }}>التفاصيل <span className="arrow-link__a">←</span></span>
-            </div>
-          </Link>
+              <img src="/assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" />
+              <em>{NATIONAL_AWARD.badge}</em>
+            </span>
+          </div>
         </div>
       </section>
 
-      {/* INITIATIVES */}
-      <section id="initiatives" style={{ background: "var(--surface-1)", borderTop: "1px solid var(--hairline)", borderBottom: "1px solid var(--hairline)", marginTop: 56 }}>
-        <div style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px" }}>
+      {/* INITIATIVES — an editorial index. Most initiatives have no photo, so
+          each row stands on its number, name and line; a photo, when there is
+          one, shows as a thumbnail, and a themed pattern tile when there isn't. */}
+      <section id="initiatives" className="home-init">
+        <div className="home-init-in">
           <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
           {featuredInitiatives.length > 0 ? (
-          <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
-            {featuredInitiatives.map((it) => (
-              <Link key={it.id} href={`/initiatives/${it.slug}`} className="card-lift" style={cardStyle}>
-                <div className="media-zoom">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={it.hero_image_url ?? it.logo_url ?? "/assets/alostath-logo.png"} alt={it.name} style={{ width: "100%", aspectRatio: "1", objectFit: "cover", display: "block" }} />
-                </div>
-                <div style={{ padding: 30, display: "flex", flexDirection: "column", flex: 1 }}>
-                  <h3 style={{ fontSize: 23, fontWeight: 700, margin: "0 0 12px" }}>{it.name}</h3>
-                  <p style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: 0 }}>{it.overview ?? it.tagline}</p>
-                  <span className="arrow-link" style={{ marginTop: 16, fontSize: 14 }}>التفاصيل <span className="arrow-link__a">←</span></span>
-                </div>
-              </Link>
-            ))}
-          </div>
+            <ol className="home-init-list" data-reveal-group>
+              {featuredInitiatives.map((it, i) => {
+                const img = it.hero_image_url ?? it.logo_url;
+                return (
+                  <li key={it.id}>
+                    <Link href={`/initiatives/${it.slug}`} className={`home-init-row is-${it.theme === "sage" ? "sage" : "gold"}`}>
+                      <span className="home-init-num">{String(i + 1).padStart(2, "0")}</span>
+                      <span className="home-init-thumb">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        {img && <img src={img} alt="" loading="lazy" />}
+                      </span>
+                      <span className="home-init-main">
+                        {it.badge && <span className="home-init-badge">{it.badge}</span>}
+                        <h3>{it.name}</h3>
+                        {(it.tagline ?? it.overview) && <p>{it.tagline ?? it.overview}</p>}
+                      </span>
+                      <span className="home-init-arrow" aria-hidden>←</span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </ol>
           ) : (
             <p className="home-empty">تُنشر المبادرات هنا قريباً.</p>
           )}
         </div>
       </section>
 
-      {/* NEWS — always present so the section is discoverable; before the
-          first item is published it says so instead of disappearing. */}
-      <section id="news" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 0" }}>
-        <SectionHead eyebrow="المركز الإعلامي" title="آخر الأخبار" href={NEWS_PATH} cta="كل الأخبار ←" />
-        {latestNews.length > 0 ? (
-          <div className="news-grid is-fit" data-reveal-group>
-            {latestNews.map((n) => (
-              <NewsCard key={n.id} item={n} />
-            ))}
+      {/* MEDIA — news and the blog side by side, magazine-style: the lead post
+          large, the rest beside it, and the news as a dated column. Both stay
+          present before anything is published and say so. */}
+      <section id="media" className="home-media">
+        <SectionHead eyebrow="المركز الإعلامي" title="الأخبار والمقالات" />
+        <div className="home-media-grid">
+          <div id="blog" className="home-media-blog" data-reveal="1">
+            <div className="home-col-head">
+              <h3>من مدونة الأستاذ</h3>
+              <Link href="/blog" className="arrow-link">كل المقالات <span className="arrow-link__a">←</span></Link>
+            </div>
+            {leadPost ? (
+              <>
+                <Link href={`/blog/${leadPost.slug}`} className="home-post-lead">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={leadPost.cover_url ?? "/assets/alostath-logo.png"} alt={leadPost.title} />
+                  <span className="home-post-lead-body">
+                    {leadPost.category && <span className="home-post-cat">{leadPost.category}</span>}
+                    <strong>{leadPost.title}</strong>
+                    <span className="home-post-date">{formatArabicDate(leadPost.published_at)}</span>
+                  </span>
+                </Link>
+                {morePosts.length > 0 && (
+                  <div className="home-post-more">
+                    {morePosts.map((p) => (
+                      <Link key={p.id} href={`/blog/${p.slug}`} className="home-post-mini">
+                        <span className="home-post-mini-media">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
+                        </span>
+                        <span>
+                          {p.category && <span className="home-post-cat">{p.category}</span>}
+                          <strong>{p.title}</strong>
+                          <span className="home-post-date">{formatArabicDate(p.published_at)}</span>
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
+            )}
           </div>
-        ) : (
-          <p className="news-empty">لا توجد أخبار منشورة بعد.</p>
-        )}
-      </section>
 
-      {/* BLOG */}
-      <section id="blog" style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <SectionHead eyebrow="مقالات وقراءات" title="من مدونة الأستاذ" href="/blog" cta="كل المقالات ←" />
-        {featuredPosts.length > 0 ? (
-        <div data-reveal-group style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28 }}>
-          {featuredPosts.map((p) => (
-            <Link key={p.id} href={`/blog/${p.slug}`} className="card-lift" style={cardStyle}>
-              <div className="media-zoom">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} style={{ width: "100%", aspectRatio: "16/10", objectFit: "cover", display: "block" }} />
-              </div>
-              <div style={{ padding: 30, display: "flex", flexDirection: "column", flex: 1 }}>
-                <div style={{ fontSize: 13, fontWeight: 600, color: "var(--olive-600)", marginBottom: 10 }}>{p.category}</div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, margin: "0 0 12px", lineHeight: 1.45, color: "var(--ink)" }}>{p.title}</h3>
-                <p style={{ fontSize: 15, lineHeight: 1.85, color: "var(--text-muted)", margin: "0 0 16px", flex: 1 }}>{p.excerpt}</p>
-                <div style={{ fontSize: 13, color: "var(--ink-subtle)" }}>{formatArabicDate(p.published_at)}</div>
-              </div>
-            </Link>
-          ))}
+          <div id="news" className="home-media-news" data-reveal="1">
+            <div className="home-col-head">
+              <h3>آخر الأخبار</h3>
+              <Link href={NEWS_PATH} className="arrow-link">كل الأخبار <span className="arrow-link__a">←</span></Link>
+            </div>
+            {latestNews.length > 0 ? (
+              <ul className="home-news-list">
+                {latestNews.map((n) => (
+                  <li key={n.id}>
+                    <Link href={`${NEWS_PATH}/${n.slug}`} className="home-news-item">
+                      <span className="home-news-meta">
+                        <span className={`home-news-kind is-${n.kind}`}>{newsKindLabel(n.kind)}</span>
+                        <span>{formatArabicDate(n.published_at)}</span>
+                      </span>
+                      <strong>{n.title}</strong>
+                      {n.excerpt && <span className="home-news-excerpt">{n.excerpt}</span>}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="home-empty">لا توجد أخبار منشورة بعد.</p>
+            )}
+          </div>
         </div>
-        ) : (
-          <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
-        )}
       </section>
 
       {/* JOIN — one closing band instead of two back-to-back asks: membership
           is the main offer (it takes a teacher), the newsletter beside it is the
           lighter option (it takes only an email). */}
       <section id="join" className="home-join">
+        <span className="home-join-orb" aria-hidden />
         <div className="home-join-in">
           <div data-reveal="1">
             <div className="home-join-kicker">مجتمع الأستاذ</div>
@@ -224,16 +290,12 @@ export default async function HomePage() {
   );
 }
 
-const cardStyle = {
-  background: "var(--canvas)",
-  border: "1px solid var(--hairline)",
-  borderRadius: 18,
-  overflow: "hidden",
-  display: "flex",
-  flexDirection: "column",
-  textDecoration: "none",
-  color: "inherit",
-} as const;
+// The founding facts, from the licence (lib/org LICENSE) — set as a ledger.
+const ABOUT_FACTS = [
+  { k: "الانطلاقة", v: "2023م" },
+  { k: "الترخيص الرسمي", v: "20/04/2024م" },
+  { k: "جهة الإشراف", v: "وزارة التعليم" },
+];
 
 function SectionHead({ eyebrow, title, href, cta }: { eyebrow: string; title: string; href?: string; cta?: string }) {
   return (
