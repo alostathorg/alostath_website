@@ -147,53 +147,61 @@
   .home-init-row::before { display: none; }
 }
 
-/* ── Media: lead post + two minis, beside a dated news column ───────── */
+/* ── Media: the news leads (feature + list), the blog as a compact column ── */
 .home-media { max-width: var(--container-max); margin: 0 auto; padding: clamp(80px, 9vw, 120px) 32px clamp(80px, 9vw, 112px); }
 .home-media-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(32px, 4vw, 56px); align-items: start; }
 .home-col-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; margin-bottom: 24px; border-bottom: 2px solid var(--ink); }
 .home-col-head h3 { font-size: 19px; font-weight: 700; margin: 0; }
 .home-col-head .arrow-link { font-size: 14px; }
 
-.home-post-lead { position: relative; display: block; border-radius: 20px; overflow: hidden; text-decoration: none; color: var(--ink-inverse); aspect-ratio: 16 / 9; background: var(--olive-900); }
-.home-post-lead img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .6s cubic-bezier(.22, .7, .25, 1); }
-.home-post-lead::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(16, 22, 10, .92) 0%, rgba(16, 22, 10, .45) 45%, transparent 75%); }
-.home-post-lead:hover img { transform: scale(1.05); }
-.home-post-lead-body { position: absolute; z-index: 1; inset-inline: 0; bottom: 0; padding: clamp(22px, 3vw, 34px); display: flex; flex-direction: column; gap: 10px; }
-.home-post-lead-body strong { font-size: clamp(20px, 2.4vw, 28px); line-height: 1.45; font-weight: 700; }
-.home-post-lead .home-post-cat { align-self: flex-start; background: var(--gold-500); color: var(--olive-900); }
-.home-post-lead .home-post-date { color: rgba(244, 246, 238, .75); }
-.home-post-cat { display: inline-block; font-size: 12px; font-weight: 700; color: var(--gold-700); background: var(--gold-50); border-radius: var(--radius-round); padding: 4px 11px; }
-.home-post-date { font-size: 13px; color: var(--ink-subtle); }
-
-.home-post-more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 20px; }
-.home-post-mini { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: 16px; align-items: center; text-decoration: none; color: inherit; padding: 12px; margin: -12px; border-radius: 16px; transition: background .2s ease; }
-.home-post-mini:hover { background: var(--surface-1); }
-.home-post-mini-media { border-radius: 12px; overflow: hidden; aspect-ratio: 1; }
-.home-post-mini-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.22, .7, .25, 1); }
-.home-post-mini:hover .home-post-mini-media img { transform: scale(1.08); }
-.home-post-mini > span:last-child { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; }
-.home-post-mini strong { font-size: 15.5px; line-height: 1.55; font-weight: 700; color: var(--ink); }
-
-.home-news-list { list-style: none; margin: 0; padding: 0; }
-.home-news-list > li + li { border-top: 1px solid var(--hairline); }
-.home-news-item { display: flex; flex-direction: column; gap: 9px; padding: 20px 0; text-decoration: none; color: inherit; }
-.home-news-list > li:first-child .home-news-item { padding-top: 0; }
 .home-news-meta { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--ink-subtle); }
 .home-news-kind { font-weight: 700; color: var(--olive-600); }
 .home-news-kind.is-announcement { color: var(--gold-700); }
 .home-news-kind.is-media { color: var(--sage-700); }
 .home-news-kind::after { content: ""; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--hairline-strong); vertical-align: middle; margin-inline-start: 12px; }
+
+/* Lead item. Without a cover it is a tinted panel led by its headline, with
+   the brand pattern in the corner; with one, the photo sits above the text. */
+.home-news-lead { position: relative; overflow: hidden; isolation: isolate; display: block; text-decoration: none; color: inherit; background: var(--gold-50); border: 1px solid var(--gold-100); border-radius: 20px; transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.home-news-lead::before { content: ""; position: absolute; z-index: -1; width: 45%; height: 70%; inset-inline-end: 0; top: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 72px; opacity: .14; -webkit-mask-image: radial-gradient(100% 100% at 0% 0%, #000, transparent 75%); mask-image: radial-gradient(100% 100% at 0% 0%, #000, transparent 75%); }
+.home-news-lead:hover { transform: translateY(-4px); border-color: var(--gold-500); box-shadow: 0 20px 44px -26px rgba(30, 40, 20, .5); }
+.home-news-lead-media { display: block; overflow: hidden; }
+.home-news-lead-media img { width: 100%; aspect-ratio: 16 / 8; object-fit: cover; display: block; transition: transform .6s cubic-bezier(.22, .7, .25, 1); }
+.home-news-lead:hover .home-news-lead-media img { transform: scale(1.04); }
+.home-news-lead-body { display: flex; flex-direction: column; gap: 14px; padding: clamp(28px, 4vw, 44px); }
+.home-news-lead:not(.has-cover) .home-news-lead-body { min-height: 300px; justify-content: center; }
+.home-news-lead-body strong { font-size: clamp(22px, 2.6vw, 30px); line-height: 1.45; font-weight: 700; color: var(--ink); }
+.home-news-lead-body .home-news-excerpt { font-size: 16px; line-height: 1.9; -webkit-line-clamp: 3; }
+.home-news-lead-body .arrow-link { font-size: 15px; margin-top: 4px; }
+.home-news-lead:hover .arrow-link { gap: 13px; color: var(--olive-700); }
+
+.home-news-list { list-style: none; margin: 20px 0 0; padding: 0; }
+.home-news-list > li + li { border-top: 1px solid var(--hairline); }
+.home-news-item { display: flex; flex-direction: column; gap: 8px; padding: 18px 4px; text-decoration: none; color: inherit; }
 .home-news-item strong { font-size: 17px; line-height: 1.6; font-weight: 700; color: var(--ink); transition: color .2s ease; }
 .home-news-item:hover strong { color: var(--olive-600); text-decoration: underline; text-decoration-color: var(--gold-500); text-underline-offset: 6px; }
 .home-news-excerpt { font-size: 14.5px; line-height: 1.8; color: var(--text-muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Blog column: compact thumbnail rows. */
+.home-post-list { display: flex; flex-direction: column; }
+.home-post-list > a + a { border-top: 1px solid var(--hairline); }
+.home-post-mini { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 16px; align-items: center; text-decoration: none; color: inherit; padding: 16px 0; }
+.home-post-list > a:first-child { padding-top: 0; }
+.home-post-mini-media { border-radius: 12px; overflow: hidden; aspect-ratio: 1; background: var(--surface-1); }
+.home-post-mini-media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.22, .7, .25, 1); }
+.home-post-mini:hover .home-post-mini-media img { transform: scale(1.08); }
+.home-post-mini > span:last-child { display: flex; flex-direction: column; align-items: flex-start; gap: 7px; min-width: 0; }
+.home-post-mini strong { font-size: 15.5px; line-height: 1.55; font-weight: 700; color: var(--ink); transition: color .2s ease; }
+.home-post-mini:hover strong { color: var(--olive-600); }
+.home-post-cat { display: inline-block; font-size: 12px; font-weight: 700; color: var(--gold-700); background: var(--gold-50); border-radius: var(--radius-round); padding: 4px 11px; }
+.home-post-date { font-size: 13px; color: var(--ink-subtle); }
 .home-media .home-empty { text-align: start; font-size: 16px; }
 @media (max-width: 980px) {
   .home-media-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 620px) {
   .home-media { padding-inline: 20px; }
-  .home-post-lead { aspect-ratio: 4 / 5; }
-  .home-post-more { grid-template-columns: minmax(0, 1fr); }
+  .home-news-lead:not(.has-cover) .home-news-lead-body { min-height: 0; }
 }
 
 /* Closing band glow, matching the award stage. */
@@ -201,5 +209,5 @@
 
 @media (prefers-reduced-motion: reduce) {
   .home-init-row, .home-init-row::before, .home-init-num, .home-init-thumb img, .home-init-arrow,
-  .home-post-lead img, .home-post-mini, .home-post-mini-media img { transition: none; }
+  .home-news-lead, .home-news-lead-media img, .home-post-mini-media img { transition: none; }
 }

@@ -27,8 +27,8 @@ export default async function HomePage() {
     getNews(),
     getPosts(),
   ]);
-  const [leadPost, ...morePosts] = posts.slice(0, 3);
-  const latestNews = news.slice(0, 4);
+  const latestPosts = posts.slice(0, 3);
+  const [leadNews, ...moreNews] = news.slice(0, 4);
   const featuredInitiatives = initiatives.slice(0, 5);
 
   return (
@@ -174,73 +174,81 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* MEDIA — news and the blog side by side, magazine-style: the lead post
-          large, the rest beside it, and the news as a dated column. Both stay
-          present before anything is published and say so. */}
+      {/* MEDIA — the news leads: the latest item as a feature (image-led
+          when it has a cover, a tinted type-led panel when it doesn't, as most
+          don't), the next ones beneath it; the blog sits beside it as a compact
+          column. Both stay present before anything is published and say so. */}
       <section id="media" className="home-media">
         <SectionHead eyebrow="المركز الإعلامي" title="الأخبار والمقالات" />
         <div className="home-media-grid">
-          <div id="blog" className="home-media-blog" data-reveal="1">
-            <div className="home-col-head">
-              <h3>من مدونة الأستاذ</h3>
-              <Link href="/blog" className="arrow-link">كل المقالات <span className="arrow-link__a">←</span></Link>
-            </div>
-            {leadPost ? (
-              <>
-                <Link href={`/blog/${leadPost.slug}`} className="home-post-lead">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={leadPost.cover_url ?? "/assets/alostath-logo.png"} alt={leadPost.title} />
-                  <span className="home-post-lead-body">
-                    {leadPost.category && <span className="home-post-cat">{leadPost.category}</span>}
-                    <strong>{leadPost.title}</strong>
-                    <span className="home-post-date">{formatArabicDate(leadPost.published_at)}</span>
-                  </span>
-                </Link>
-                {morePosts.length > 0 && (
-                  <div className="home-post-more">
-                    {morePosts.map((p) => (
-                      <Link key={p.id} href={`/blog/${p.slug}`} className="home-post-mini">
-                        <span className="home-post-mini-media">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
-                        </span>
-                        <span>
-                          {p.category && <span className="home-post-cat">{p.category}</span>}
-                          <strong>{p.title}</strong>
-                          <span className="home-post-date">{formatArabicDate(p.published_at)}</span>
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </>
-            ) : (
-              <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
-            )}
-          </div>
-
           <div id="news" className="home-media-news" data-reveal="1">
             <div className="home-col-head">
               <h3>آخر الأخبار</h3>
               <Link href={NEWS_PATH} className="arrow-link">كل الأخبار <span className="arrow-link__a">←</span></Link>
             </div>
-            {latestNews.length > 0 ? (
-              <ul className="home-news-list">
-                {latestNews.map((n) => (
-                  <li key={n.id}>
-                    <Link href={`${NEWS_PATH}/${n.slug}`} className="home-news-item">
-                      <span className="home-news-meta">
-                        <span className={`home-news-kind is-${n.kind}`}>{newsKindLabel(n.kind)}</span>
-                        <span>{formatArabicDate(n.published_at)}</span>
-                      </span>
-                      <strong>{n.title}</strong>
-                      {n.excerpt && <span className="home-news-excerpt">{n.excerpt}</span>}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+            {leadNews ? (
+              <>
+                <Link href={`${NEWS_PATH}/${leadNews.slug}`} className={`home-news-lead${leadNews.cover_url ? " has-cover" : ""}`}>
+                  {leadNews.cover_url && (
+                    <span className="home-news-lead-media">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={leadNews.cover_url} alt={leadNews.title} />
+                    </span>
+                  )}
+                  <span className="home-news-lead-body">
+                    <span className="home-news-meta">
+                      <span className={`home-news-kind is-${leadNews.kind}`}>{newsKindLabel(leadNews.kind)}</span>
+                      <span>{formatArabicDate(leadNews.published_at)}</span>
+                    </span>
+                    <strong>{leadNews.title}</strong>
+                    {leadNews.excerpt && <span className="home-news-excerpt">{leadNews.excerpt}</span>}
+                    <span className="arrow-link">اقرأ الخبر <span className="arrow-link__a">←</span></span>
+                  </span>
+                </Link>
+                {moreNews.length > 0 && (
+                  <ul className="home-news-list">
+                    {moreNews.map((n) => (
+                      <li key={n.id}>
+                        <Link href={`${NEWS_PATH}/${n.slug}`} className="home-news-item">
+                          <span className="home-news-meta">
+                            <span className={`home-news-kind is-${n.kind}`}>{newsKindLabel(n.kind)}</span>
+                            <span>{formatArabicDate(n.published_at)}</span>
+                          </span>
+                          <strong>{n.title}</strong>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </>
             ) : (
               <p className="home-empty">لا توجد أخبار منشورة بعد.</p>
+            )}
+          </div>
+
+          <div id="blog" className="home-media-blog" data-reveal="1">
+            <div className="home-col-head">
+              <h3>من مدونة الأستاذ</h3>
+              <Link href="/blog" className="arrow-link">كل المقالات <span className="arrow-link__a">←</span></Link>
+            </div>
+            {latestPosts.length > 0 ? (
+              <div className="home-post-list">
+                {latestPosts.map((p) => (
+                  <Link key={p.id} href={`/blog/${p.slug}`} className="home-post-mini">
+                    <span className="home-post-mini-media">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
+                    </span>
+                    <span>
+                      {p.category && <span className="home-post-cat">{p.category}</span>}
+                      <strong>{p.title}</strong>
+                      <span className="home-post-date">{formatArabicDate(p.published_at)}</span>
+                    </span>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
             )}
           </div>
         </div>
