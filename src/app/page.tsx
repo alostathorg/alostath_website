@@ -29,7 +29,7 @@ export default async function HomePage() {
   ]);
   const latestPosts = posts.slice(0, 3);
   const [leadNews, ...moreNews] = news.slice(0, 4);
-  const featuredInitiatives = initiatives.slice(0, 5);
+  const featuredInitiatives = initiatives.slice(0, 3);
 
   return (
     <PageShell active="home">
