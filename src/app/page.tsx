@@ -136,12 +136,14 @@ export default async function HomePage() {
           {featuredInitiatives.length > 0 ? (
             <ol className="home-init-list" data-reveal-group>
               {featuredInitiatives.map((it, i) => {
+                // A photo fills the tile; a logo alone sits whole on a white tile.
                 const img = it.hero_image_url ?? it.logo_url;
+                const isLogo = !it.hero_image_url && !!it.logo_url;
                 return (
                   <li key={it.id}>
                     <Link href={`/initiatives/${it.slug}`} className={`home-init-row is-${it.theme === "sage" ? "sage" : "gold"}`}>
                       <span className="home-init-num">{String(i + 1).padStart(2, "0")}</span>
-                      <span className="home-init-thumb">
+                      <span className={`home-init-thumb${isLogo ? " is-logo" : ""}`}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         {img && <img src={img} alt="" loading="lazy" />}
                       </span>

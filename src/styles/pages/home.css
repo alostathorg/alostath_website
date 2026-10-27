@@ -119,6 +119,10 @@
 .home-init-thumb::before { content: ""; position: absolute; inset: 0; background: url("/assets/alostath-pattern.svg") 0 0 / auto 44px; opacity: .35; }
 .home-init-thumb img { position: relative; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s cubic-bezier(.22, .7, .25, 1); }
 .home-init-row:hover .home-init-thumb img { transform: scale(1.08); }
+.home-init-thumb.is-logo { background: var(--canvas); box-shadow: inset 0 0 0 1px var(--hairline); }
+.home-init-thumb.is-logo::before { display: none; }
+.home-init-thumb.is-logo img { object-fit: contain; padding: 12px; }
+.home-init-row:hover .home-init-thumb.is-logo img { transform: scale(1.04); }
 .home-init-main { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .home-init-badge { font-size: 12.5px; font-weight: 600; color: var(--gold-700); }
 .home-init-row.is-sage .home-init-badge { color: var(--sage-700); }
