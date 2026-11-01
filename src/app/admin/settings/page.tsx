@@ -12,6 +12,7 @@ export default async function SettingsPage() {
   const contact = (map.get("contact") as Record<string, unknown>) ?? {};
   const council = (map.get("council") as Record<string, unknown>) ?? {};
   const community = (map.get("community") as Record<string, unknown>) ?? {};
+  const translation = (map.get("translation") as Record<string, unknown>) ?? {};
 
   return (
     <div>
@@ -25,6 +26,7 @@ export default async function SettingsPage() {
       <SettingsForm sectionKey="contact" value={contact} action={saveSettings.bind(null, "contact")} />
       <SettingsForm sectionKey="council" value={council} action={saveSettings.bind(null, "council")} />
       <SettingsForm sectionKey="community" value={community} action={saveSettings.bind(null, "community")} />
+      <SettingsForm sectionKey="translation" value={translation} action={saveSettings.bind(null, "translation")} />
     </div>
   );
 }

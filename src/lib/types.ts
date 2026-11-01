@@ -146,6 +146,42 @@ export interface PressAsset {
 
 export type SiteSettings = Record<string, unknown>;
 
+// ── الترجمات («مليون كلمة») ──────────────────────────────────────────────────
+// Mirrors supabase/migrations/0005_translations.sql.
+export type TranslationStatus = "draft" | "revise" | "rejected" | "published";
+
+export interface Translation {
+  id: string;
+  slug: string;
+  title: string;
+  original_title: string | null;
+  excerpt: string | null;
+  body: string[];
+  original_body: string[];
+  mode: "full" | "summary";
+  category: string | null;
+  tags: string[];
+  source_name: string | null;
+  source_url: string | null;
+  author: string | null;
+  source_date: string | null;
+  source_language: string;
+  license: string | null;
+  license_url: string | null;
+  word_count: number;
+  status: TranslationStatus;
+  review_note: string | null;
+  batch_date: string;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TranslationTotals {
+  words: number;
+  items: number;
+}
+
 // ── مجتمع الأستاذ ─────────────────────────────────────────────────────────────
 
 export type MemberStatus = "active" | "pending" | "unsubscribed" | "blocked";

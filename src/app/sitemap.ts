@@ -13,6 +13,7 @@ const ROUTES = [
   "/partners",
   "/about",
   "/news",
+  "/translations",
   "/blog",
   "/press",
   "/contact",

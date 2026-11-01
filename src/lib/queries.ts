@@ -10,6 +10,8 @@ import type {
   Partner,
   PressAsset,
   SiteSettings,
+  Translation,
+  TranslationTotals,
 } from "@/lib/types";
 
 // Public reads use a cookieless anon client, so pages statically generate and
@@ -191,4 +193,42 @@ export async function getFeaturedIdeas(limit = 6): Promise<CommunityIdea[]> {
     .order("created_at", { ascending: false })
     .limit(limit);
   return latinDigitsDeep((data as CommunityIdea[] | null) ?? []);
+}
+
+// ── الترجمات («مليون كلمة») ──────────────────────────────────────────────────
+// RLS already returns only published rows to the anon client; the status
+// filter keeps an admin session on the same page a visitor sees.
+
+/** Published translations, newest first. */
+export async function getTranslations(): Promise<Translation[]> {
+  const supabase = publicClient();
+  if (!supabase) return [];
+  const { data } = await supabase
+    .from("translations")
+    .select("*")
+    .eq("status", "published")
+    .order("published_at", { ascending: false, nullsFirst: false })
+    .order("created_at", { ascending: false });
+  return latinDigitsDeep((data as Translation[] | null) ?? []);
+}
+
+export async function getTranslation(slug: string): Promise<Translation | null> {
+  const supabase = publicClient();
+  if (!supabase) return null;
+  const { data } = await supabase
+    .from("translations")
+    .select("*")
+    .eq("slug", slug)
+    .eq("status", "published")
+    .maybeSingle();
+  return latinDigitsDeep((data as Translation | null) ?? null);
+}
+
+/** The «مليون كلمة» counter: published Arabic words and items. */
+export async function getTranslationTotals(): Promise<TranslationTotals> {
+  const supabase = publicClient();
+  if (!supabase) return { words: 0, items: 0 };
+  const { data } = await supabase.rpc("translations_totals");
+  const row = Array.isArray(data) ? data[0] : data;
+  return { words: Number(row?.words ?? 0), items: Number(row?.items ?? 0) };
 }

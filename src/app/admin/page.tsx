@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { PARTNERS_NAV_LABEL } from "@/lib/brandPartners";
 import { NEWS_NAV_LABEL } from "@/lib/news";
+import { TRANSLATIONS_NAV_LABEL } from "@/lib/translations";
 import { COLLECTIONS } from "./config";
 
 export const dynamic = "force-dynamic";
@@ -45,12 +46,15 @@ const BulbIcon = (
 const StoreIcon = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" /><path d="M4 12v8h16v-8" /><path d="M9 20v-5h6v5" /></svg>
 );
+const TranslateIcon = (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 8 6 6" /><path d="m4 14 6-6 2-3" /><path d="M2 5h12" /><path d="M7 2h1" /><path d="m22 22-5-10-5 10" /><path d="M14 18h6" /></svg>
+);
 const Chevron = (
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
 );
 
 export default async function AdminDashboard() {
-  const [awards, initiatives, posts, news, brands, registrations, members, newIdeas] = await Promise.all([
+  const [awards, initiatives, posts, news, brands, registrations, members, newIdeas, draftTranslations] = await Promise.all([
     count("awards"),
     count("initiatives"),
     count("blog_posts"),
@@ -59,6 +63,7 @@ export default async function AdminDashboard() {
     count("registrations"),
     count("community_members"),
     countWhere("community_ideas", "status", "new"),
+    countWhere("translations", "status", "draft"),
   ]);
 
   const tiles = [
@@ -70,6 +75,7 @@ export default async function AdminDashboard() {
     { label: "الطلبات والاشتراكات", value: registrations, href: "/admin/registrations", icon: InboxIcon },
     { label: "أعضاء المجتمع", value: members, href: "/admin/community", icon: UsersIcon },
     { label: "أفكار جديدة", value: newIdeas, href: "/admin/community/ideas?status=new", icon: BulbIcon },
+    { label: `${TRANSLATIONS_NAV_LABEL} بانتظار المراجعة`, value: draftTranslations, href: "/admin/translations?status=draft", icon: TranslateIcon },
   ];
 
   return (

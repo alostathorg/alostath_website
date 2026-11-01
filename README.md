@@ -45,6 +45,7 @@ supabase/
   migrations/0002_community.sql  مجتمع الأستاذ tables, RLS, public write RPCs
   migrations/0003_brand_partners.sql  الإعلامات table + RLS
   migrations/0004_news.sql  الأخبار table + RLS
+  migrations/0005_translations.sql  الترجمات («مليون كلمة») table, counter, RLS
   seed.ts                  one‑time seed from the original hardcoded content
 ```
 
@@ -89,6 +90,9 @@ or the Supabase CLI (`supabase db push`):
   write).
 - `supabase/migrations/0004_news.sql` — الأخبار: the `news` table and its RLS
   (public read of published rows, admin write).
+- `supabase/migrations/0005_translations.sql` — الترجمات: the `translations`
+  table, its word-count trigger, the `translations_totals()` counter and the
+  `translation` settings row (sources + glossary).
 
 All four files are idempotent, so re-running them is safe. `0001` and `0002`
 have already been applied to the live project — never edit them; add a numbered
@@ -254,3 +258,43 @@ to **false**, so a new item is a draft until an editor flips `منشور`.
   «اقرأ الخبر في مصدره» button that links to the original story.
 - The three latest items appear on the home page above the blog strip; the
   section is hidden while nothing is published.
+
+## الترجمات — «مليون كلمة» (`/translations`)
+
+Education content from open sources, translated into Arabic each week and
+published only after review. The counter on `/translations` and the home page
+adds up published Arabic words toward 1,000,000.
+
+**The loop.** A weekly scheduled Claude task (Sunday morning) reads the source
+list and glossary from `site_settings.translation`, picks 3–5 new items, and
+inserts them into `translations` with `status = 'draft'`. Items the editor sent
+back (`revise`) are rewritten first, using `review_note`. Nothing reaches the
+site until an editor approves it in **الترجمات** in the dashboard.
+
+**Rights.** `mode = 'full'` only for sources whose licence allows translation
+(CC BY, BY‑SA, BY‑NC, BY‑NC‑SA, public domain). Everything else — including CC
+*ND* licences — is `summary`: an Arabic summary linking to the original. Every
+item names its source, author and licence, on the page and in the PDF.
+
+**Review.** `/admin/translations` lists items by status, drafts grouped by the
+run that produced them. `/admin/translations/[id]` sets each Arabic paragraph
+beside the original paragraph, numbered; the buttons save and then publish,
+send back for rewriting (needs a note), reject (kept so the source is never
+picked again), or take a published item off the site.
+
+**PDFs** are the browser's own «Save as PDF» of an A4 print page — correct
+Arabic shaping, selectable text, the brand font:
+
+- `/print/translations/[id]` — review copy, «مسودة للمراجعة» watermark,
+  numbered paragraphs; `?bilingual=1` adds the original beside the Arabic.
+- `/print/translations/batch/[date]` — a whole weekly run behind a cover and a
+  numbered index.
+- `/translations/[slug]/print` — the visitor copy, published items only.
+
+The two `/print` routes sit outside `/admin` so they print without the
+dashboard chrome; each checks `isAdmin()` itself, and RLS hides unpublished
+rows from everyone else regardless.
+
+**Naming.** The section's name is not final. The label, title and path live in
+`src/lib/translations.ts`; it is in the footer and mobile menu for now
+(`NAV_SECONDARY`), not yet a header tab.

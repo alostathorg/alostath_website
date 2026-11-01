@@ -11,6 +11,7 @@
 
 import { PARTNERS_NAV_LABEL, PARTNERS_PATH } from "@/lib/brandPartners";
 import { NEWS_NAV_LABEL, NEWS_PATH } from "@/lib/news";
+import { TRANSLATIONS_NAV_LABEL, TRANSLATIONS_PATH } from "@/lib/translations";
 
 export type NavItem = { href: string; label: string; key: string };
 
@@ -32,8 +33,12 @@ export const NEWS: NavItem = { href: NEWS_PATH, label: NEWS_NAV_LABEL, key: "new
 /** The seven desktop tabs. Array order is RTL visual order, right → left. */
 export const NAV_PRIMARY: NavItem[] = [...NAV_PROGRAMS, NEWS, ABOUT];
 
+/** «مليون كلمة». Footer + mobile panel for now; a header tab once the section is named. */
+export const TRANSLATIONS: NavItem = { href: TRANSLATIONS_PATH, label: TRANSLATIONS_NAV_LABEL, key: "translations" };
+
 /** Never a desktop tab — the mobile panel and the footer only. */
 export const NAV_SECONDARY: NavItem[] = [
+  TRANSLATIONS,
   { href: "/blog", label: "المدونة", key: "blog" },
   { href: "/press", label: "الملف الإعلامي", key: "press" },
 ];
