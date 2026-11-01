@@ -69,6 +69,12 @@ export async function saveTranslation(id: string, _prev: SaveState, form: FormDa
     source_date: orNull(str(form, "source_date")),
     license: orNull(str(form, "license")),
     license_url: orNull(str(form, "license_url")),
+    cover_url: orNull(str(form, "cover_url")),
+    cover_alt: orNull(str(form, "cover_alt")),
+    cover_credit: orNull(str(form, "cover_credit")),
+    cover_prompt: orNull(str(form, "cover_prompt")),
+    cover_prompt_ar: orNull(str(form, "cover_prompt_ar")),
+    cover_model: orNull(str(form, "cover_model")),
     review_note: orNull(reviewNote),
     body,
   });

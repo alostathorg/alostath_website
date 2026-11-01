@@ -18,7 +18,7 @@ export const dynamic = "force-dynamic";
 type Row = Pick<
   Translation,
   | "id" | "slug" | "title" | "original_title" | "excerpt" | "mode" | "category" | "source_name" | "source_url"
-  | "word_count" | "status" | "review_note" | "batch_date" | "published_at"
+  | "word_count" | "status" | "review_note" | "batch_date" | "published_at" | "cover_url"
 >;
 
 const BADGE: Record<TranslationStatus, string> = {
@@ -40,7 +40,7 @@ export default async function TranslationsAdminPage({
   const [{ data }, { data: all }] = await Promise.all([
     supabase
       .from("translations")
-      .select("id, slug, title, original_title, excerpt, mode, category, source_name, source_url, word_count, status, review_note, batch_date, published_at")
+      .select("id, slug, title, original_title, excerpt, mode, category, source_name, source_url, word_count, status, review_note, batch_date, published_at, cover_url")
       .eq("status", status)
       .order(status === "published" ? "published_at" : "batch_date", { ascending: false })
       .order("created_at", { ascending: false })
@@ -152,6 +152,14 @@ export default async function TranslationsAdminPage({
                 const src = sourceOf(t);
                 return (
                   <article key={t.id} className="admin-card tr-item">
+                    <Link href={`/admin/translations/${t.id}`} className="tr-item-thumb" aria-hidden tabIndex={-1}>
+                      {t.cover_url ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={t.cover_url} alt="" loading="lazy" />
+                      ) : (
+                        <span>بدون صورة</span>
+                      )}
+                    </Link>
                     <div className="tr-item-main">
                       <div className="tr-item-badges">
                         <span className={`admin-badge ${BADGE[t.status]}`}><span className="dot" />{STATUS_LABELS[t.status]}</span>

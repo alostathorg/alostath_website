@@ -78,6 +78,14 @@ export default function TranslationDocument({
       {t.original_title && <div className="tp-orig" dir="ltr">{t.original_title}</div>}
       {t.excerpt && <p className="tp-excerpt">{t.excerpt}</p>}
 
+      {t.cover_url && (
+        <figure className="tp-cover-img">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={t.cover_url} alt={t.cover_alt ?? ""} />
+          {t.cover_credit && <figcaption>{t.cover_credit}</figcaption>}
+        </figure>
+      )}
+
       <dl className="tp-meta">
         {meta.map((m) => (
           <div key={m.k}>

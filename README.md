@@ -282,6 +282,17 @@ beside the original paragraph, numbered; the buttons save and then publish,
 send back for rewriting (needs a note), reject (kept so the source is never
 picked again), or take a published item off the site.
 
+**Cover images.** Every item gets its own 16:9 cover. Source images are not
+reused — even openly licensed articles usually carry photos under separate
+agency/stock rights. The weekly task writes an image prompt in the house style
+(`site_settings.translation.cover_style`): `cover_prompt` in English, which
+image models follow best, `cover_prompt_ar` so the editor can read it, and
+`cover_model`, the recommended model and any reference images to attach. The
+editor generates the image, uploads it on the review screen (resized to WebP in
+the browser first) and it appears on the list, the item page, the share card
+and the PDF. `cover_credit` is for the exception: an openly licensed report or
+book cover used as-is.
+
 **PDFs** are the browser's own «Save as PDF» of an A4 print page — correct
 Arabic shaping, selectable text, the brand font:
 

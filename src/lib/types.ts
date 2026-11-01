@@ -168,6 +168,12 @@ export interface Translation {
   source_language: string;
   license: string | null;
   license_url: string | null;
+  cover_url: string | null;
+  cover_alt: string | null;
+  cover_credit: string | null;
+  cover_prompt: string | null;
+  cover_prompt_ar: string | null;
+  cover_model: string | null;
   word_count: number;
   status: TranslationStatus;
   review_note: string | null;

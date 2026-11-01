@@ -31,7 +31,11 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const t = await getTranslation(slug);
-  return { title: t?.title ?? TRANSLATIONS_NAV_LABEL, description: t?.excerpt ?? undefined };
+  return {
+    title: t?.title ?? TRANSLATIONS_NAV_LABEL,
+    description: t?.excerpt ?? undefined,
+    openGraph: t?.cover_url ? { images: [{ url: t.cover_url, width: 1600, height: 900, alt: t.cover_alt ?? t.title }] } : undefined,
+  };
 }
 
 export default async function TranslationItemPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -82,6 +86,7 @@ export default async function TranslationItemPage({ params }: { params: Promise<
         crumbs={[{ label: TRANSLATIONS_NAV_LABEL, href: TRANSLATIONS_PATH }, { label: t.title }]}
         eyebrow={t.category ?? modeLabel(t.mode)}
         title={t.title}
+        image={t.cover_url}
         lede={t.excerpt || undefined}
         meta={
           <div className="bl-hero-meta">
@@ -100,6 +105,13 @@ export default async function TranslationItemPage({ params }: { params: Promise<
 
       <div className="tl-wrap tl-item">
         <article data-read-target>
+          {t.cover_url && (
+            <figure className="tl-cover">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={t.cover_url} alt={t.cover_alt ?? ""} />
+              {t.cover_credit && <figcaption>{t.cover_credit}</figcaption>}
+            </figure>
+          )}
           {t.original_title && <p className="tl-orig-title" dir="ltr">{t.original_title}</p>}
 
           <div className="tl-notice">

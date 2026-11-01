@@ -30,6 +30,15 @@
 --  • `status` is text + CHECK rather than an enum so a future state is a
 --    one-line change. Labels live in src/lib/translations.ts.
 --  • `source_url` is unique when present: the de-duplication key for the task.
+--  • Every item gets a cover image of its own. Source images are not reused —
+--    even in an openly licensed article the photos usually carry separate
+--    rights (agency / stock credits). Instead the weekly task writes an image
+--    prompt in the house style (`cover_prompt`, in English because image
+--    models follow English best, with `cover_prompt_ar` so the editor can read
+--    it) and recommends a model (`cover_model`). The editor generates the
+--    image, uploads it on the review screen, and it lands in `cover_url`.
+--    `cover_credit` is for the exception: an openly licensed report or book
+--    cover used as-is, credited.
 -- =============================================================================
 
 create table if not exists translations (
@@ -51,6 +60,12 @@ create table if not exists translations (
   source_language  text not null default 'en',
   license          text,                                   -- e.g. CC BY 4.0, CC BY-SA 3.0 IGO, حقوق محفوظة
   license_url      text,
+  cover_url        text,                                   -- uploaded cover image (16:9)
+  cover_alt        text,                                   -- Arabic description for screen readers
+  cover_credit     text,                                   -- only when an existing licensed image is used
+  cover_prompt     text,                                   -- image-generation prompt, English
+  cover_prompt_ar  text,                                   -- the same prompt in Arabic, for the editor
+  cover_model      text,                                   -- recommended model + why + references to attach
   word_count       integer not null default 0,             -- trigger-maintained, Arabic body
   status           text not null default 'draft'
                      check (status in ('draft', 'revise', 'rejected', 'published')),
@@ -146,6 +161,15 @@ values (
       'The Conversation — Education | https://theconversation.com/global/education | CC BY-ND — ملخص فقط',
       'Edutopia | https://www.edutopia.org | حقوق محفوظة — ملخص فقط',
       'Education Endowment Foundation | https://educationendowmentfoundation.org.uk | حقوق محفوظة — ملخص فقط'
+    ),
+    'cover_style', concat_ws(' ',
+      'Modern editorial illustration for an Arabic education publication.',
+      'Conceptual visual metaphor of the article''s core idea, one clear focal subject, generous negative space.',
+      'Flat illustration with soft paper-grain texture and subtle shading, clean geometric shapes.',
+      'Brand palette: deep olive green #4E5B30 and #1E2814, warm gold #BF9B2F, sage green #78A183, cream background #F8F9F4.',
+      'When people appear: Saudi classroom context, modest attire (men in thobe and shemagh, women in abaya and hijab), respectful and dignified, no identifiable real persons.',
+      'Absolutely no text, letters, numbers, words, logos or watermarks anywhere in the image.',
+      'Wide 16:9 landscape composition, 1600x900, subject centred with safe margins for cropping.'
     ),
     'glossary', concat_ws(E'\n',
       'formative assessment = التقويم البنائي',

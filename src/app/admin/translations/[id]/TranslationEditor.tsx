@@ -4,6 +4,7 @@ import { useActionState, useState } from "react";
 import { saveTranslation, type SaveState } from "../actions";
 import { MODE_LABELS, TRANSLATION_CATEGORIES, formatCount } from "@/lib/translations";
 import type { Translation } from "@/lib/types";
+import CoverField from "./CoverField";
 
 const countWords = (ps: string[]) =>
   ps.reduce((n, p) => n + (p.trim() ? p.trim().split(/\s+/).length : 0), 0);
@@ -80,6 +81,8 @@ export default function TranslationEditor({ item }: { item: Translation }) {
           </div>
         </div>
       </div>
+
+      <CoverField item={item} />
 
       <div className="admin-card">
         <h2 className="admin-card-title">المصدر والرخصة</h2>
