@@ -103,6 +103,11 @@
 }
 .nav-toggle svg { display: block; }
 nav[data-mainnav] { display: flex; align-items: center; gap: 4px; }
+/* Just above the fold, eight tabs plus the logo are a few px too wide at the
+   default padding; trim it a little so nothing overflows. */
+@media (min-width: 981px) and (max-width: 1060px) {
+  nav[data-mainnav] > .nav-a { padding-inline: 13px; }
+}
 /* Tiers that exist only inside the hamburger: the spelled-out «الرئيسية» (the
    logo carries it on desktop), the footer-tier links, and the CTA. */
 .nav-cta, .nav-home-m, .nav-sec { display: none; }
