@@ -52,7 +52,7 @@ export default async function TranslationBatchPrintPage({
       <section className="tp-doc tp-cover">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img className="tp-cover-logo" src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" />
-        <div className="tp-cover-k">{TRANSLATIONS_TITLE} — مبادرة «مليون كلمة»</div>
+        <div className="tp-cover-k">{TRANSLATIONS_TITLE} — مؤسسة الأستاذ</div>
         <h1 className="tp-cover-title">
           {status === "published" ? "المواد المنشورة" : "مسودات للمراجعة"}
         </h1>
