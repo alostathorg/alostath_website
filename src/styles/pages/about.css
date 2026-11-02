@@ -142,12 +142,11 @@
 .ab-team li { display: flex; align-items: center; padding: 22px 24px; border-radius: 16px; background: var(--canvas); border: 1px solid var(--hairline); font-size: 16px; font-weight: 600; text-align: start; }
 
 /* ── Newsletter ──────────────────────────────────────────────── */
-.ab-news { position: relative; overflow: hidden; isolation: isolate; color: var(--ink-inverse); background: linear-gradient(160deg, #222D17 0%, #182010 55%, #10160A 100%); }
-.ab-news::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(50% 100% at 50% 0%, #000, transparent 75%); }
-.ab-news-in { max-width: 760px; margin: 0 auto; padding: clamp(72px,9vw,120px) 24px; text-align: center; }
+/* Newsletter closing card — the card itself is .close-band/.close-card (shared.css). */
+.ab-news-in { position: relative; max-width: 760px; margin: 0 auto; padding: clamp(64px,8vw,104px) 32px; text-align: center; }
 .ab-news-in .kicker { justify-content: center; }
 .ab-news-in .kicker::after { content: ""; width: 28px; height: 1px; background: currentColor; }
-.ab-news h2 { font-size: clamp(28px,3.6vw,44px); font-weight: 700; line-height: 1.3; margin: 0 0 16px; }
+.ab-news h2 { font-size: clamp(28px,3.6vw,44px); font-weight: 700; line-height: 1.35; margin: 0 0 16px; text-wrap: balance; }
 .ab-news p { text-align: center; font-size: 17px; line-height: 1.85; color: var(--inverse-muted); margin: 0 0 36px; }
 .ab-news-field { display: flex; gap: 8px; max-width: 560px; margin: 0 auto; padding: 8px; border-radius: 16px; background: rgba(244,246,238,.08); border: 1px solid rgba(244,246,238,.2); }
 .ab-news-field input { flex: 1 1 auto; min-width: 0; font-family: var(--font-sans); font-size: 16px; color: var(--ink-inverse); background: transparent; border: none; padding: 12px 14px; text-align: left; outline: none; }

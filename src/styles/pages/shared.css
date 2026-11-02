@@ -15,3 +15,16 @@
 .chip.is-active { color: var(--ink-inverse); background: var(--olive-900); border-color: var(--olive-900); }
 .chip-n { font-family: var(--font-mono); font-size: 12px; min-width: 24px; height: 24px; padding-inline: 6px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--surface-2); color: var(--ink-subtle); }
 .chip.is-active .chip-n { background: var(--gold-500); color: var(--olive-900); }
+
+/* Closing card — the page's last ask (newsletter, register interest) as a
+   contained dark card on the white page, so it reads as its own moment rather
+   than the top of the (equally dark) footer. Same look as the home «انضم» card. */
+.close-band { padding: 0 32px clamp(80px, 9vw, 112px); }
+.close-card { position: relative; overflow: hidden; isolation: isolate; max-width: var(--container-max); margin: 0 auto; border-radius: 28px; color: var(--ink-inverse); background: linear-gradient(150deg, #2B361C 0%, #1E2814 55%, #141B0C 100%); }
+/* Brand pattern from the top, a gold glow rising from the bottom. */
+.close-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: url("/assets/alostath-pattern.svg") 0 0 / auto 96px; opacity: .1; -webkit-mask-image: radial-gradient(60% 90% at 50% 0%, #000, transparent 75%); mask-image: radial-gradient(60% 90% at 50% 0%, #000, transparent 75%); }
+.close-card::after { content: ""; position: absolute; z-index: -1; left: 50%; bottom: -260px; width: 760px; height: 420px; transform: translateX(-50%); border-radius: 50%; filter: blur(80px); background: radial-gradient(circle, rgba(191, 155, 47, .32), transparent 70%); pointer-events: none; }
+@media (max-width: 620px) {
+  .close-band { padding-inline: 16px; }
+  .close-card { border-radius: 22px; }
+}
