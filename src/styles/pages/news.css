@@ -104,7 +104,7 @@
   .nw-layout, .nw-item { grid-template-columns: minmax(0,1fr); }
   .nw-desk, .nw-facts { position: static; }
   .nw-desk { display: grid; grid-template-columns: 1fr 1fr; }
-  .nw-facts { order: -1; padding: 6px 20px 20px; }
+  .nw-facts { padding: 6px 20px 20px; }
   .nw-facts dl { display: flex; flex-wrap: wrap; gap: 0 32px; margin-bottom: 14px; }
   .nw-facts dl > div { border-bottom: none; padding-block: 12px 4px; }
 }

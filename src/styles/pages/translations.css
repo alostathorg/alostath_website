@@ -101,7 +101,6 @@
 @media (max-width: 1080px) {
   .tl-layout, .tl-item { grid-template-columns: minmax(0,1fr); }
   .tl-side, .tl-facts { position: static; }
-  .tl-facts { order: -1; }
   .tl-strip-card { grid-template-columns: minmax(0,1fr); }
 }
 @media (max-width: 640px) {

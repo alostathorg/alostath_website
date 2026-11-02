@@ -554,6 +554,10 @@ a.card-lift:hover .arrow-link .arrow-link__a { transform: translateX(4px); }
   text-shadow: 0 2px 30px rgba(0,0,0,.3);
 }
 .ph[data-size="lg"] .ph-title { font-size: clamp(40px,6.4vw,96px); line-height: 1.06; max-width: 16ch; }
+/* Length-aware title scale (see titleLength in PageHero). The home stage
+   (.ph-full) keeps its own single-line treatment. */
+.ph:not(.ph-full)[data-len="medium"] .ph-title { font-size: clamp(30px,4.4vw,64px); line-height: 1.18; max-width: 20ch; }
+.ph:not(.ph-full)[data-len="long"] .ph-title { font-size: clamp(26px,3.4vw,50px); line-height: 1.28; max-width: 26ch; }
 .ph-accent {
   display: block;
   background: linear-gradient(180deg, #E2C46A 0%, var(--gold-500) 55%, #A9851F 100%);

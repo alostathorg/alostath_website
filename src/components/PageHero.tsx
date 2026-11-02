@@ -1,4 +1,27 @@
 import Link from "next/link";
+import { isValidElement, type ReactNode } from "react";
+
+/** Plain text of a title, for measuring its length. */
+function textOf(node: ReactNode): string {
+  if (node == null || typeof node === "boolean") return "";
+  if (typeof node === "string" || typeof node === "number") return String(node);
+  if (Array.isArray(node)) return node.map(textOf).join("");
+  if (isValidElement<{ children?: ReactNode }>(node)) return textOf(node.props.children);
+  return "";
+}
+
+/**
+ * Display type is for a few words. A headline set at 96px stops reading as a
+ * headline once it runs past three lines, so the size steps down with length:
+ * short titles keep the full display scale, longer ones get a calmer size and
+ * a wider measure so they settle into two or three lines.
+ */
+function titleLength(title: ReactNode, accent: ReactNode): "short" | "medium" | "long" {
+  const n = (textOf(title) + " " + textOf(accent)).trim().length;
+  if (n <= 22) return "short";
+  if (n <= 48) return "medium";
+  return "long";
+}
 
 export type HeroCrumb = { label: string; href?: string };
 
@@ -81,6 +104,7 @@ export default function PageHero({
       data-hero
       data-size={size}
       data-tone={tone}
+      data-len={titleLength(title, accent)}
       {...(image ? { "data-photo": "" } : {})}
       className={`ph${full ? " ph-full" : ""}`}
     >
