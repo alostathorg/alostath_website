@@ -103,10 +103,21 @@
 }
 .nav-toggle svg { display: block; }
 nav[data-mainnav] { display: flex; align-items: center; gap: 4px; }
+/* Header logo. The asset is cropped tight, so the height is the mark itself. */
+.header-logo { height: 54px; width: auto; display: block; }
+/* Just above the fold, eight tabs plus the logo are too wide at full size;
+   shrink the logo and trim the tab padding so nothing overflows. */
+@media (min-width: 981px) and (max-width: 1180px) {
+  .header-logo { height: 44px; }
+  nav[data-mainnav] > .nav-a { padding-inline: 12px; }
+}
+@media (max-width: 980px) {
+  .header-logo { height: 46px; }
+}
 /* Tiers that exist only inside the hamburger: the spelled-out «الرئيسية» (the
    logo carries it on desktop), the footer-tier links, and the CTA. */
 .nav-cta, .nav-home-m, .nav-sec { display: none; }
-/* Collapse the main nav into the hamburger below 980px. At 17px the seven tabs
+/* Collapse the main nav into the hamburger below 980px. At 17px the eight tabs
    plus the logo and CTA need ~900px of header to share one row — at the 981px
    fold the content box is 925px, so the tabs still never have to shrink. (The
    nine-tab bar needed ~1045px, which is why this used to carry a 981-1120px

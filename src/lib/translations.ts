@@ -10,7 +10,7 @@ import { normalizeExternalUrl, hostnameOf, text } from "@/lib/brandPartners";
 export const TRANSLATIONS_NAV_LABEL = "الترجمات";
 
 /** The public section title shown in the hero and on the PDFs. */
-export const TRANSLATIONS_TITLE = "ترجمات الأستاذ";
+export const TRANSLATIONS_TITLE = "مليون كلمة للأستاذ";
 
 /** Public route of the section. */
 export const TRANSLATIONS_PATH = "/translations";

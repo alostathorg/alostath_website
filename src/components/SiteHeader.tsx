@@ -52,10 +52,10 @@ export default function SiteHeader({
           style={{ display: "flex", alignItems: "center", textDecoration: "none", flex: "none" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img className="logo-ink" src="/assets/alostath-logo.png" alt="مؤسسة الأستاذ" style={{ height: 46, width: "auto" }} />
+          <img className="logo-ink header-logo" src="/assets/alostath-logo-header.png" alt="مؤسسة الأستاذ" />
           {overlay && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img className="logo-inverse" src="/assets/alostath-logo-inverse.png" alt="" aria-hidden style={{ height: 46, width: "auto" }} />
+            <img className="logo-inverse header-logo" src="/assets/alostath-logo-header-inverse.png" alt="" aria-hidden />
           )}
         </Link>
         {/* gap/align-items live in design-system.css, not here: the <980px panel
