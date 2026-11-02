@@ -106,7 +106,7 @@ nav[data-mainnav] { display: flex; align-items: center; gap: 4px; }
 /* Tiers that exist only inside the hamburger: the spelled-out «الرئيسية» (the
    logo carries it on desktop), the footer-tier links, and the CTA. */
 .nav-cta, .nav-home-m, .nav-sec { display: none; }
-/* Collapse the main nav into the hamburger below 980px. At 17px the seven tabs
+/* Collapse the main nav into the hamburger below 980px. At 17px the eight tabs
    plus the logo and CTA need ~900px of header to share one row — at the 981px
    fold the content box is 925px, so the tabs still never have to shrink. (The
    nine-tab bar needed ~1045px, which is why this used to carry a 981-1120px
