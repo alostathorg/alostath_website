@@ -103,10 +103,16 @@
 }
 .nav-toggle svg { display: block; }
 nav[data-mainnav] { display: flex; align-items: center; gap: 4px; }
-/* Just above the fold, eight tabs plus the logo are a few px too wide at the
-   default padding; trim it a little so nothing overflows. */
-@media (min-width: 981px) and (max-width: 1060px) {
-  nav[data-mainnav] > .nav-a { padding-inline: 13px; }
+/* Header logo. The asset is cropped tight, so the height is the mark itself. */
+.header-logo { height: 54px; width: auto; display: block; }
+/* Just above the fold, eight tabs plus the logo are too wide at full size;
+   shrink the logo and trim the tab padding so nothing overflows. */
+@media (min-width: 981px) and (max-width: 1180px) {
+  .header-logo { height: 44px; }
+  nav[data-mainnav] > .nav-a { padding-inline: 12px; }
+}
+@media (max-width: 980px) {
+  .header-logo { height: 46px; }
 }
 /* Tiers that exist only inside the hamburger: the spelled-out «الرئيسية» (the
    logo carries it on desktop), the footer-tier links, and the CTA. */
