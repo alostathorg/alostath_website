@@ -1,10 +1,9 @@
-import Link from "next/link";
 import type { Metadata } from "next";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
 import WordsCounter from "@/components/translations/WordsCounter";
 import { getTranslationTotals, getTranslations } from "@/lib/queries";
-import { MACHINE_NOTE, TRANSLATIONS_NAV_LABEL, TRANSLATIONS_TITLE } from "@/lib/translations";
+import { TRANSLATIONS_NAV_LABEL, TRANSLATIONS_TITLE } from "@/lib/translations";
 import TranslationsFeed from "./TranslationsFeed";
 
 export const revalidate = 60;
@@ -49,13 +48,6 @@ export default async function TranslationsPage() {
             <p style={{ color: "var(--inverse-muted)" }}>
               نختار كل أسبوع موادَّ تعليمية من مصادر عالمية موثوقة، ونترجمها ترجمةً كاملة متى أتاحت رخصتها ذلك، أو نلخّصها
               بالعربية مع الإحالة إلى أصلها.
-            </p>
-          </div>
-          <div className="tl-card">
-            <span className="tl-card-k">منهجنا</span>
-            <p>{MACHINE_NOTE}: تُنجز الترجمة آلياً وتُراجَع قبل النشر، ويُذكر مع كل مادة مصدرها ومؤلفها ورخصتها.</p>
-            <p>
-              لاقتراح مصدر أو ملاحظة على ترجمة: <Link href="/contact">تواصل معنا</Link>.
             </p>
           </div>
         </aside>

@@ -211,3 +211,21 @@ export async function signOut() {
   await supabase.auth.signOut();
   redirect("/admin/login");
 }
+
+/**
+ * One switch in /admin/pages. Merges into the stored map rather than replacing
+ * it, so two editors flipping different switches never undo each other.
+ */
+export async function setVisibility(group: "pages" | "home_sections", key: string, on: boolean) {
+  await requireAdmin();
+  if (group !== "pages" && group !== "home_sections") throw new Error("مجموعة غير معروفة");
+  const supabase = await createClient();
+  const { data } = await supabase.from("site_settings").select("value").eq("key", group).maybeSingle();
+  const current = (data?.value as Record<string, boolean> | null) ?? {};
+  const value = { ...current, [key]: on };
+  const { error } = await supabase.from("site_settings").upsert({ key: group, value }, { onConflict: "key" });
+  if (error) throw new Error(error.message);
+  revalidatePath("/", "layout");
+  revalidatePath("/sitemap.xml");
+  revalidatePath("/admin/pages");
+}

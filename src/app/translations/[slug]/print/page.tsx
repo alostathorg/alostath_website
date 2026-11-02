@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getTranslation } from "@/lib/queries";
+import { getSettings, getTranslation } from "@/lib/queries";
+import { requirePageOn } from "@/lib/pages";
 import PrintFrame from "@/components/translations/PrintFrame";
 import TranslationDocument from "@/components/translations/TranslationDocument";
 
@@ -16,6 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function PublicTranslationPrintPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  requirePageOn(await getSettings(), "translations");
   const t = await getTranslation(slug);
   if (!t) notFound();
   return (

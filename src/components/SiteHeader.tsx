@@ -1,7 +1,20 @@
 import Link from "next/link";
 import { HOME, NAV_PRIMARY, NAV_SECONDARY } from "@/lib/nav";
 
-export default function SiteHeader({ active, overlay = false }: { active?: string; overlay?: boolean }) {
+export default function SiteHeader({
+  active,
+  overlay = false,
+  hidden,
+}: {
+  active?: string;
+  overlay?: boolean;
+  /** Page keys switched off in the dashboard. */
+  hidden?: Set<string>;
+}) {
+  const shown = (n: { key: string }) => !hidden?.has(n.key);
+  const primary = NAV_PRIMARY.filter(shown);
+  const secondary = NAV_SECONDARY.filter(shown);
+  const contactOn = !hidden?.has("contact");
   return (
     <header
       {...(overlay ? { "data-overlay": "" } : {})}
@@ -56,7 +69,7 @@ export default function SiteHeader({ active, overlay = false }: { active?: strin
           >
             {HOME.label}
           </Link>
-          {NAV_PRIMARY.map((n) => (
+          {primary.map((n) => (
             <Link
               key={n.key}
               className="nav-a"
@@ -68,9 +81,10 @@ export default function SiteHeader({ active, overlay = false }: { active?: strin
           ))}
           {/* Footer-tier links, surfaced inside the hamburger so nothing on the
               site is more than one tap away on a phone. */}
+          {secondary.length > 0 && (
           <div className="nav-sec" role="group" aria-labelledby="nav-sec-label">
             <div className="nav-sec-label" id="nav-sec-label">المؤسسة</div>
-            {NAV_SECONDARY.map((n) => (
+            {secondary.map((n) => (
               <Link
                 key={n.key}
                 className="nav-a"
@@ -81,14 +95,19 @@ export default function SiteHeader({ active, overlay = false }: { active?: strin
               </Link>
             ))}
           </div>
-          <Link href="/contact" className="nav-a nav-cta">
-            تواصل معنا
-          </Link>
+          )}
+          {contactOn && (
+            <Link href="/contact" className="nav-a nav-cta">
+              تواصل معنا
+            </Link>
+          )}
         </nav>
         <div className="header-cta" style={{ marginInlineStart: "auto", flex: "none" }}>
-          <Link href="/contact" className="btn btn-primary btn-sm">
-            تواصل معنا
-          </Link>
+          {contactOn && (
+            <Link href="/contact" className="btn btn-primary btn-sm">
+              تواصل معنا
+            </Link>
+          )}
         </div>
       </div>
     </header>
