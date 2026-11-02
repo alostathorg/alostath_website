@@ -93,6 +93,7 @@ create trigger trg_translations_updated before update on translations
 create or replace function translations_before_write()
 returns trigger
 language plpgsql
+set search_path = public
 as $$
 begin
   new.word_count := coalesce((
@@ -122,6 +123,7 @@ create or replace function translations_totals()
 returns table (words bigint, items bigint)
 language sql
 stable
+set search_path = public
 as $$
   select coalesce(sum(word_count), 0)::bigint, count(*)::bigint
   from translations
