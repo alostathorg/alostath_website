@@ -114,16 +114,6 @@ export default async function TranslationItemPage({ params }: { params: Promise<
           )}
           {t.original_title && <p className="tl-orig-title" dir="ltr">{t.original_title}</p>}
 
-          <div className="tl-notice">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
-            <span>
-              <strong>{MACHINE_NOTE}.</strong>{" "}
-              {t.mode === "summary"
-                ? "هذا ملخّص مترجم يعرض أبرز ما في المادة الأصلية؛ للنص الكامل يُرجى الرجوع إلى المصدر."
-                : "النص ترجمة كاملة لمادة منشورة برخصة مفتوحة تسمح بترجمتها."}
-            </span>
-          </div>
-
           <div className="tl-prose">
             {body.map((p, i) => (
               <p key={i}>{p}</p>
@@ -156,6 +146,16 @@ export default async function TranslationItemPage({ params }: { params: Promise<
               )}
             </div>
           )}
+
+          <div className="tl-notice">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden><circle cx="12" cy="12" r="10" /><path d="M12 16v-4" /><path d="M12 8h.01" /></svg>
+            <span>
+              <strong>{MACHINE_NOTE}.</strong>{" "}
+              {t.mode === "summary"
+                ? "هذا ملخّص مترجم يعرض أبرز ما في المادة الأصلية؛ للنص الكامل يُرجى الرجوع إلى المصدر."
+                : "النص ترجمة كاملة لمادة منشورة برخصة مفتوحة تسمح بترجمتها."}
+            </span>
+          </div>
 
           <div className="bl-after nw-after">
             <Link href={TRANSLATIONS_PATH} className="arrow-link">
