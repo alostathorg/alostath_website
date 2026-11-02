@@ -31,7 +31,8 @@ const socialStyle = {
   color: "var(--inverse-muted)",
 } as const;
 
-export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
+export default function SiteFooter({ settings, hidden }: { settings?: SiteSettings; hidden?: Set<string> }) {
+  const shown = (n: NavItem) => !hidden?.has(n.key);
   const c = { ...DEFAULTS, ...((settings?.contact as Record<string, string>) ?? {}) };
   return (
     <footer style={{ background: "var(--olive-900)", color: "var(--inverse-muted)" }}>
@@ -47,8 +48,8 @@ export default function SiteFooter({ settings }: { settings?: SiteSettings }) {
       >
         {/* Two audience-shaped columns. «المدونة» and «الملف الإعلامي» left the
             header bar, so this is now their primary home in the chrome. */}
-        <LinkColumn title="للمعلّم" items={NAV_PROGRAMS} />
-        <LinkColumn title="المؤسسة" items={FOOTER_ORG} />
+        {NAV_PROGRAMS.some(shown) && <LinkColumn title="للمعلّم" items={NAV_PROGRAMS.filter(shown)} />}
+        <LinkColumn title="المؤسسة" items={FOOTER_ORG.filter(shown)} />
         <div>
           <div style={{ fontSize: 14, fontWeight: 600, color: "var(--ink-inverse)", marginBottom: 16 }}>تواصل معنا</div>
           <div style={{ fontSize: 14, lineHeight: 1.9, color: "var(--inverse-subtle)", marginBottom: 14 }}>{c.address}</div>

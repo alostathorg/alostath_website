@@ -143,6 +143,8 @@
 /* ── Media: the news leads (feature + list), the blog as a compact column ── */
 .home-media { max-width: var(--container-max); margin: 0 auto; padding: clamp(80px, 9vw, 120px) 32px clamp(80px, 9vw, 112px); }
 .home-media-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: clamp(32px, 4vw, 56px); align-items: start; }
+/* One column switched off in /admin/pages → the other takes the full width. */
+.home-media-grid > :only-child { grid-column: 1 / -1; }
 .home-col-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 16px; margin-bottom: 24px; border-bottom: 2px solid var(--ink); }
 .home-col-head h3 { font-size: 19px; font-weight: 700; margin: 0; }
 .home-col-head .arrow-link { font-size: 14px; }

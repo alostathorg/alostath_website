@@ -1,7 +1,8 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { getInitiatives, getNews, getPosts, getTranslationTotals } from "@/lib/queries";
+import { getInitiatives, getNews, getPosts, getSettings, getTranslationTotals } from "@/lib/queries";
+import { isHomeSectionOn, isPageOn } from "@/lib/pages";
 import { TRANSLATIONS_PATH } from "@/lib/translations";
 import WordsCounter from "@/components/translations/WordsCounter";
 import { NEWS_PATH, newsKindLabel } from "@/lib/news";
@@ -24,12 +25,18 @@ const BENTO = [
 ];
 
 export default async function HomePage() {
-  const [initiatives, news, posts, words] = await Promise.all([
+  const [initiatives, news, posts, words, settings] = await Promise.all([
     getInitiatives(),
     getNews(),
     getPosts(),
     getTranslationTotals(),
+    getSettings(),
   ]);
+  // Blocks and links follow the switches in /admin/pages.
+  const show = (section: string) => isHomeSectionOn(settings, section);
+  const pageOn = (key: string) => isPageOn(settings, key);
+  const newsOn = pageOn("news");
+  const blogOn = pageOn("blog");
   const latestPosts = posts.slice(0, 3);
   const [leadNews, ...moreNews] = news.slice(0, 4);
   const featuredInitiatives = initiatives.slice(0, 3);
@@ -48,8 +55,8 @@ export default async function HomePage() {
         lede="نسعى لأن نكون مرجعاً وطنياً في خدمة المعلّم والتعليم، وشريكاً فاعلاً لمنظومة التعليم والمجتمع في تحقيق رؤية المملكة 2030."
         actions={
           <>
-            <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>
-            <Link href="/initiatives" className="btn btn-outline btn-on-dark btn-lg">المبادرات</Link>
+            {pageOn("community") && <Link href="/community" className="btn btn-secondary btn-lg">انضم لمجتمع الأستاذ</Link>}
+            {pageOn("initiatives") && <Link href="/initiatives" className="btn btn-outline btn-on-dark btn-lg">المبادرات</Link>}
           </>
         }
         scrollCue="#about"
@@ -57,115 +64,123 @@ export default async function HomePage() {
 
       {/* ABOUT — the foundation's introduction lives here; the hero carries only
           its aspiration, in one line, so the two never say the same thing. The photo sits in a gold offset frame. */}
-      <section id="about" className="home-about">
-        <div className="home-about-in">
-          <figure className="home-about-media" data-reveal="1">
-            <div className="home-about-frame media-zoom">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" />
+      {show("about") && (
+        <section id="about" className="home-about">
+          <div className="home-about-in">
+            <figure className="home-about-media" data-reveal="1">
+              <div className="home-about-frame media-zoom">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={`${FR}/kvi7PxaoGkKKK99CbnbOWiTUDY.jpeg?width=1492&height=1024`} alt="طلاب أمام مبنى" />
+              </div>
+            </figure>
+            <div data-reveal="1">
+              <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
+              <h2 className="h-accent home-about-title">عن الأستاذ</h2>
+              <p className="home-about-lede">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
+              {pageOn("about") && <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>}
             </div>
-          </figure>
-          <div data-reveal="1">
-            <div className="eyebrow" style={{ marginBottom: 14 }}>من نحن</div>
-            <h2 className="h-accent home-about-title">عن الأستاذ</h2>
-            <p className="home-about-lede">مؤسسة الأستاذ مؤسسة أهلية سعودية غير ربحية، انطلقت عام 2023م من إيمانٍ عميق بأن المعلّم ركيزةٌ أساسية من ركائز العملية التعليمية والقيمية. ورُخّصت رسمياً من المركز الوطني لتنمية القطاع غير الربحي بتاريخ 20/04/2024م، وتعمل تحت إشراف وزارة التعليم، ضمن المجموعة الثانية للمنظمات والأنشطة التي تقود وتدير وتقدّم وتشجّع وتدعم الخدمات التعليمية والبحثية.</p>
-            <Link href="/about" className="btn btn-primary btn-md">أعرف أكثر</Link>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* SYSTEM (bento) */}
-      <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
-        <div data-reveal="1" style={{ textAlign: "center", marginBottom: 60 }}>
-          <div className="eyebrow" style={{ marginBottom: 14 }}>حلولٌ متكاملة</div>
-          <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 700, margin: "0 auto 16px", display: "inline-block" }}>منظومة الأستاذ</h2>
-          <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تعزّز مكانة المعلّم المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته المهنية والمعيشية، وذلك عبر المكوّنات التالية:</p>
-        </div>
-        <div className="bento" data-reveal-group>
-          {BENTO.map((b) => (
-            <div key={b.t} data-reveal="1" className={`bento-cell${b.full ? " span-full" : b.span2 ? " span2" : ""}`} style={{ background: b.bg, ...(b.border ? { borderColor: b.border } : {}), ...(b.ink === "var(--ink-inverse)" ? { color: "var(--ink-inverse)" } : {}) }}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="bento-ico" src={b.ico} alt={b.t} />
-              <div>
-                <h3 style={{ color: b.ink }}>{b.t}</h3>
-                <p style={{ color: b.muted }}>{b.d}</p>
+      {show("programs") && (
+        <section style={{ maxWidth: "var(--container-max)", margin: "0 auto", padding: "96px 32px 40px" }}>
+          <div data-reveal="1" style={{ textAlign: "center", marginBottom: 60 }}>
+            <div className="eyebrow" style={{ marginBottom: 14 }}>حلولٌ متكاملة</div>
+            <h2 className="h-accent is-center" style={{ fontSize: "clamp(28px,3.6vw,44px)", fontWeight: 700, margin: "0 auto 16px", display: "inline-block" }}>منظومة الأستاذ</h2>
+            <p className="txt-justify is-center" style={{ fontSize: 17, lineHeight: 1.85, color: "var(--text-muted)", maxWidth: "70ch", margin: "0 auto" }}>منظومة الأستاذ المتكاملة تعزّز مكانة المعلّم المهنية والمجتمعية، وتوفّر له بيئةً داعمة للتطوير المستمر وتحسين جودة حياته المهنية والمعيشية، وذلك عبر المكوّنات التالية:</p>
+          </div>
+          <div className="bento" data-reveal-group>
+            {BENTO.map((b) => (
+              <div key={b.t} data-reveal="1" className={`bento-cell${b.full ? " span-full" : b.span2 ? " span2" : ""}`} style={{ background: b.bg, ...(b.border ? { borderColor: b.border } : {}), ...(b.ink === "var(--ink-inverse)" ? { color: "var(--ink-inverse)" } : {}) }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img className="bento-ico" src={b.ico} alt={b.t} />
+                <div>
+                  <h3 style={{ color: b.ink }}>{b.t}</h3>
+                  <p style={{ color: b.muted }}>{b.d}</p>
+                </div>
+                {b.href && pageOn(b.href.slice(1)) && (
+                  <Link href={b.href} className="btn btn-primary btn-md bento-cta">{b.cta}</Link>
+                )}
               </div>
-              {b.href && (
-                <Link href={b.href} className="btn btn-primary btn-md bento-cta">{b.cta}</Link>
-              )}
-            </div>
-          ))}
-        </div>
-      </section>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* AWARD — a light panel in the award's gold tint (the same pairing as
           its bento cell), set in the page's own heading, ledger and button.
           The photo is NATIONAL_AWARD.image, so the award page and this panel
           change together. */}
-      <section id="awards" className="home-award">
-        <div className="home-award-panel" data-reveal="1">
-          <div className="home-award-copy">
-            <div className="eyebrow" style={{ marginBottom: 14 }}>تقديرٌ يتحوّل إلى تمكين</div>
-            <h2 className="h-accent">{NATIONAL_AWARD.name}</h2>
-            <span className="badge badge-gold home-award-status">{NATIONAL_AWARD.statusLabel}</span>
-            <p>{NATIONAL_AWARD.goal}</p>
-            <dl className="home-facts">
-              <div><dt>المستهدفون</dt><dd>المعلّمون الممارسون</dd></div>
-              <div><dt>النطاق</dt><dd>{NATIONAL_AWARD.scope}</dd></div>
-              <div><dt>معيار النجاح</dt><dd>الأثر في المهنة</dd></div>
-            </dl>
-            <Link href={AWARD_PATH} className="btn btn-primary btn-md">تعرّف على الجائزة</Link>
-          </div>
-          <figure className="home-award-photo">
-            <div className="home-award-photo-frame media-zoom">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} />
+      {show("awards") && (
+        <section id="awards" className="home-award">
+          <div className="home-award-panel" data-reveal="1">
+            <div className="home-award-copy">
+              <div className="eyebrow" style={{ marginBottom: 14 }}>تقديرٌ يتحوّل إلى تمكين</div>
+              <h2 className="h-accent">{NATIONAL_AWARD.name}</h2>
+              <span className="badge badge-gold home-award-status">{NATIONAL_AWARD.statusLabel}</span>
+              <p>{NATIONAL_AWARD.goal}</p>
+              <dl className="home-facts">
+                <div><dt>المستهدفون</dt><dd>المعلّمون الممارسون</dd></div>
+                <div><dt>النطاق</dt><dd>{NATIONAL_AWARD.scope}</dd></div>
+                <div><dt>معيار النجاح</dt><dd>الأثر في المهنة</dd></div>
+              </dl>
+              <Link href={AWARD_PATH} className="btn btn-primary btn-md">تعرّف على الجائزة</Link>
             </div>
-            <figcaption className="home-award-tag">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" />
-              <span>{NATIONAL_AWARD.badge}</span>
-            </figcaption>
-          </figure>
-        </div>
-      </section>
+            <figure className="home-award-photo">
+              <div className="home-award-photo-frame media-zoom">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={NATIONAL_AWARD.image} alt={NATIONAL_AWARD.name} />
+              </div>
+              <figcaption className="home-award-tag">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/assets/alostath-logo-inverse.png" alt="مؤسسة الأستاذ" />
+                <span>{NATIONAL_AWARD.badge}</span>
+              </figcaption>
+            </figure>
+          </div>
+        </section>
+      )}
 
       {/* INITIATIVES — an editorial index. Most initiatives have no photo, so
           each row stands on its number, name and line; a photo, when there is
           one, shows as a thumbnail, and a themed pattern tile when there isn't. */}
-      <section id="initiatives" className="home-init">
-        <div className="home-init-in">
-          <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
-          {featuredInitiatives.length > 0 ? (
-            <ol className="home-init-list" data-reveal-group>
-              {featuredInitiatives.map((it, i) => {
-                // A photo fills the tile; a logo alone sits whole on a white tile.
-                const img = it.hero_image_url ?? it.logo_url;
-                const isLogo = !it.hero_image_url && !!it.logo_url;
-                return (
-                  <li key={it.id}>
-                    <Link href={`/initiatives/${it.slug}`} className={`home-init-row is-${it.theme === "sage" ? "sage" : "gold"}`}>
-                      <span className="home-init-num">{String(i + 1).padStart(2, "0")}</span>
-                      <span className={`home-init-thumb${isLogo ? " is-logo" : ""}`}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        {img && <img src={img} alt="" loading="lazy" />}
-                      </span>
-                      <span className="home-init-main">
-                        {it.badge && <span className="home-init-badge">{it.badge}</span>}
-                        <h3>{it.name}</h3>
-                        {(it.tagline ?? it.overview) && <p>{it.tagline ?? it.overview}</p>}
-                      </span>
-                      <span className="home-init-arrow" aria-hidden>←</span>
-                    </Link>
-                  </li>
-                );
-              })}
-            </ol>
-          ) : (
-            <p className="home-empty">تُنشر المبادرات هنا قريباً.</p>
-          )}
-        </div>
-      </section>
+      {show("initiatives") && (
+        <section id="initiatives" className="home-init">
+          <div className="home-init-in">
+            <SectionHead eyebrow="الريادة في تعزيز مكانة المعلّم" title="أبرز مبادرات الأستاذ" href="/initiatives" cta="كل المبادرات ←" />
+            {featuredInitiatives.length > 0 ? (
+              <ol className="home-init-list" data-reveal-group>
+                {featuredInitiatives.map((it, i) => {
+                  // A photo fills the tile; a logo alone sits whole on a white tile.
+                  const img = it.hero_image_url ?? it.logo_url;
+                  const isLogo = !it.hero_image_url && !!it.logo_url;
+                  return (
+                    <li key={it.id}>
+                      <Link href={`/initiatives/${it.slug}`} className={`home-init-row is-${it.theme === "sage" ? "sage" : "gold"}`}>
+                        <span className="home-init-num">{String(i + 1).padStart(2, "0")}</span>
+                        <span className={`home-init-thumb${isLogo ? " is-logo" : ""}`}>
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          {img && <img src={img} alt="" loading="lazy" />}
+                        </span>
+                        <span className="home-init-main">
+                          {it.badge && <span className="home-init-badge">{it.badge}</span>}
+                          <h3>{it.name}</h3>
+                          {(it.tagline ?? it.overview) && <p>{it.tagline ?? it.overview}</p>}
+                        </span>
+                        <span className="home-init-arrow" aria-hidden>←</span>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ol>
+            ) : (
+              <p className="home-empty">تُنشر المبادرات هنا قريباً.</p>
+            )}
+          </div>
+        </section>
+      )}
 
       {/* MEDIA — the news leads: the latest item as a feature (image-led
           when it has a cover, a tinted type-led panel when it doesn't, as most
@@ -173,7 +188,7 @@ export default async function HomePage() {
           column. Both stay present before anything is published and say so. */}
       {/* «مليون كلمة» — the counter. Hidden until the first translation is
           published, so the home page never announces a zero. */}
-      {words.items > 0 && (
+      {words.items > 0 && show("translations") && (
         <section id="translations" className="tl-strip" data-reveal="1">
           <div className="tl-strip-card">
             <div>
@@ -187,112 +202,119 @@ export default async function HomePage() {
         </section>
       )}
 
-      <section id="media" className="home-media">
-        <SectionHead eyebrow="المركز الإعلامي" title="الأخبار والمقالات" />
-        <div className="home-media-grid">
-          <div id="news" className="home-media-news" data-reveal="1">
-            <div className="home-col-head">
-              <h3>آخر الأخبار</h3>
-              <Link href={NEWS_PATH} className="arrow-link">كل الأخبار <span className="arrow-link__a">←</span></Link>
-            </div>
-            {leadNews ? (
-              <>
-                <Link href={`${NEWS_PATH}/${leadNews.slug}`} className={`home-news-lead${leadNews.cover_url ? " has-cover" : ""}`}>
-                  {leadNews.cover_url && (
-                    <span className="home-news-lead-media">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={leadNews.cover_url} alt={leadNews.title} />
-                    </span>
-                  )}
-                  <span className="home-news-lead-body">
-                    <span className="home-news-meta">
-                      <span className={`home-news-kind is-${leadNews.kind}`}>{newsKindLabel(leadNews.kind)}</span>
-                      <span>{formatArabicDate(leadNews.published_at)}</span>
-                    </span>
-                    <strong>{leadNews.title}</strong>
-                    {leadNews.excerpt && <span className="home-news-excerpt">{leadNews.excerpt}</span>}
-                    <span className="arrow-link">اقرأ الخبر <span className="arrow-link__a">←</span></span>
-                  </span>
-                </Link>
-                {moreNews.length > 0 && (
-                  <ul className="home-news-list">
-                    {moreNews.map((n) => (
-                      <li key={n.id}>
-                        <Link href={`${NEWS_PATH}/${n.slug}`} className="home-news-item">
-                          <span className="home-news-meta">
-                            <span className={`home-news-kind is-${n.kind}`}>{newsKindLabel(n.kind)}</span>
-                            <span>{formatArabicDate(n.published_at)}</span>
-                          </span>
-                          <strong>{n.title}</strong>
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </>
-            ) : (
-              <p className="home-empty">لا توجد أخبار منشورة بعد.</p>
-            )}
-          </div>
-
-          <div id="blog" className="home-media-blog" data-reveal="1">
-            <div className="home-col-head">
-              <h3>من مدونة الأستاذ</h3>
-              <Link href="/blog" className="arrow-link">كل المقالات <span className="arrow-link__a">←</span></Link>
-            </div>
-            {latestPosts.length > 0 ? (
-              <div className="home-post-list">
-                {latestPosts.map((p) => (
-                  <Link key={p.id} href={`/blog/${p.slug}`} className="home-post-mini">
-                    <span className="home-post-mini-media">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
-                    </span>
-                    <span>
-                      {p.category && <span className="home-post-cat">{p.category}</span>}
-                      <strong>{p.title}</strong>
-                      <span className="home-post-date">{formatArabicDate(p.published_at)}</span>
+      {show("media") && (newsOn || blogOn) && (
+        <section id="media" className="home-media">
+          <SectionHead eyebrow="المركز الإعلامي" title="الأخبار والمقالات" />
+          <div className="home-media-grid">
+            {newsOn && (
+            <div id="news" className="home-media-news" data-reveal="1">
+              <div className="home-col-head">
+                <h3>آخر الأخبار</h3>
+                <Link href={NEWS_PATH} className="arrow-link">كل الأخبار <span className="arrow-link__a">←</span></Link>
+              </div>
+              {leadNews ? (
+                <>
+                  <Link href={`${NEWS_PATH}/${leadNews.slug}`} className={`home-news-lead${leadNews.cover_url ? " has-cover" : ""}`}>
+                    {leadNews.cover_url && (
+                      <span className="home-news-lead-media">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={leadNews.cover_url} alt={leadNews.title} />
+                      </span>
+                    )}
+                    <span className="home-news-lead-body">
+                      <span className="home-news-meta">
+                        <span className={`home-news-kind is-${leadNews.kind}`}>{newsKindLabel(leadNews.kind)}</span>
+                        <span>{formatArabicDate(leadNews.published_at)}</span>
+                      </span>
+                      <strong>{leadNews.title}</strong>
+                      {leadNews.excerpt && <span className="home-news-excerpt">{leadNews.excerpt}</span>}
+                      <span className="arrow-link">اقرأ الخبر <span className="arrow-link__a">←</span></span>
                     </span>
                   </Link>
-                ))}
+                  {moreNews.length > 0 && (
+                    <ul className="home-news-list">
+                      {moreNews.map((n) => (
+                        <li key={n.id}>
+                          <Link href={`${NEWS_PATH}/${n.slug}`} className="home-news-item">
+                            <span className="home-news-meta">
+                              <span className={`home-news-kind is-${n.kind}`}>{newsKindLabel(n.kind)}</span>
+                              <span>{formatArabicDate(n.published_at)}</span>
+                            </span>
+                            <strong>{n.title}</strong>
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </>
+              ) : (
+                <p className="home-empty">لا توجد أخبار منشورة بعد.</p>
+              )}
+            </div>
+            )}
+            {blogOn && (
+            <div id="blog" className="home-media-blog" data-reveal="1">
+              <div className="home-col-head">
+                <h3>من مدونة الأستاذ</h3>
+                <Link href="/blog" className="arrow-link">كل المقالات <span className="arrow-link__a">←</span></Link>
               </div>
-            ) : (
-              <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
+              {latestPosts.length > 0 ? (
+                <div className="home-post-list">
+                  {latestPosts.map((p) => (
+                    <Link key={p.id} href={`/blog/${p.slug}`} className="home-post-mini">
+                      <span className="home-post-mini-media">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.cover_url ?? "/assets/alostath-logo.png"} alt={p.title} loading="lazy" />
+                      </span>
+                      <span>
+                        {p.category && <span className="home-post-cat">{p.category}</span>}
+                        <strong>{p.title}</strong>
+                        <span className="home-post-date">{formatArabicDate(p.published_at)}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="home-empty">لا توجد مقالات منشورة بعد.</p>
+              )}
+            </div>
             )}
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* JOIN — a contained dark card on the white page, so it reads as its own
           moment rather than the top of the (equally dark) footer. One centred ask: membership is the offer (it
           takes a teacher); the newsletter is a single slim row beneath it for
           those who only want the email. */}
-      <section id="join" className="home-join">
-        <div className="home-join-card" data-reveal="1">
-        <div className="home-join-in">
-          <div className="home-join-kicker">مجتمع الأستاذ</div>
-          <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
-          <p className="home-join-lede">انضمّ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، وشارك بأفكارك في تطوير ما نعمل عليه. العضوية مجانية.</p>
-          <div className="home-join-actions">
-            <Link href="/community#join" className="btn btn-secondary btn-lg">انضمّ إلى المجتمع</Link>
-            <Link href="/community#idea" className="btn btn-outline btn-on-dark btn-lg">شارك فكرتك</Link>
-          </div>
+      {show("join") && (
+        <section id="join" className="home-join">
+          <div className="home-join-card" data-reveal="1">
+          <div className="home-join-in">
+            <div className="home-join-kicker">مجتمع الأستاذ</div>
+            <h2>كن جزءاً من صناعة القرار، لا متابعاً له فقط</h2>
+            <p className="home-join-lede">انضمّ لتصلك أخبار الجوائز والمبادرات والمجلس أولاً بأول، وشارك بأفكارك في تطوير ما نعمل عليه. العضوية مجانية.</p>
+            <div className="home-join-actions">
+              {pageOn("community") && <Link href="/community#join" className="btn btn-secondary btn-lg">انضمّ إلى المجتمع</Link>}
+              {pageOn("community") && <Link href="/community#idea" className="btn btn-outline btn-on-dark btn-lg">شارك فكرتك</Link>}
+            </div>
 
-          <form data-newsletter-form className="home-nl">
-            <div data-nl-success-state hidden className="ab-news-ok">
-              <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
-            </div>
-            <div data-nl-form-state className="home-nl-row">
-              <label htmlFor="home-nl-email">أو اكتفِ بالنشرة البريدية</label>
-              <div className="ab-news-field">
-                <input id="home-nl-email" type="email" required dir="ltr" placeholder="name@example.com" />
-                <button type="submit" className="btn btn-secondary btn-md">اشترك</button>
+            <form data-newsletter-form className="home-nl">
+              <div data-nl-success-state hidden className="ab-news-ok">
+                <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
               </div>
-            </div>
-          </form>
-        </div>
-        </div>
-      </section>
+              <div data-nl-form-state className="home-nl-row">
+                <label htmlFor="home-nl-email">أو اكتفِ بالنشرة البريدية</label>
+                <div className="ab-news-field">
+                  <input id="home-nl-email" type="email" required dir="ltr" placeholder="name@example.com" />
+                  <button type="submit" className="btn btn-secondary btn-md">اشترك</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          </div>
+        </section>
+      )}
     </PageShell>
   );
 }

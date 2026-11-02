@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { publicClient } from "@/lib/supabase/public";
 import { latinDigitsDeep } from "@/lib/format";
 import type {
@@ -168,14 +169,16 @@ export async function getPressAssets(): Promise<PressAsset[]> {
   return latinDigitsDeep(data ?? []);
 }
 
-export async function getSettings(): Promise<SiteSettings> {
+// cache(): PageShell, the home page and the visibility guard all read the
+// settings in one render — one round-trip serves them all.
+export const getSettings = cache(async (): Promise<SiteSettings> => {
   const supabase = publicClient();
   if (!supabase) return {};
   const { data } = await supabase.from("site_settings").select("key, value");
   const out: SiteSettings = {};
   for (const row of data ?? []) out[row.key] = row.value;
   return latinDigitsDeep(out);
-}
+});
 
 /**
  * «أصوات المجتمع» — the ideas the team chose to showcase. RLS already limits
