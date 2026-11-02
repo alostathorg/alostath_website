@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { COLLECTIONS } from "./config";
 import { signOut } from "./actions";
+import { TRANSLATIONS_NAV_LABEL } from "@/lib/translations";
 
 const I = {
   dashboard: (
@@ -32,6 +33,9 @@ const I = {
   ),
   brands: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" /><path d="M4 12v8h16v-8" /><path d="M9 20v-5h6v5" /></svg>
+  ),
+  translations: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 8 6 6" /><path d="m4 14 6-6 2-3" /><path d="M2 5h12" /><path d="M7 2h1" /><path d="m22 22-5-10-5 10" /><path d="M14 18h6" /></svg>
   ),
   settings: (
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
@@ -71,6 +75,7 @@ export default function AdminNav({ email }: { email: string }) {
     "/admin",
     "/admin/registrations",
     ...COLLECTIONS.map((c) => `/admin/collections/${c.slug}`),
+    "/admin/translations",
     "/admin/community",
     "/admin/community/ideas",
     "/admin/community/broadcasts",
@@ -106,6 +111,7 @@ export default function AdminNav({ email }: { email: string }) {
       {COLLECTIONS.map((c) => (
         <NavLink key={c.slug} href={`/admin/collections/${c.slug}`} icon={I[COLLECTION_ICON[c.slug] ?? "posts"]} label={c.labelPlural} />
       ))}
+      <NavLink href="/admin/translations" icon={I.translations} label={TRANSLATIONS_NAV_LABEL} />
 
       <div className="admin-navlabel">المجتمع</div>
       <NavLink href="/admin/community" icon={I.members} label="أعضاء المجتمع" />

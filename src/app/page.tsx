@@ -1,7 +1,9 @@
 import Link from "next/link";
 import PageShell from "@/components/PageShell";
 import PageHero from "@/components/PageHero";
-import { getInitiatives, getNews, getPosts } from "@/lib/queries";
+import { getInitiatives, getNews, getPosts, getTranslationTotals } from "@/lib/queries";
+import { TRANSLATIONS_PATH } from "@/lib/translations";
+import WordsCounter from "@/components/translations/WordsCounter";
 import { NEWS_PATH, newsKindLabel } from "@/lib/news";
 import { AWARD_PATH, NATIONAL_AWARD } from "@/lib/award";
 import { formatArabicDate } from "@/lib/format";
@@ -22,10 +24,11 @@ const BENTO = [
 ];
 
 export default async function HomePage() {
-  const [initiatives, news, posts] = await Promise.all([
+  const [initiatives, news, posts, words] = await Promise.all([
     getInitiatives(),
     getNews(),
     getPosts(),
+    getTranslationTotals(),
   ]);
   const latestPosts = posts.slice(0, 3);
   const [leadNews, ...moreNews] = news.slice(0, 4);
@@ -168,6 +171,22 @@ export default async function HomePage() {
           when it has a cover, a tinted type-led panel when it doesn't, as most
           don't), the next ones beneath it; the blog sits beside it as a compact
           column. Both stay present before anything is published and say so. */}
+      {/* «مليون كلمة» — the counter. Hidden until the first translation is
+          published, so the home page never announces a zero. */}
+      {words.items > 0 && (
+        <section id="translations" className="tl-strip" data-reveal="1">
+          <div className="tl-strip-card">
+            <div>
+              <div className="tl-strip-k">مبادرة «مليون كلمة»</div>
+              <h2>المعرفة التعليمية العالمية، بالعربية</h2>
+              <p>أبحاث وتقارير وتجارب تعليمية من مصادر عالمية موثوقة، نترجمها للمعلّم كل أسبوع.</p>
+              <Link href={TRANSLATIONS_PATH} className="btn btn-secondary btn-md">تصفّح الترجمات</Link>
+            </div>
+            <WordsCounter words={words.words} items={words.items} />
+          </div>
+        </section>
+      )}
+
       <section id="media" className="home-media">
         <SectionHead eyebrow="المركز الإعلامي" title="الأخبار والمقالات" />
         <div className="home-media-grid">

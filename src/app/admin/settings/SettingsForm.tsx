@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { uploadMedia } from "../actions";
 
-type FieldDef = { name: string; label: string; type: "text" | "textarea" | "tel" | "email" | "url" | "datetime" | "image"; hint?: string };
+type FieldDef = { name: string; label: string; type: "text" | "textarea" | "tel" | "email" | "url" | "datetime" | "image"; hint?: string; rows?: number };
 
 const SCHEMAS: Record<string, { title: string; hint: string; fields: FieldDef[] }> = {
   contact: {
@@ -25,6 +25,15 @@ const SCHEMAS: Record<string, { title: string; hint: string; fields: FieldDef[] 
     fields: [
       { name: "next_session", label: "موعد الجلسة القادمة", type: "datetime", hint: "اختر التاريخ والوقت (بتوقيت السعودية)." },
       { name: "hero_image", label: "صورة الخلفية", type: "image" },
+    ],
+  },
+  translation: {
+    title: "الترجمات — المصادر وأسلوب الصور ومسرد المصطلحات",
+    hint: "تقرأهما المهمة الأسبوعية في كل تشغيل. سطر لكل مدخل؛ أي تعديل هنا يسري من الأحد القادم.",
+    fields: [
+      { name: "sources", label: "المصادر المعتمدة", type: "textarea", rows: 12, hint: "سطر لكل مصدر بالصيغة: الاسم | الرابط | ملاحظة الرخصة. لا تُترجم المهمة إلا من هذه المصادر." },
+      { name: "cover_style", label: "أسلوب صور المقالات", type: "textarea", rows: 7, hint: "وصف الأسلوب البصري الموحّد (بالإنجليزية) الذي تبني عليه المهمة برومت صورة كل مقال، حتى تبدو الصور سلسلةً واحدة." },
+      { name: "glossary", label: "مسرد المصطلحات", type: "textarea", rows: 14, hint: "سطر لكل مصطلح بالصيغة: English term = المصطلح العربي. تلتزم الترجمة به في كل المواد." },
     ],
   },
   community: {
@@ -103,7 +112,7 @@ function FieldControl({ field, value, onChange }: { field: FieldDef; value: stri
     return (
       <div className="admin-field is-wide">
         <label className="admin-label">{field.label}</label>
-        <textarea className="admin-textarea" rows={4} value={value} onChange={(e) => onChange(e.target.value)} />
+        <textarea className="admin-textarea" rows={field.rows ?? 4} value={value} onChange={(e) => onChange(e.target.value)} />
         {field.hint && <p className="admin-hint">{field.hint}</p>}
       </div>
     );
