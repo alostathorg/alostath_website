@@ -48,14 +48,16 @@ export default function AwardsPage() {
         </dl>
       </section>
 
-      <section className="aw-close">
-        <div className="aw-close-in" data-reveal="1">
-          <div className="kicker is-gold is-center">{A.statusLabel}</div>
-          <h2>كن أول من يعلم</h2>
-          <p>سجّل اهتمامك ليصلك إشعار فور فتح باب الترشّح. ونرحّب بالجهات الراغبة في دعم الجائزة الوطنية للمعلّم والشراكة فيها.</p>
-          <div className="aw-close-actions">
-            <button type="button" {...regProps} className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
-            <Link href="/contact" className="btn btn-outline btn-on-dark btn-lg">تواصل معنا للشراكة</Link>
+      <section className="aw-close close-band">
+        <div className="close-card">
+          <div className="aw-close-in" data-reveal="1">
+            <div className="kicker is-gold is-center">{A.statusLabel}</div>
+            <h2>كن أول من يعلم</h2>
+            <p>سجّل اهتمامك ليصلك إشعار فور فتح باب الترشّح. ونرحّب بالجهات الراغبة في دعم الجائزة الوطنية للمعلّم والشراكة فيها.</p>
+            <div className="aw-close-actions">
+              <button type="button" {...regProps} className="btn btn-secondary btn-lg">سجّل اهتمامك</button>
+              <Link href="/contact" className="btn btn-outline btn-on-dark btn-lg">تواصل معنا للشراكة</Link>
+            </div>
           </div>
         </div>
       </section>

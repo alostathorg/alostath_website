@@ -135,23 +135,25 @@ export default async function ContactPage() {
       </section>
 
       {/* NEWSLETTER */}
-      <section className="ab-news">
-        <div className="ab-news-in" data-reveal="1">
-          <div className="kicker is-gold is-center">النشرة البريدية</div>
-          <h2>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
-          <p>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
-          <form data-newsletter-form>
-            <div data-nl-success-state hidden className="ab-news-ok">
-              <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
-            </div>
-            <div data-nl-form-state>
-              <div className="ab-news-field">
-                <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
-                <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
+      <section className="ab-news close-band">
+        <div className="close-card">
+          <div className="ab-news-in" data-reveal="1">
+            <div className="kicker is-gold is-center">النشرة البريدية</div>
+            <h2>اشترك في النشرة البريدية لمؤسسة الأستاذ</h2>
+            <p>كن على اطّلاعٍ دائم بأحدث المبادرات التعليمية والبرامج التطويرية والفرص المخصّصة للمعلّمين والطلاب.</p>
+            <form data-newsletter-form>
+              <div data-nl-success-state hidden className="ab-news-ok">
+                <span>✓</span> شكراً لاشتراكك — سيصلك كلّ جديد.
               </div>
-              <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
-            </div>
-          </form>
+              <div data-nl-form-state>
+                <div className="ab-news-field">
+                  <input type="email" required dir="ltr" placeholder="name@example.com" aria-label="البريد الإلكتروني" />
+                  <button type="submit" className="btn btn-secondary btn-lg">اشترك الآن</button>
+                </div>
+                <div className="ab-news-fine">نحن نحترم خصوصيتك — يمكنك إلغاء الاشتراك بضغطةٍ واحدة.</div>
+              </div>
+            </form>
+          </div>
         </div>
       </section>
     </PageShell>
