@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { togglePublished } from "./actions";
 import ConfirmModal from "./ConfirmModal";
+import { toast } from "./Toaster";
 
 export default function PublishToggle({
   slug,
@@ -25,10 +26,11 @@ export default function PublishToggle({
       try {
         await togglePublished(slug, id, !published);
         setOpen(false);
+        toast(published ? `أُخفي ${itemText} من الموقع.` : `نُشر ${itemText} على الموقع.`);
         router.refresh();
       } catch (err) {
         setOpen(false);
-        alert(err instanceof Error ? err.message : "تعذّر تغيير حالة النشر");
+        toast(err instanceof Error ? err.message : "تعذّر تغيير حالة النشر", "error");
       }
     });
   }

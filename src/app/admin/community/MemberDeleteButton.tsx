@@ -4,6 +4,8 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { deleteMember } from "./actions";
 import ConfirmModal from "../ConfirmModal";
+import { toast } from "../Toaster";
+import { Icon } from "../icons";
 
 export default function MemberDeleteButton({ id, name }: { id: string; name: string }) {
   const [pending, start] = useTransition();
@@ -14,12 +16,13 @@ export default function MemberDeleteButton({ id, name }: { id: string; name: str
     <>
       <button
         type="button"
-        className="admin-danger"
+        className="admin-iconbtn is-danger"
         disabled={pending}
         onClick={() => setOpen(true)}
         aria-label={`حذف ${name}`}
+        title="حذف"
       >
-        {pending ? "…" : "حذف"}
+        {Icon.trash}
       </button>
 
       <ConfirmModal
@@ -34,10 +37,11 @@ export default function MemberDeleteButton({ id, name }: { id: string; name: str
             try {
               await deleteMember(id);
               setOpen(false);
+              toast(`تم حذف «${name}».`);
               router.refresh();
             } catch (err) {
               setOpen(false);
-              alert(err instanceof Error ? err.message : "تعذّر الحذف");
+              toast(err instanceof Error ? err.message : "تعذّر الحذف", "error");
             }
           })
         }

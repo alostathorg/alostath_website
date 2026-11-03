@@ -233,6 +233,29 @@ export function getCollection(slug: string): Collection | undefined {
   return COLLECTIONS.find((c) => c.slug === slug);
 }
 
+// Where a collection's records live on the public site, so the dashboard can
+// offer "عرض على الموقع". Collections without a detail page (logos, press kit)
+// are absent.
+const PUBLIC_BASE: Record<string, string> = {
+  awards: "/awards",
+  initiatives: "/initiatives",
+  posts: "/blog",
+  news: "/news",
+  brands: "/partners",
+};
+
+/** The public URL of a record, or null when it has no page of its own. */
+export function publicPath(collectionSlug: string, row: Record<string, unknown>): string | null {
+  const base = PUBLIC_BASE[collectionSlug];
+  const slug = typeof row.slug === "string" ? row.slug.trim() : "";
+  return base && slug ? `${base}/${slug}` : null;
+}
+
+/** The column that names a record (its first list column — name or title). */
+export function titleField(collection: Collection): string {
+  return collection.fields.find((f) => f.listColumn)?.name ?? "name";
+}
+
 // ── AI content helper ────────────────────────────────────────────────────────
 // The writing-heavy fields the "copy prompt → paste back" flow fills. System
 // fields (slug, status, theme, order, images, published) and the steps/timeline

@@ -139,7 +139,8 @@ export async function saveRecord(slug: string, id: string | null, form: FormData
   }
 
   revalidatePath("/", "layout");
-  redirect(`/admin/collections/${slug}`);
+  // `notice` is picked up by the dashboard Toaster, which confirms the save.
+  redirect(`/admin/collections/${slug}?notice=${id ? "saved" : "created"}`);
 }
 
 export async function deleteRecord(slug: string, id: string) {

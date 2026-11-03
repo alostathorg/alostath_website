@@ -2,8 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { latinDigitsDeep } from "@/lib/format";
-import { getCollection, NEW_DEFAULTS } from "../../../config";
+import { getCollection, NEW_DEFAULTS, publicPath } from "../../../config";
 import RecordForm from "../../../RecordForm";
+import { Icon } from "../../../icons";
 
 export const dynamic = "force-dynamic";
 
@@ -35,12 +36,42 @@ export default async function EditRecord({ params }: { params: Promise<{ slug: s
     }
   }
 
+  const hasPublished = collection.fields.some((f) => f.name === "published");
+  const live = !isNew && initial.published !== false ? publicPath(slug, initial) : null;
+  const name = String(initial.name ?? initial.title ?? "");
+
   return (
     <div>
-      <Link href={`/admin/collections/${slug}`} className="admin-back">→ رجوع إلى {collection.labelPlural}</Link>
-      <h1 className="admin-title" style={{ marginBottom: 24 }}>
-        {isNew ? `إضافة ${collection.labelSingular}` : `تعديل: ${initial.name ?? initial.title ?? ""}`}
-      </h1>
+      <nav className="admin-crumbs" aria-label="مسار التنقل">
+        <Link href={`/admin/collections/${slug}`} className="admin-back">
+          {Icon.back}
+          {collection.labelPlural}
+        </Link>
+      </nav>
+      <div className="admin-head">
+        <div>
+          <h1 className="admin-title">
+            {isNew ? `إضافة ${collection.labelSingular}` : name || `تعديل ${collection.labelSingular}`}
+          </h1>
+          <div className="admin-head-meta">
+            {isNew ? (
+              <span className="admin-badge is-type">جديد — لم يُحفظ بعد</span>
+            ) : hasPublished ? (
+              initial.published ? (
+                <span className="admin-badge is-pub"><span className="dot" />منشور على الموقع</span>
+              ) : (
+                <span className="admin-badge is-draft"><span className="dot" />مسودة — غير ظاهر للزوّار</span>
+              )
+            ) : null}
+          </div>
+        </div>
+        {live && (
+          <a href={live} target="_blank" rel="noopener" className="admin-btn admin-btn-ghost">
+            {Icon.external}
+            عرض على الموقع
+          </a>
+        )}
+      </div>
       <RecordForm collection={collection} id={isNew ? null : id} initial={initial} />
     </div>
   );

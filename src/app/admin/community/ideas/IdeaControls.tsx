@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { toast } from "../../Toaster";
 import { useRouter } from "next/navigation";
 import ConfirmModal from "../../ConfirmModal";
 import { deleteIdea, setIdeaStatus, toggleIdeaFeatured } from "../actions";
@@ -30,7 +31,7 @@ export default function IdeaControls({
         await fn();
         router.refresh();
       } catch (err) {
-        alert(err instanceof Error ? err.message : "تعذّر تنفيذ العملية");
+        toast(err instanceof Error ? err.message : "تعذّر تنفيذ العملية", "error");
       }
     });
 

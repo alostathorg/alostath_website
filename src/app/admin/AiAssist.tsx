@@ -93,7 +93,7 @@ export default function AiAssist({
     <div className="admin-ai">
       <button type="button" className="admin-ai-toggle" onClick={() => setOpen((o) => !o)} aria-expanded={open}>
         <span className="admin-ai-toggle-title">✨ كتابة المحتوى بمساعدة الذكاء الاصطناعي</span>
-        <span className="admin-ai-chev" aria-hidden>{open ? "▲" : "▼"}</span>
+        <span className={`admin-ai-chev${open ? " is-open" : ""}`} aria-hidden>▾</span>
       </button>
 
       {open && (
