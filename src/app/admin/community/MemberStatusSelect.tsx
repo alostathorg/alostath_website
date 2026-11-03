@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
+import { toast } from "../Toaster";
 import { useRouter } from "next/navigation";
 import { setMemberStatus } from "./actions";
 import { MEMBER_STATUS_LABEL } from "@/lib/community";
@@ -25,7 +26,7 @@ export default function MemberStatusSelect({ id, status }: { id: string; status:
             await setMemberStatus(id, next);
             router.refresh();
           } catch (err) {
-            alert(err instanceof Error ? err.message : "تعذّر تغيير الحالة");
+            toast(err instanceof Error ? err.message : "تعذّر تغيير الحالة", "error");
           }
         });
       }}

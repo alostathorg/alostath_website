@@ -5,6 +5,7 @@ import { saveRecord, uploadMedia } from "./actions";
 import AiAssist from "./AiAssist";
 import { AI_FIELDS, type Collection, type Field } from "./config";
 import { latinDigitsDeep } from "@/lib/format";
+import { Icon } from "./icons";
 
 // Basic Arabic → Latin transliteration so a slug can be generated automatically
 // from the (Arabic) name/title. Editors never have to type a URL by hand.
@@ -63,6 +64,39 @@ export default function RecordForm({
   const [values, setValues] = useState<Values>(initial);
   const [version, setVersion] = useState(0);
   const formRef = useRef<HTMLFormElement>(null);
+  const errorRef = useRef<HTMLDivElement>(null);
+  // Unsaved-changes tracking: any edit flips it; a successful save navigates
+  // away (saveRecord redirects), so it never needs resetting by hand.
+  const [dirty, setDirty] = useState(false);
+  const submitting = useRef(false);
+
+  // Warn before leaving with unsaved edits (tab close, reload, «إلغاء»).
+  useEffect(() => {
+    if (!dirty) return;
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (submitting.current) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    return () => window.removeEventListener("beforeunload", onBeforeUnload);
+  }, [dirty]);
+
+  // Ctrl/⌘ + S saves, as editors expect from any editor.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") {
+        e.preventDefault();
+        formRef.current?.requestSubmit();
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (error) errorRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }, [error]);
   // The copy-prompt flow works for any collection that declares its writing fields.
   const aiEnabled = collection.slug in AI_FIELDS;
 
@@ -70,11 +104,16 @@ export default function RecordForm({
     e.preventDefault();
     setError(null);
     const form = new FormData(e.currentTarget);
+    submitting.current = true;
     start(async () => {
       try {
         const res = await saveRecord(collection.slug, id, form);
-        if (res?.error) setError(res.error);
+        if (res?.error) {
+          submitting.current = false;
+          setError(res.error);
+        }
       } catch (err) {
+        submitting.current = false;
         setError(err instanceof Error ? err.message : "خطأ غير متوقع");
       }
     });
@@ -113,6 +152,7 @@ export default function RecordForm({
     if (imported.name && !String(merged.slug ?? "").trim()) merged.slug = slugify(String(imported.name));
     setValues(merged);
     setVersion((v) => v + 1);
+    setDirty(true);
   }
 
   // Group fields into titled sections, preserving first-seen order.
@@ -124,28 +164,64 @@ export default function RecordForm({
     g.fields.push(f);
   }
 
+  // The AI helper's own paste box isn't record data — typing there isn't an edit.
+  const markDirty = (e: React.SyntheticEvent) => {
+    if (!(e.target as HTMLElement).closest(".admin-ai")) setDirty(true);
+  };
+  // Row add / remove / reorder buttons change state without an input event.
+  const onClickCapture = (e: React.MouseEvent) => {
+    const btn = (e.target as HTMLElement).closest("button[type=button]");
+    if (btn && !btn.closest(".admin-ai") && !btn.closest(".admin-formnav")) setDirty(true);
+  };
+
   return (
-    <form onSubmit={onSubmit} ref={formRef}>
+    <form onSubmit={onSubmit} ref={formRef} onInput={markDirty} onChange={markDirty} onClickCapture={onClickCapture}>
       {aiEnabled && <AiAssist collection={collection} onImport={handleImport} />}
 
-      {groups.map((g) => (
-        <div className="admin-card" key={g.name}>
-          <h2 className="admin-section-title" style={{ marginBottom: 18 }}>{g.name}</h2>
+      {groups.length > 2 && (
+        <nav className="admin-formnav" aria-label="أقسام النموذج">
+          {groups.map((g, i) => (
+            <a key={g.name} href={`#sec-${i}`} className="admin-formnav-link">{g.name}</a>
+          ))}
+        </nav>
+      )}
+
+      {groups.map((g, i) => (
+        <section className="admin-card admin-formsec" key={g.name} id={`sec-${i}`} aria-labelledby={`sec-${i}-h`}>
+          <h2 className="admin-section-title" id={`sec-${i}-h`}>{g.name}</h2>
           <div className="admin-form-grid">
             {g.fields.map((f) => (
               <FieldRow key={`${f.name}:${version}`} field={f} value={values[f.name]} />
             ))}
           </div>
-        </div>
+        </section>
       ))}
 
-      {error && <div className="admin-error" style={{ marginTop: 16 }}>{error}</div>}
+      {error && (
+        <div className="admin-error" role="alert" ref={errorRef} style={{ marginTop: 16 }}>
+          {Icon.alert}
+          <span>{error}</span>
+        </div>
+      )}
 
       <div className="admin-actionbar">
-        <button type="submit" className="admin-btn admin-btn-primary" disabled={pending}>
-          {pending ? "جارٍ الحفظ…" : "حفظ التغييرات"}
-        </button>
-        <a href={`/admin/collections/${collection.slug}`} className="admin-btn admin-btn-ghost">إلغاء</a>
+        <div className="admin-actionbar-inner">
+          <span className={`admin-savestate${dirty ? " is-dirty" : ""}`} aria-live="polite">
+            <span className="dot" aria-hidden="true" />
+            {pending ? "جارٍ الحفظ…" : dirty ? "تغييرات غير محفوظة" : id ? "لا توجد تغييرات" : "عنصر جديد"}
+          </span>
+          <span className="admin-actionbar-gap" />
+          <a href={`/admin/collections/${collection.slug}`} className="admin-btn admin-btn-ghost">إلغاء</a>
+          <button
+            type="submit"
+            className="admin-btn admin-btn-primary"
+            disabled={pending}
+            title="حفظ (Ctrl+S)"
+          >
+            {Icon.check}
+            {pending ? "جارٍ الحفظ…" : id ? "حفظ التغييرات" : `إضافة ${collection.labelSingular}`}
+          </button>
+        </div>
       </div>
     </form>
   );
@@ -175,8 +251,8 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
   if (field.type === "date") {
     return (
       <div className="admin-field">
-        <label className="admin-label">{field.label}</label>
-        <input className="admin-input" type="date" name={field.name} defaultValue={String(value ?? "").slice(0, 10)} />
+        <label className="admin-label" htmlFor={`f-${field.name}`}>{field.label}</label>
+        <input id={`f-${field.name}`} className="admin-input" type="date" name={field.name} defaultValue={String(value ?? "").slice(0, 10)} />
         {field.help && <p className="admin-hint">{field.help}</p>}
       </div>
     );
@@ -198,8 +274,8 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
   if (field.type === "select") {
     return (
       <div className="admin-field">
-        <label className="admin-label">{field.label}</label>
-        <select className="admin-select" name={field.name} defaultValue={String(value ?? field.options?.[0] ?? "")}>
+        <label className="admin-label" htmlFor={`f-${field.name}`}>{field.label}</label>
+        <select id={`f-${field.name}`} className="admin-select" name={field.name} defaultValue={String(value ?? field.options?.[0] ?? "")}>
           {field.options?.map((o) => <option key={o} value={o}>{field.optionLabels?.[o] ?? o}</option>)}
         </select>
         {field.help && <p className="admin-hint">{field.help}</p>}
@@ -214,11 +290,11 @@ function FieldRow({ field, value }: { field: Field; value: unknown }) {
 
   return (
     <div className={`admin-field${isWide(field) ? " is-wide" : ""}`}>
-      <label className="admin-label">{field.label}</label>
+      <label className="admin-label" htmlFor={`f-${field.name}`}>{field.label}</label>
       {isArea ? (
-        <textarea className={areaClass} name={field.name} defaultValue={display} rows={field.type === "json" ? 9 : 4} placeholder={field.placeholder} />
+        <textarea id={`f-${field.name}`} className={areaClass} name={field.name} defaultValue={display} rows={field.type === "json" ? 9 : 4} placeholder={field.placeholder} />
       ) : (
-        <input className={inputClass} name={field.name} type={field.type === "number" ? "number" : "text"} defaultValue={display} placeholder={field.placeholder} />
+        <input id={`f-${field.name}`} className={inputClass} name={field.name} type={field.type === "number" ? "number" : "text"} defaultValue={display} placeholder={field.placeholder} />
       )}
       {field.help && <p className="admin-hint">{field.help}</p>}
     </div>
@@ -248,8 +324,9 @@ function SlugField({ field, value }: { field: Field; value: unknown }) {
 
   return (
     <div className="admin-field">
-      <label className="admin-label">{field.label}</label>
+      <label className="admin-label" htmlFor={`f-${field.name}`}>{field.label}</label>
       <input
+        id={`f-${field.name}`}
         ref={ref}
         className="admin-input is-ltr"
         name={field.name}
@@ -338,7 +415,7 @@ function Repeater({ field, value }: { field: Field; value: unknown }) {
                 </div>
               ))}
             </div>
-            <button type="button" className="admin-repeater-remove" onClick={() => removeRow(i)} title="حذف" aria-label="حذف">✕</button>
+            <button type="button" className="admin-repeater-remove" onClick={() => removeRow(i)} title="حذف" aria-label="حذف">{Icon.close}</button>
           </div>
         ))}
         <button type="button" className="admin-btn admin-btn-ghost admin-btn-sm admin-repeater-add" onClick={addRow}>
@@ -392,7 +469,7 @@ function KeyValue({ field, value }: { field: Field; value: unknown }) {
                 )}
               </div>
             </div>
-            <button type="button" className="admin-repeater-remove" onClick={() => removeRow(i)} title="حذف" aria-label="حذف">✕</button>
+            <button type="button" className="admin-repeater-remove" onClick={() => removeRow(i)} title="حذف" aria-label="حذف">{Icon.close}</button>
           </div>
         ))}
         <button type="button" className="admin-btn admin-btn-ghost admin-btn-sm admin-repeater-add" onClick={addRow}>+ إضافة حقل</button>
@@ -432,7 +509,7 @@ function TagInput({ field, value }: { field: Field; value: unknown }) {
         {tags.map((t, i) => (
           <span className="admin-tag" key={i}>
             {t}
-            <button type="button" onClick={() => remove(i)} aria-label="حذف">✕</button>
+            <button type="button" onClick={() => remove(i)} aria-label={`حذف ${t}`}>{Icon.close}</button>
           </span>
         ))}
         <input
@@ -470,7 +547,7 @@ function ImageField({ field, initial }: { field: Field; initial: string }) {
 
   return (
     <div className="admin-field is-wide">
-      <label className="admin-label">{field.label}</label>
+      <label className="admin-label" htmlFor={`f-${field.name}`}>{field.label}</label>
       <div className="admin-imagefield">
         {showThumb && (
           // eslint-disable-next-line @next/next/no-img-element
@@ -478,6 +555,7 @@ function ImageField({ field, initial }: { field: Field; initial: string }) {
         )}
         <div className="admin-imagefield-body">
           <input
+            id={`f-${field.name}`}
             className="admin-input is-ltr"
             name={field.name}
             value={url}
@@ -485,9 +563,12 @@ function ImageField({ field, initial }: { field: Field; initial: string }) {
             placeholder="https://…"
             style={{ marginBottom: 10 }}
           />
-          <input className="admin-file" type="file" accept="image/*,application/pdf" onChange={onFile} />
-          {busy && <span style={{ fontSize: 12, color: "var(--text-muted)", marginInlineStart: 8 }}>جارٍ الرفع…</span>}
-          {err && <p className="admin-hint" style={{ color: "#b3261e" }}>{err}</p>}
+          <label className={`admin-btn admin-btn-ghost admin-btn-sm admin-upload${busy ? " is-busy" : ""}`}>
+            {Icon.media}
+            {busy ? "جارٍ الرفع…" : url ? "استبدال الملف" : "رفع ملف من جهازك"}
+            <input className="sr-only" type="file" accept="image/*,application/pdf" onChange={onFile} disabled={busy} />
+          </label>
+          {err && <p className="admin-hint" role="alert" style={{ color: "var(--ad-danger)" }}>{err}</p>}
         </div>
       </div>
       {field.help && <p className="admin-hint">{field.help}</p>}

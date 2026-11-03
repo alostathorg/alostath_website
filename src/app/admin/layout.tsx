@@ -1,10 +1,22 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import "./admin.css";
 import { getUser, isAdmin } from "@/lib/supabase/auth";
+import { createClient } from "@/lib/supabase/server";
 import { signOut } from "./actions";
-import AdminNav from "./AdminNav";
+import AdminNav, { type NavCounts } from "./AdminNav";
+import Toaster from "./Toaster";
 
 export const metadata: Metadata = { title: "لوحة التحكم", robots: { index: false, follow: false } };
+
+/** Items waiting on an editor — shown as badges in the sidebar. */
+async function navCounts(): Promise<NavCounts> {
+  const supabase = await createClient();
+  const pending = (table: string, status: string) =>
+    supabase.from(table).select("*", { count: "exact", head: true }).eq("status", status);
+  const [ideas, drafts] = await Promise.all([pending("community_ideas", "new"), pending("translations", "draft")]);
+  return { newIdeas: ideas.count ?? 0, draftTranslations: drafts.count ?? 0 };
+}
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await getUser();
@@ -16,14 +28,14 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!(await isAdmin())) {
     return (
       <div className="admin" dir="rtl">
-        <div style={{ minHeight: "100vh", display: "grid", placeItems: "center", padding: 24, textAlign: "center" }}>
-          <div className="admin-card" style={{ maxWidth: 460 }}>
+        <div className="admin-login">
+          <div className="admin-login-card" style={{ textAlign: "center" }}>
             <h1 className="admin-title" style={{ marginBottom: 10 }}>لا تملك صلاحية الوصول</h1>
-            <p style={{ color: "var(--text-muted)", margin: "0 0 20px" }}>
+            <p style={{ color: "var(--text-muted)", margin: "0 0 20px", lineHeight: 1.8 }}>
               هذا الحساب ليس ضمن مديري الموقع. تواصل مع مسؤول النظام لإضافتك إلى جدول <code>admins</code>.
             </p>
             <form action={signOut}>
-              <button className="admin-btn admin-btn-ghost" type="submit">تسجيل الخروج</button>
+              <button className="admin-btn admin-btn-ghost admin-btn-block" type="submit">تسجيل الخروج</button>
             </form>
           </div>
         </div>
@@ -31,14 +43,20 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     );
   }
 
+  const counts = await navCounts();
+
   return (
     <div className="admin" dir="rtl">
+      <a href="#admin-main" className="admin-skip">تخطَّ إلى المحتوى</a>
       <div className="admin-shell">
-        <AdminNav email={user.email ?? ""} />
-        <main className="admin-main">
+        <AdminNav email={user.email ?? ""} counts={counts} />
+        <main className="admin-main" id="admin-main">
           <div className="admin-main-inner">{children}</div>
         </main>
       </div>
+      <Suspense fallback={null}>
+        <Toaster />
+      </Suspense>
     </div>
   );
 }

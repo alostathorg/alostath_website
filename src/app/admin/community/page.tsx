@@ -5,6 +5,7 @@ import { MEMBER_STATUS_LABEL, safeSearchTerm } from "@/lib/community";
 import type { CommunityMember, MemberStatus } from "@/lib/types";
 import MemberStatusSelect from "./MemberStatusSelect";
 import MemberDeleteButton from "./MemberDeleteButton";
+import { Icon } from "../icons";
 
 export const dynamic = "force-dynamic";
 
@@ -64,12 +65,13 @@ export default async function CommunityMembersPage({
             {status ? ` ضمن «${MEMBER_STATUS_LABEL[status] ?? status}»` : ""}.
           </p>
         </div>
-        <a href={exportHref} className="admin-btn admin-btn-primary">تصدير CSV</a>
+        <a href={exportHref} className="admin-btn admin-btn-ghost">تصدير CSV</a>
       </div>
 
       <div className="admin-filterbar">
-        <form method="get" className="admin-search">
+        <form method="get" className="admin-search" role="search">
           {status && <input type="hidden" name="status" value={status} />}
+          <span className="admin-search-ico">{Icon.search}</span>
           <input
             className="admin-input"
             type="search"
@@ -78,7 +80,6 @@ export default async function CommunityMembersPage({
             placeholder="ابحث بالاسم أو البريد أو التخصص…"
             aria-label="بحث في الأعضاء"
           />
-          <button type="submit" className="admin-btn admin-btn-ghost admin-btn-sm">بحث</button>
         </form>
         <div className="admin-tabs">
           {TABS.map((t) => (
@@ -94,25 +95,25 @@ export default async function CommunityMembersPage({
       </div>
 
       <div className="admin-tablewrap">
-        <table className="admin-table" aria-label="أعضاء المجتمع">
+        <table className="admin-table is-stack" aria-label="أعضاء المجتمع">
           <thead>
             <tr>
               {["الاسم", "البريد", "المنطقة", "المرحلة", "الاهتمامات", "الحالة", "التاريخ"].map((h) => (
                 <th key={h}>{h}</th>
               ))}
-              <th style={{ textAlign: "end" }}>إجراءات</th>
+              <th scope="col" className="admin-th-actions"><span className="sr-only">إجراءات</span></th>
             </tr>
           </thead>
           <tbody>
             {rows.map((m) => (
               <tr key={m.id}>
                 <td className="col-name">
-                  <Link href={`/admin/community/${m.id}`} className="admin-edit">{m.full_name}</Link>
+                  <Link href={`/admin/community/${m.id}`} className="admin-rowtitle">{m.full_name}</Link>
                 </td>
-                <td className="admin-cell-ltr">{m.email}</td>
-                <td>{m.region || "—"}</td>
-                <td>{m.school_stage || "—"}</td>
-                <td>
+                <td className="admin-cell-ltr" data-label="البريد">{m.email}</td>
+                <td data-label="المنطقة">{m.region || "—"}</td>
+                <td data-label="المرحلة">{m.school_stage || "—"}</td>
+                <td data-label="الاهتمامات">
                   {m.interests?.length ? (
                     <span className="admin-chiprow">
                       {m.interests.slice(0, 2).map((i) => (
@@ -126,13 +127,13 @@ export default async function CommunityMembersPage({
                     <span style={{ color: "var(--ink-subtle)" }}>—</span>
                   )}
                 </td>
-                <td>
+                <td data-label="الحالة">
                   <span className={`admin-badge ${STATUS_CLASS[m.status] ?? "is-type"}`}>
                     <span className="dot" />{MEMBER_STATUS_LABEL[m.status]}
                   </span>
                 </td>
-                <td style={{ whiteSpace: "nowrap" }}>{formatArabicDate(m.created_at.slice(0, 10))}</td>
-                <td style={{ textAlign: "end" }}>
+                <td style={{ whiteSpace: "nowrap" }} data-label="التاريخ">{formatArabicDate(m.created_at.slice(0, 10))}</td>
+                <td className="admin-td-actions">
                   <span className="admin-rowactions">
                     <MemberStatusSelect id={m.id} status={m.status as MemberStatus} />
                     <MemberDeleteButton id={m.id} name={m.full_name} />
@@ -141,7 +142,7 @@ export default async function CommunityMembersPage({
               </tr>
             ))}
             {rows.length === 0 && (
-              <tr>
+              <tr className="admin-empty-row">
                 <td colSpan={8} className="admin-empty">
                   {q || status ? "لا نتائج مطابقة لهذا البحث." : "لا يوجد أعضاء بعد — شارك رابط صفحة المجتمع لتبدأ العضويات."}
                 </td>

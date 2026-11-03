@@ -1,127 +1,222 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { PARTNERS_NAV_LABEL } from "@/lib/brandPartners";
-import { NEWS_NAV_LABEL } from "@/lib/news";
+import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { TRANSLATIONS_NAV_LABEL } from "@/lib/translations";
 import { COLLECTIONS } from "./config";
+import { Icon, type IconName } from "./icons";
 
 export const dynamic = "force-dynamic";
 
-async function count(table: string) {
-  const supabase = await createClient();
-  const { count } = await supabase.from(table).select("*", { count: "exact", head: true });
+const COLLECTION_ICON: Record<string, IconName> = {
+  awards: "awards",
+  initiatives: "initiatives",
+  posts: "posts",
+  news: "news",
+  brands: "brands",
+  partners: "partners",
+  press: "press",
+};
+
+const REG_TYPE_LABEL: Record<string, string> = {
+  award: "جائزة",
+  initiative: "مبادرة",
+  council: "المجلس",
+  newsletter: "نشرة بريدية",
+  contact: "رسالة تواصل",
+};
+
+type Supabase = Awaited<ReturnType<typeof createClient>>;
+type Filter = { eq?: [string, string | boolean]; gte?: [string, string] };
+
+async function countRows(supabase: Supabase, table: string, filter: Filter = {}) {
+  let q = supabase.from(table).select("*", { count: "exact", head: true });
+  if (filter.eq) q = q.eq(...filter.eq);
+  if (filter.gte) q = q.gte(...filter.gte);
+  const { count } = await q;
   return count ?? 0;
 }
-
-async function countWhere(table: string, column: string, value: string) {
-  const supabase = await createClient();
-  const { count } = await supabase
-    .from(table)
-    .select("*", { count: "exact", head: true })
-    .eq(column, value);
-  return count ?? 0;
-}
-
-const TrophyIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" /><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" /><path d="M4 22h16" /><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" /><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" /><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" /></svg>
-);
-const FlagIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" y1="22" x2="4" y2="15" /></svg>
-);
-const NewsIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /><path d="M18 14h-8" /><path d="M15 18h-5" /><path d="M10 6h8v4h-8z" /></svg>
-);
-const PenIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4z" /></svg>
-);
-const InboxIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></svg>
-);
-const UsersIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-);
-const BulbIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18h6" /><path d="M10 22h4" /><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" /></svg>
-);
-const StoreIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l1.5-5h15L21 9" /><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" /><path d="M4 12v8h16v-8" /><path d="M9 20v-5h6v5" /></svg>
-);
-const TranslateIcon = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 8 6 6" /><path d="m4 14 6-6 2-3" /><path d="M2 5h12" /><path d="M7 2h1" /><path d="m22 22-5-10-5 10" /><path d="M14 18h6" /></svg>
-);
-const Chevron = (
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6" /></svg>
-);
 
 export default async function AdminDashboard() {
-  const [awards, initiatives, posts, news, brands, registrations, members, newIdeas, draftTranslations] = await Promise.all([
-    count("awards"),
-    count("initiatives"),
-    count("blog_posts"),
-    count("news"),
-    count("brand_partners"),
-    count("registrations"),
-    count("community_members"),
-    countWhere("community_ideas", "status", "new"),
-    countWhere("translations", "status", "draft"),
+  const supabase = await createClient();
+  const weekAgo = new Date(Date.now() - 7 * 864e5).toISOString();
+
+  const hasPublished = (slug: string) =>
+    COLLECTIONS.find((c) => c.slug === slug)?.fields.some((f) => f.name === "published") ?? false;
+
+  const [content, members, newIdeas, draftTranslations, weekRegs, recent] = await Promise.all([
+    Promise.all(
+      COLLECTIONS.map(async (c) => ({
+        collection: c,
+        total: await countRows(supabase, c.table),
+        drafts: hasPublished(c.slug) ? await countRows(supabase, c.table, { eq: ["published", false] }) : 0,
+      })),
+    ),
+    countRows(supabase, "community_members"),
+    countRows(supabase, "community_ideas", { eq: ["status", "new"] }),
+    countRows(supabase, "translations", { eq: ["status", "draft"] }),
+    countRows(supabase, "registrations", { gte: ["created_at", weekAgo] }),
+    supabase
+      .from("registrations")
+      .select("id, program_name, program_type, name, email, created_at")
+      .order("created_at", { ascending: false })
+      .limit(5),
   ]);
 
-  const tiles = [
-    { label: "الجوائز", value: awards, href: "/admin/collections/awards", icon: TrophyIcon },
-    { label: "المبادرات", value: initiatives, href: "/admin/collections/initiatives", icon: FlagIcon },
-    { label: "المقالات", value: posts, href: "/admin/collections/posts", icon: PenIcon },
-    { label: NEWS_NAV_LABEL, value: news, href: "/admin/collections/news", icon: NewsIcon },
-    { label: PARTNERS_NAV_LABEL, value: brands, href: "/admin/collections/brands", icon: StoreIcon },
-    { label: "الطلبات والاشتراكات", value: registrations, href: "/admin/registrations", icon: InboxIcon },
-    { label: "أعضاء المجتمع", value: members, href: "/admin/community", icon: UsersIcon },
-    { label: "أفكار جديدة", value: newIdeas, href: "/admin/community/ideas?status=new", icon: BulbIcon },
-    { label: `${TRANSLATIONS_NAV_LABEL} بانتظار المراجعة`, value: draftTranslations, href: "/admin/translations?status=draft", icon: TranslateIcon },
+  const latest = latinDigitsDeep((recent.data ?? []) as Record<string, string | null>[]);
+  const totalDrafts = content.reduce((n, c) => n + c.drafts, 0);
+
+  const attention = [
+    {
+      n: newIdeas,
+      label: "أفكار جديدة من المجتمع",
+      cta: "راجع الأفكار",
+      href: "/admin/community/ideas?status=new",
+      icon: "ideas" as IconName,
+      tone: "gold",
+    },
+    {
+      n: draftTranslations,
+      label: `${TRANSLATIONS_NAV_LABEL} بانتظار المراجعة`,
+      cta: "راجع الترجمات",
+      href: "/admin/translations?status=draft",
+      icon: "translations" as IconName,
+      tone: "gold",
+    },
+    {
+      n: weekRegs,
+      label: "طلبات ورسائل هذا الأسبوع",
+      cta: "افتح الطلبات",
+      href: "/admin/registrations",
+      icon: "inbox" as IconName,
+      tone: "olive",
+    },
+    {
+      n: totalDrafts,
+      label: "مسودات غير منشورة",
+      cta: "اعرض المسودات",
+      href: firstWithDrafts(content),
+      icon: "posts" as IconName,
+      tone: "muted",
+    },
   ];
 
+  const quick = [
+    { href: "/admin/collections/news/new", label: "خبر جديد", icon: "news" as IconName },
+    { href: "/admin/collections/posts/new", label: "مقال جديد", icon: "posts" as IconName },
+    { href: "/admin/collections/awards/new", label: "جائزة جديدة", icon: "awards" as IconName },
+    { href: "/admin/community/broadcasts", label: "رسالة للمجتمع", icon: "broadcasts" as IconName },
+  ];
+
+  const today = formatArabicDate(new Date().toISOString().slice(0, 10));
+
   return (
-    <div>
+    <div className="admin-dash">
       <div className="admin-head">
         <div>
-          <h1 className="admin-title">لوحة التحكم</h1>
-          <p className="admin-subtitle">أهلاً بك — من هنا تُدير محتوى موقع مؤسسة الأستاذ.</p>
+          <p className="admin-eyebrow">{today}</p>
+          <h1 className="admin-title">أهلاً بك في لوحة التحكم</h1>
+          <p className="admin-subtitle">ما يحتاج انتباهك اليوم، واختصارات لأكثر المهام تكراراً.</p>
         </div>
+        <a href="/" target="_blank" rel="noopener" className="admin-btn admin-btn-ghost">
+          {Icon.external}
+          عرض الموقع
+        </a>
       </div>
 
-      <div className="admin-stats">
-        {tiles.map((t) => (
-          <Link key={t.href} href={t.href} className="admin-stat">
-            <div className="admin-stat-ico">{t.icon}</div>
-            <div>
-              <div className="admin-stat-num">{t.value}</div>
-              <div className="admin-stat-label">{t.label}</div>
+      {/* 1 — What needs action */}
+      <section aria-labelledby="dash-attn" className="admin-dash-section">
+        <h2 id="dash-attn" className="admin-section-head">بانتظار إجراء منك</h2>
+        <div className="admin-attn">
+          {attention.map((a) => (
+            <Link key={a.label} href={a.href} className={`admin-attn-card is-${a.n ? a.tone : "zero"}`}>
+              <span className="admin-attn-ico">{Icon[a.icon]}</span>
+              <span className="admin-attn-num">{a.n}</span>
+              <span className="admin-attn-label">{a.label}</span>
+              <span className="admin-attn-cta">
+                {a.n ? a.cta : "لا شيء جديد"}
+                {a.n ? Icon.chevron : null}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 2 — Quick actions */}
+      <section aria-labelledby="dash-quick" className="admin-dash-section">
+        <h2 id="dash-quick" className="admin-section-head">إجراءات سريعة</h2>
+        <div className="admin-quick">
+          {quick.map((q) => (
+            <Link key={q.href} href={q.href} className="admin-quick-btn">
+              <span className="admin-quick-ico">{Icon[q.icon]}</span>
+              <span>{q.label}</span>
+              <span className="admin-quick-plus">{Icon.plus}</span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* 3 — Content overview + latest submissions */}
+      <div className="admin-dash-cols">
+        <section aria-labelledby="dash-content" className="admin-panel">
+          <div className="admin-panel-head">
+            <h2 id="dash-content" className="admin-panel-title">المحتوى</h2>
+          </div>
+          <ul className="admin-overview">
+            {content.map(({ collection: c, total, drafts }) => (
+              <li key={c.slug}>
+                <Link href={`/admin/collections/${c.slug}`} className="admin-overview-row">
+                  <span className="admin-overview-ico">{Icon[COLLECTION_ICON[c.slug] ?? "posts"]}</span>
+                  <span className="admin-overview-name">{c.labelPlural}</span>
+                  {drafts > 0 && <span className="admin-badge is-draft">{drafts} مسودة</span>}
+                  <span className="admin-overview-num">{total}</span>
+                  <span className="admin-overview-chev">{Icon.chevron}</span>
+                </Link>
+              </li>
+            ))}
+            <li>
+              <Link href="/admin/community" className="admin-overview-row">
+                <span className="admin-overview-ico">{Icon.members}</span>
+                <span className="admin-overview-name">أعضاء المجتمع</span>
+                <span className="admin-overview-num">{members}</span>
+                <span className="admin-overview-chev">{Icon.chevron}</span>
+              </Link>
+            </li>
+          </ul>
+        </section>
+
+        <section aria-labelledby="dash-latest" className="admin-panel">
+          <div className="admin-panel-head">
+            <h2 id="dash-latest" className="admin-panel-title">أحدث الطلبات</h2>
+            <Link href="/admin/registrations" className="admin-panel-link">عرض الكل</Link>
+          </div>
+          {latest.length === 0 ? (
+            <div className="admin-emptystate is-compact">
+              <span className="admin-emptystate-ico">{Icon.inbox}</span>
+              <p>لم يصل أي طلب بعد. ستظهر هنا نماذج التسجيل والتواصل فور وصولها.</p>
             </div>
-          </Link>
-        ))}
-      </div>
-
-      <h2 className="admin-card-title" style={{ marginBottom: 14 }}>إدارة المحتوى</h2>
-      <div className="admin-quicklinks">
-        {COLLECTIONS.map((c) => (
-          <Link key={c.slug} href={`/admin/collections/${c.slug}`} className="admin-quicklink">
-            <span>{c.labelPlural}</span>
-            {Chevron}
-          </Link>
-        ))}
-      </div>
-
-      <h2 className="admin-card-title" style={{ margin: "28px 0 14px" }}>مجتمع الأستاذ</h2>
-      <div className="admin-quicklinks">
-        {[
-          { href: "/admin/community", label: "أعضاء المجتمع" },
-          { href: "/admin/community/ideas", label: "أفكار المجتمع" },
-          { href: "/admin/community/broadcasts", label: "رسائل المجتمع" },
-        ].map((l) => (
-          <Link key={l.href} href={l.href} className="admin-quicklink">
-            <span>{l.label}</span>
-            {Chevron}
-          </Link>
-        ))}
+          ) : (
+            <ul className="admin-feed">
+              {latest.map((r) => (
+                <li key={r.id ?? ""} className="admin-feed-row">
+                  <span className="admin-avatar is-sm" aria-hidden="true">{(r.name || r.email || "؟").trim()[0]}</span>
+                  <span className="admin-feed-body">
+                    <span className="admin-feed-name">{r.name || r.email || "—"}</span>
+                    <span className="admin-feed-meta">
+                      {r.program_name || REG_TYPE_LABEL[r.program_type ?? ""] || "—"}
+                    </span>
+                  </span>
+                  <span className="admin-feed-date">{r.created_at ? formatArabicDate(r.created_at.slice(0, 10)) : ""}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
       </div>
     </div>
   );
+}
+
+function firstWithDrafts(content: { collection: { slug: string }; drafts: number }[]) {
+  const hit = content.find((c) => c.drafts > 0);
+  return hit ? `/admin/collections/${hit.collection.slug}?status=draft` : "/admin/collections/posts";
 }
