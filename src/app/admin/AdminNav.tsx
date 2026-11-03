@@ -21,7 +21,7 @@ const COLLECTION_ICON: Record<string, IconName> = {
 type Item = { href: string; icon: IconName; label: string; badge?: number };
 type Section = { label?: string; items: Item[] };
 
-export type NavCounts = { newIdeas: number; draftTranslations: number };
+export type NavCounts = { newIdeas: number; draftTranslations: number; newRegistrations: number };
 
 export default function AdminNav({ email, counts }: { email: string; counts: NavCounts }) {
   const pathname = usePathname();
@@ -31,7 +31,7 @@ export default function AdminNav({ email, counts }: { email: string; counts: Nav
     {
       items: [
         { href: "/admin", icon: "dashboard", label: "نظرة عامة" },
-        { href: "/admin/registrations", icon: "inbox", label: "الطلبات والاشتراكات" },
+        { href: "/admin/registrations", icon: "inbox", label: "الطلبات والاشتراكات", badge: counts.newRegistrations },
       ],
     },
     {
@@ -87,7 +87,7 @@ export default function AdminNav({ email, counts }: { email: string; counts: Nav
   }, [open]);
 
   const initial = (email.trim()[0] || "؟").toUpperCase();
-  const attention = counts.newIdeas + counts.draftTranslations;
+  const attention = counts.newIdeas + counts.draftTranslations + counts.newRegistrations;
 
   return (
     <>

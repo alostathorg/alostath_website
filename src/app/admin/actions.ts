@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isAdmin } from "@/lib/supabase/auth";
 import { latinDigitsDeep, toLatinDigits } from "@/lib/format";
 import { getCollection, type Collection } from "./config";
+import { isReviewStatus } from "@/lib/registrations";
 
 const BUCKET = process.env.NEXT_PUBLIC_SUPABASE_BUCKET ?? "media";
 
@@ -174,8 +175,41 @@ export async function togglePublished(slug: string, id: string, next: boolean) {
 export async function deleteRegistration(id: string) {
   await requireAdmin();
   const supabase = await createClient();
-  await supabase.from("registrations").delete().eq("id", id);
+  const { error } = await supabase.from("registrations").delete().eq("id", id);
+  if (error) throw new Error(error.message);
   revalidatePath("/admin/registrations");
+  revalidatePath("/admin", "layout");
+}
+
+/** A missing column means migration 0006 hasn't been applied yet — say so plainly. */
+function registrationError(message: string): Error {
+  if (/review_status|admin_note|handled_at/.test(message) || /column .* does not exist/i.test(message)) {
+    return new Error("ميزة المتابعة تحتاج تطبيق الترحيل supabase/migrations/0006_registrations_review.sql على قاعدة البيانات.");
+  }
+  return new Error(message);
+}
+
+export async function setRegistrationStatus(id: string, status: string) {
+  await requireAdmin();
+  if (!isReviewStatus(status)) throw new Error("حالة غير معروفة");
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("registrations")
+    .update({ review_status: status, handled_at: new Date().toISOString() })
+    .eq("id", id);
+  if (error) throw registrationError(error.message);
+  revalidatePath("/admin/registrations");
+  revalidatePath(`/admin/registrations/${id}`);
+  revalidatePath("/admin", "layout");
+}
+
+export async function saveRegistrationNote(id: string, form: FormData) {
+  await requireAdmin();
+  const note = toLatinDigits(String(form.get("admin_note") ?? "").trim());
+  const supabase = await createClient();
+  const { error } = await supabase.from("registrations").update({ admin_note: note || null }).eq("id", id);
+  if (error) throw registrationError(error.message);
+  revalidatePath(`/admin/registrations/${id}`);
 }
 
 export async function saveSettings(key: string, form: FormData) {

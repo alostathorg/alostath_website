@@ -93,6 +93,10 @@ or the Supabase CLI (`supabase db push`):
 - `supabase/migrations/0005_translations.sql` — الترجمات: the `translations`
   table, its word-count trigger, the `translations_totals()` counter and the
   `translation` settings row (sources + glossary).
+- `supabase/migrations/0006_registrations_review.sql` — الطلبات والاشتراكات:
+  follow-up status (`review_status`), internal note and `handled_at` on
+  `registrations`, plus the admin UPDATE policy the dashboard needs. Until it
+  runs, the inbox and detail pages still work but hide the status/note controls.
 
 All four files are idempotent, so re-running them is safe. `0001` and `0002`
 have already been applied to the live project — never edit them; add a numbered

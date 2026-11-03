@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { formatArabicDate, latinDigitsDeep } from "@/lib/format";
 import { TRANSLATIONS_NAV_LABEL } from "@/lib/translations";
+import { REG_TYPE_LABEL } from "@/lib/registrations";
 import { COLLECTIONS } from "./config";
 import { Icon, type IconName } from "./icons";
 
@@ -17,13 +18,6 @@ const COLLECTION_ICON: Record<string, IconName> = {
   press: "press",
 };
 
-const REG_TYPE_LABEL: Record<string, string> = {
-  award: "جائزة",
-  initiative: "مبادرة",
-  council: "المجلس",
-  newsletter: "نشرة بريدية",
-  contact: "رسالة تواصل",
-};
 
 type Supabase = Awaited<ReturnType<typeof createClient>>;
 type Filter = { eq?: [string, string | boolean]; gte?: [string, string] };
@@ -197,7 +191,8 @@ export default async function AdminDashboard() {
           ) : (
             <ul className="admin-feed">
               {latest.map((r) => (
-                <li key={r.id ?? ""} className="admin-feed-row">
+                <li key={r.id ?? ""}>
+                  <Link href={`/admin/registrations/${r.id}`} className="admin-feed-row is-link">
                   <span className="admin-avatar is-sm" aria-hidden="true">{(r.name || r.email || "؟").trim()[0]}</span>
                   <span className="admin-feed-body">
                     <span className="admin-feed-name">{r.name || r.email || "—"}</span>
@@ -206,6 +201,7 @@ export default async function AdminDashboard() {
                     </span>
                   </span>
                   <span className="admin-feed-date">{r.created_at ? formatArabicDate(r.created_at.slice(0, 10)) : ""}</span>
+                  </Link>
                 </li>
               ))}
             </ul>

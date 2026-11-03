@@ -7,7 +7,18 @@ import ConfirmModal from "../ConfirmModal";
 import { toast } from "../Toaster";
 import { Icon } from "../icons";
 
-export default function RegDeleteButton({ id, name }: { id: string; name?: string }) {
+export default function RegDeleteButton({
+  id,
+  name,
+  redirectTo,
+  variant = "icon",
+}: {
+  id: string;
+  name?: string;
+  /** Where to go once it's gone — the detail page sends you back to the inbox. */
+  redirectTo?: string;
+  variant?: "icon" | "button";
+}) {
   const [pending, start] = useTransition();
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -18,7 +29,8 @@ export default function RegDeleteButton({ id, name }: { id: string; name?: strin
         await deleteRegistration(id);
         setOpen(false);
         toast("تم حذف الطلب.");
-        router.refresh();
+        if (redirectTo) router.push(redirectTo);
+        else router.refresh();
       } catch (err) {
         setOpen(false);
         toast(err instanceof Error ? err.message : "تعذّر الحذف", "error");
@@ -30,13 +42,14 @@ export default function RegDeleteButton({ id, name }: { id: string; name?: strin
     <>
       <button
         type="button"
-        className="admin-iconbtn is-danger"
+        className={variant === "button" ? "admin-btn admin-btn-ghost admin-btn-sm is-danger" : "admin-iconbtn is-danger"}
         disabled={pending}
         onClick={() => setOpen(true)}
         aria-label={name ? `حذف طلب ${name}` : "حذف الطلب"}
         title="حذف"
       >
         {Icon.trash}
+        {variant === "button" && "حذف"}
       </button>
 
       <ConfirmModal
