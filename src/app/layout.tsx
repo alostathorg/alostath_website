@@ -20,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body>
-        <div dir="rtl" style={{ fontFamily: "var(--font-sans)", background: "var(--canvas)", overflowX: "hidden" }}>
+        {/* overflow-x: clip, not hidden — "hidden" turns this div into a scroll
+            container, which silently breaks every position: sticky inside it
+            (the dashboard sidebar scrolled away with the page). */}
+        <div dir="rtl" style={{ fontFamily: "var(--font-sans)", background: "var(--canvas)", overflowX: "clip" }}>
           {children}
         </div>
         <SiteChrome />

@@ -14,8 +14,18 @@ async function navCounts(): Promise<NavCounts> {
   const supabase = await createClient();
   const pending = (table: string, status: string) =>
     supabase.from(table).select("*", { count: "exact", head: true }).eq("status", status);
-  const [ideas, drafts] = await Promise.all([pending("community_ideas", "new"), pending("translations", "draft")]);
-  return { newIdeas: ideas.count ?? 0, draftTranslations: drafts.count ?? 0 };
+  // review_status arrives with migration 0006; before that the query errors
+  // and the badge simply stays at 0.
+  const [ideas, drafts, regs] = await Promise.all([
+    pending("community_ideas", "new"),
+    pending("translations", "draft"),
+    supabase.from("registrations").select("*", { count: "exact", head: true }).eq("review_status", "new"),
+  ]);
+  return {
+    newIdeas: ideas.count ?? 0,
+    draftTranslations: drafts.count ?? 0,
+    newRegistrations: regs.error ? 0 : regs.count ?? 0,
+  };
 }
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
