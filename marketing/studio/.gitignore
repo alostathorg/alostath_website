@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+.env
+
+# Renders and stills stay out of git.
+out
+
+# Prepared by scripts/prep.mjs: the site's logos and pattern, the typefaces, and each video's audio from
+# ~/Movies/Al-Ostath Marketing. Regenerate them (npm run prep) instead of committing.
+public/site
+public/fonts
+public/media
