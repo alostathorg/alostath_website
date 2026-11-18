@@ -29,8 +29,9 @@ export const StrategyCard: React.FC<{
   const brand = progress(frame, done + 4, 14);
   const top = 735;
   const row = 80;
-  const height = 70 + steps.length * row;
-  const rowY = (n: number) => top + 45 + n * row;
+  const pad = 14;
+  const height = 2 * pad + steps.length * row;
+  const rowY = (n: number) => top + pad + row / 2 + n * row;
   return (
     <Page
       svg={
