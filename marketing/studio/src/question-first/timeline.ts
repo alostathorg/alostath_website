@@ -8,8 +8,9 @@
 //   payoff     23 when anyone might be asked, everyone thinks
 //   end        24 the strategy: «السؤال قبل الاسم» · اسأل، انتظر، ثم قل الاسم; the logo
 //
-// Until the voices exist (~/Movies/Al-Ostath Marketing/01-question-first/lines, then `npm run prep`), every line is
-// timed by an estimate from its length; the beats below are keyed on words, so they follow the real read.
+// The voice is one take of one voice (take2, with lines 03 and 11 from take1), split into lines by voice:split; `npm run
+// prep` copies them with their word timings, which every beat below follows. «سارة!» carries its own long pause (the
+// [long pause] tag), so the plan adds only 0.6 s before it: the wait comes out at about two seconds.
 import script from "../../../videos/01-question-first/script.json";
 import { buildTimeline as build, type Line, type Manifest, type ScenePlan, type Timeline as Base, wordFrame } from "../lib/timeline";
 
@@ -23,7 +24,7 @@ export const TRANSITION = 10;
 const PLAN: ScenePlan<SceneId>[] = [
   { id: "hook", min: 5, tail: 0.7, lines: [{ id: "01", at: 0.6 }] },
   { id: "wednesday", min: 12, tail: 0.9, lines: [{ id: "02", at: 0.7 }, { id: "03", gap: 0.5 }, { id: "04", gap: 0.6 }, { id: "05", gap: 0.4 }] },
-  { id: "friday", min: 18, tail: 1.2, lines: [{ id: "06", at: 0.6 }, { id: "07", gap: 0.5 }, { id: "08", gap: 2.2 }, { id: "09", gap: 0.4 }, { id: "10", gap: 0.6 }, { id: "11", gap: 0.8 }] },
+  { id: "friday", min: 18, tail: 1.2, lines: [{ id: "06", at: 0.6 }, { id: "07", gap: 0.5 }, { id: "08", gap: 0.6 }, { id: "09", gap: 0.4 }, { id: "10", gap: 0.6 }, { id: "11", gap: 0.8 }] },
   { id: "saturday", min: 8, tail: 1.2, lines: [{ id: "12", at: 0.6 }, { id: "13", gap: 0.6 }] },
   {
     id: "sunday",
@@ -60,7 +61,7 @@ export function beats(t: Timeline) {
       hands: at("wednesday", "03", "ثلاث"),
       same: at("wednesday", "03", "نفس"),
       reset: at("wednesday", "03", "فجرب"),
-      named: start("wednesday", "04"),
+      named: at("wednesday", "04", "عبدالله"),
       off: at("wednesday", "05", "تسعة"),
       notMe: at("wednesday", "05", "مو"),
       red: at("wednesday", "05", "أحمر"),
@@ -70,7 +71,7 @@ export function beats(t: Timeline) {
       ask: start("friday", "07"),
       spider: at("friday", "07", "للعنكبوت"),
       wait: done("friday", "07"),
-      name: start("friday", "08"),
+      name: at("friday", "08", "سارة"),
       eight: at("friday", "09", "ثمان"),
       capitals: at("friday", "10", "عواصم"),
       capitalsDone: done("friday", "10"),
@@ -88,7 +89,7 @@ export function beats(t: Timeline) {
       askDone: done("sunday", "15"),
       two: at("sunday", "16", "ثانيتين"),
       thirty: at("sunday", "16", "ثلاثين"),
-      name: start("sunday", "17"),
+      name: at("sunday", "17", "عبدالله"),
       answer: start("sunday", "18"),
       how: start("sunday", "19"),
       right: at("sunday", "20", "صح"),

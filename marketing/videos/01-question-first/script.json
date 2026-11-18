@@ -2,7 +2,7 @@
   "id": "01-question-first",
   "title": "السؤال قبل الاسم",
   "composition": "QuestionFirst",
-  "purpose": "أول حلقة من سلسلة استراتيجيات صفّية لحسابات الأستاذ في مواقع التواصل. مسودة للمراجعة.",
+  "purpose": "أول حلقة من سلسلة استراتيجيات صفّية لحسابات الأستاذ في مواقع التواصل.",
   "source": "على شكل فيديو «Teach Like a Champion» عن Technique 34: Cold Call (دوغ ليموف)، بقصة سعودية ورسم وهوية جديدة.",
   "language": "ar",
   "dialect": "سعودية بيضاء",
@@ -28,7 +28,8 @@
       }
     ],
     "settings": "eleven_v4: Stability قرابة 50%، Similarity قرابة 75%، Style صفر. ما فيه سرعة في v4: البطء بـ[slowly] والوقفات بـ[pause] و«…».",
-    "takes": "~/Movies/Al-Ostath Marketing/01-question-first/takes/"
+    "takes": "~/Movies/Al-Ostath Marketing/01-question-first/takes/ (take1.mp3, take2.mp3)",
+    "picked": "تسجيلين من الأستاذ بنفس الصوت (2026-11-18): take1 وtake2، كل واحد يقرأ النص كامل في 92 ثانية تقريباً. المعتمد take2، وفيه كل التقسيمات داخل سكتات حقيقية، مع السطرين 03 و11 من take1: 03 أوضح فيه («ثلاث أيادي… فجرّب الأستاذ») و11 يقول «ومعه» مثل النص. take1 ما ينفع للسطرين 15 و16: Whisper فقد التوقيت عند «الاثنعش» فانقسم السطر في نصه. الأوامر اشتغلت: صوت عبدالله ([childlike voice]) قرابة 205 Hz مقابل 120–150 للراوي، و[long pause] قبل «سارة!» طلع ثانية."
   },
   "format": {
     "width": 1080,
