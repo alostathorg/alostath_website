@@ -1,0 +1,64 @@
+# Heavy media stays out of git: keep it in the content folder outside the repo.
+# GitHub rejects files over 100 MB, and every workspace of the site shares this repo.
+
+# video
+*.mp4
+*.mov
+*.m4v
+*.webm
+*.mkv
+*.avi
+*.mxf
+*.braw
+*.r3d
+
+# audio masters
+*.wav
+*.aif
+*.aiff
+*.flac
+
+# camera raw photos (events, the award, the council)
+*.cr2
+*.cr3
+*.nef
+*.arw
+*.dng
+*.raf
+*.orf
+*.rw2
+
+# design and project sources
+*.psd
+*.psb
+*.ai
+*.indd
+*.aep
+*.prproj
+*.drp
+*.fcpbundle/
+*.blend
+*.sketch
+*.xd
+*.fig
+
+# archives
+*.zip
+*.rar
+*.7z
+
+# spreadsheets: registration and member exports carry personal data, and this repo is public.
+# Add one deliberately with `git add -f` only when it holds no personal data.
+*.csv
+*.xlsx
+*.xls
+*.numbers
+
+# keys for content tools (voices and the like)
+.env*
+
+# tool output
+node_modules/
+out/
+renders/
+exports/

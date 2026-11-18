@@ -1,5 +1,12 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "git": {
+    "deploymentEnabled": {
+      "alostath-marketing-content": false,
+      "**/*marketing*": false,
+      "**/*Marketing*": false
+    }
+  },
   "framework": "nextjs",
   "buildCommand": "next build",
   "installCommand": "npm install"

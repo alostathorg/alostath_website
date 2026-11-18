@@ -1,0 +1,49 @@
+#!/bin/sh
+# Al-Ostath marketing guard: pre-push hook.
+# Source: marketing/tools/pre-push on the alostath-marketing-content branch.
+# Install: sh marketing/tools/install-guard.sh. One install covers every
+# Conductor workspace of this repo, because they share one hooks folder.
+#
+# Strict rule: content from alostath-marketing-content never reaches the site's
+# branch (claude/push-zip-to-repo-yigxoq), main or any other branch. Only
+# branches whose name contains "marketing" may receive it.
+# Tags and branch deletions are not checked.
+
+marketing_branch=alostath-marketing-content
+token=ALOSTATH_MARKETING_ONLY
+
+# Marketing-only history starts at the commit that added marketing/README.md.
+root=
+for ref in "refs/heads/$marketing_branch" "refs/remotes/origin/$marketing_branch"; do
+  git rev-parse -q --verify "$ref^{commit}" >/dev/null 2>&1 || continue
+  root=$(git log --format=%H --diff-filter=A --reverse "$ref" -- marketing/README.md 2>/dev/null | head -n 1)
+  [ -n "$root" ] && break
+done
+
+status=0
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$remote_ref" in refs/heads/*) ;; *) continue ;; esac  # branches only
+  case "$local_sha" in *[!0]*) ;; *) continue ;; esac          # deletion
+  name=${remote_ref#refs/heads/}
+  case "$name" in *[Mm]arketing*) continue ;; esac
+
+  reason=
+  if [ -n "$root" ] && git merge-base --is-ancestor "$root" "$local_sha" </dev/null 2>/dev/null; then
+    reason="its history contains the marketing branch"
+  elif git cat-file -e "$local_sha:marketing" </dev/null 2>/dev/null; then
+    reason="it has a marketing/ folder"
+  elif git cat-file -p "$local_sha:CLAUDE.md" </dev/null 2>/dev/null | grep -q "$token"; then
+    reason="its CLAUDE.md carries the marketing-branch rules"
+  elif git cat-file -p "$local_sha:vercel.json" </dev/null 2>/dev/null | grep -q "$marketing_branch"; then
+    reason="its vercel.json carries the marketing branch's deploy switch"
+  fi
+
+  if [ -n "$reason" ]; then
+    printf '\nAl-Ostath marketing guard: push to "%s" refused: %s.\n' "$name" "$reason" >&2
+    printf 'قاعدة صارمة: محتوى التسويق ما يطلع من %s لأي برانش ثاني.\n' "$marketing_branch" >&2
+    printf 'Marketing work goes to %s only, or to a side branch whose name contains "marketing".\n\n' "$marketing_branch" >&2
+    status=1
+  fi
+done
+
+exit $status
