@@ -141,7 +141,7 @@ function manFace(x: number, y: number, r: number, mood: "smile" | "o" | "happy",
   return items;
 }
 
-export type Pose = "rest" | "point" | "ask" | "hip" | "write";
+export type Pose = "rest" | "point" | "ask" | "hip" | "write" | "tap";
 
 /** The teacher standing on (x, y): thobe, shemagh and iqal; [s] scales him, [pose] places his arms. */
 export const Teacher: React.FC<{ x: number; y: number; s?: number; pose?: Pose; mood?: "smile" | "o" | "happy"; seed: number }> = ({ x, y, s = 1, pose = "rest", mood = "smile", seed }) => {
@@ -167,6 +167,10 @@ export const Teacher: React.FC<{ x: number; y: number; s?: number; pose?: Pose; 
     ],
     write: [
       [P(-22, -138), P(-48, -104), P(-82, -70)],
+      [P(22, -138), P(30, -96), P(27, -62)],
+    ],
+    tap: [
+      [P(-22, -138), P(-48, -118), P(-74, -124)],
       [P(22, -138), P(30, -96), P(27, -62)],
     ],
   };
@@ -273,6 +277,89 @@ export const StandingKid: React.FC<{ x: number; y: number; s?: number; kind?: Ha
   ];
   return <Sk seed={seed} items={items} />;
 };
+
+export type SeatArms = "rest" | "write" | "tap" | "chat" | "fold" | "up" | "turn";
+
+/** A student seated behind a small desk, seen from the front, standing on the floor at (x, y). [lean] tilts him
+ *  toward a neighbour (−1 left, 1 right); [down] 0 → 1 lowers his head onto his folded arms; [tick] animates a pencil
+ *  or a tapping pen. The desk is drawn in front of him. */
+export const SeatedKid: React.FC<{
+  x: number;
+  y: number;
+  kind?: Hair;
+  glasses?: boolean;
+  mood?: Mood;
+  lean?: number;
+  down?: number;
+  arms?: SeatArms;
+  tick?: number;
+  seed: number;
+}> = ({ x, y, kind = "short", glasses = false, mood = "smile", lean = 0, down = 0, arms = "rest", tick = 0, seed }) => {
+  const r = 30;
+  const top = y - 122;
+  const hx = x + lean * 18;
+  const hy = y - 232 + down * 84;
+  const sh = (side: -1 | 1): Pt => [x + side * 17 + lean * 6, y - 192 + down * 30];
+  const body: Item[] = [
+    { k: "linear", pts: [[x - 9, y - 112], [x - 13, y - 14], [x - 24, y - 2]], width: 3 },
+    { k: "linear", pts: [[x + 9, y - 112], [x + 13, y - 14], [x + 24, y - 2]], width: 3 },
+    { k: "path", d: `M${x - 11 + lean * 8},${y - 202 + down * 30} L${x - 24},${y - 112} L${x + 24},${y - 112} L${x + 11 + lean * 8},${y - 202 + down * 30} Z`, fill: C.sheet, width: 3 },
+  ];
+  const arm = (side: -1 | 1, pts: Pt[]): Item => ({ k: "linear", pts: [sh(side), ...pts], width: 3.1 });
+  const extra: Item[] = [];
+  const wob = Math.sin(tick * 1.7) * 4;
+  switch (arms) {
+    case "rest":
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22, y - 128]]), arm(1, [[x + 32, y - 158], [x + 22, y - 128]]));
+      break;
+    case "write":
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22, y - 128]]), arm(1, [[x + 30, y - 156], [x + 6 + wob, y - 128]]));
+      extra.push({ k: "line", a: [x + 6 + wob, y - 128], b: [x - 8 + wob, y - 146], stroke: C.goldText, width: 4 });
+      break;
+    case "tap": {
+      const lift = Math.abs(Math.sin(tick * 2.2)) * 10;
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22, y - 128]]), arm(1, [[x + 34, y - 160], [x + 26, y - 136 - lift]]));
+      extra.push({ k: "line", a: [x + 26, y - 136 - lift], b: [x + 18, y - 124 - lift * 0.4], stroke: C.goldText, width: 4 });
+      extra.push({ k: "arc", c: [x + 18, y - 122], w: 26, h: 16, start: Math.PI * 1.05, stop: Math.PI * 1.45, stroke: C.inkSubtle, width: 2.2 });
+      extra.push({ k: "arc", c: [x + 18, y - 122], w: 42, h: 26, start: Math.PI * 1.05, stop: Math.PI * 1.45, stroke: C.inkSubtle, width: 2.2 });
+      break;
+    }
+    case "chat":
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22, y - 128]]), arm(1, [[x + 36 + lean * 10, y - 176], [hx + lean * 30 + 6, hy + 14]]));
+      break;
+    case "turn":
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22 + lean * 10, y - 128]]), arm(1, [[x + 32, y - 158], [x + 22 + lean * 10, y - 128]]));
+      break;
+    case "fold":
+      body.push(arm(-1, [[x - 44, y - 140], [x, y - 128]]), arm(1, [[x + 44, y - 140], [x, y - 128]]));
+      break;
+    case "up":
+      body.push(arm(-1, [[x - 32, y - 158], [x - 22, y - 128]]), arm(1, [[x + 40, y - 226], [x + 34, y - 284]]));
+      extra.push({ k: "circle", c: [x + 34, y - 288], d: 15, fill: C.sheet, width: 2.8 });
+      break;
+  }
+  const desk: Item[] = [
+    { k: "line", a: [x - 62, top + 10], b: [x - 62, y], width: 3 },
+    { k: "line", a: [x + 62, top + 10], b: [x + 62, y], width: 3 },
+    { k: "rect", x: x - 74, y: top, w: 148, h: 13, fill: C.goldTint, width: 3 },
+  ];
+  const head: Item[] = [{ k: "circle", c: [hx, hy], d: 2 * r, fill: C.sheet, width: 3 }, ...hair(hx, hy, r, kind), ...face(hx, hy, r, mood, glasses)];
+  return (
+    <g>
+      <Sk seed={seed} items={body} />
+      <Sk seed={seed + 1} items={head} />
+      <Sk seed={seed + 2} items={[...desk, ...extra]} />
+    </g>
+  );
+};
+
+/** Where a seated student's head is (for bubbles and the spotlight). */
+export const seatedHead = (x: number, y: number, lean = 0, down = 0): Pt => [x + lean * 18, y - 232 + down * 84];
+
+/** A man's head with shemagh (or white ghutra) and iqal, at (x, y) with radius [r]: for the cinema rows. */
+export const ManHead: React.FC<{ x: number; y: number; r?: number; red?: boolean; mood?: "smile" | "o" | "happy"; seed: number }> = ({ x, y, r = 22, red = true, mood = "smile", seed }) => (
+  <Sk seed={seed} items={[...headdressBack(x, y, r, red), { k: "circle", c: [x, y], d: 2 * r, fill: C.sheet, width: 3 }, ...manFace(x, y, r, mood), ...iqal(x, y, r)]} />
+);
 
 /** Where a sitting figure's head is, for bulbs and labels. */
 export const sittingHead = (x: number, y: number, who: "grandpa" | "teacher" | "boy" | "girl"): Pt => (who === "grandpa" || who === "teacher" ? [x, y - 150] : [x, y - 138 * 0.78]);

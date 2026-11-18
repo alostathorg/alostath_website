@@ -41,15 +41,4 @@ export const QuestionFirst: React.FC<{ timeline: Timeline }> = ({ timeline }) =>
   </AbsoluteFill>
 );
 
-/** One scene alone, for the Studio's per-scene compositions. */
-export const sceneAlone = (Scene: React.FC<{ timeline: Timeline }>) => {
-  const Alone: React.FC<{ timeline: Timeline }> = ({ timeline }) => (
-    <AbsoluteFill style={{ backgroundColor: C.paper }}>
-      <WobbleDefs />
-      <Scene timeline={timeline} />
-    </AbsoluteFill>
-  );
-  return Alone;
-};
-
 export { SCENES as QUESTION_FIRST_SCENES };

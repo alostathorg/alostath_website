@@ -7,7 +7,7 @@ import { Sk, roundRect } from "../components/Sketch";
 import { Bulb, Dallah, Finjan, Gift, Lamp, Ring, Spider, Timer, Trap } from "../components/Things";
 import { At, Bubble, Label, Tag, rich } from "../components/Words";
 import { progress } from "../lib/motion";
-import { Page } from "./ClassScenes";
+import { Page } from "../components/Page";
 import { beats, type Timeline } from "./timeline";
 
 const FLOOR = 1150;

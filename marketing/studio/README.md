@@ -56,6 +56,10 @@ video with no voice lines yet: use `--draft` for those.
 - `src/components/Things.tsx`: `Bulb`, `Plank`, `Window`, `Ring`, `Tick`, `Timer`, `Spider`, `Dallah`, `Finjan`,
   `Gift`, `Trap`, `Lamp`.
 - `src/components/Words.tsx`: `Tag`, `Label`, `Bubble`, `Captions` (the spoken words, a few at a time, karaoke style).
+- `src/components/StrategyCard.tsx`: the end card every strategy video closes on (name stamp, English name, steps on
+  their words, logo, site, source). `Page.tsx` (a scene on the paper) and `SceneAlone.tsx` (per-scene compositions).
+- `People.tsx` also has `SeatedKid` (a student at a desk, front view: chatting, tapping, head down, writing, turning to
+  a partner) and `ManHead` (a head in shemagh and iqal, for crowds).
 
 ## 01-question-first «السؤال قبل الاسم»
 
@@ -63,3 +67,9 @@ video with no voice lines yet: use `--draft` for those.
 of thirty bulbs (`Classroom.tsx`), the class scenes (`ClassScenes.tsx`), Friday at the family house and the night before
 (`HomeScenes.tsx`), the end card (`End.tsx`), and the scene plan with every beat on a word (`timeline.ts`). The story,
 the decisions and the lines to voice are in `../videos/01-question-first/README.md`.
+
+## 02-fix-it-small «أخفّ تدخّل»
+
+`src/fix-it-small/`, composition `FixItSmall`: the side-view classroom with the board, the pizza and the lesson's player
+badge (`Room.tsx`), the cinema and the intervention ladder (`Cinema.tsx`), the scenes (`Scenes.tsx`) and the plan
+(`timeline.ts`). The story and the lines to voice are in `../videos/02-fix-it-small/README.md`.

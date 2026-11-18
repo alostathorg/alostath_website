@@ -1,0 +1,192 @@
+{
+  "id": "02-fix-it-small",
+  "title": "أخف تدخل",
+  "composition": "FixItSmall",
+  "purpose": "الحلقة الثانية من سلسلة استراتيجيات صفّية لحسابات الأستاذ في مواقع التواصل.",
+  "source": "على شكل فيديو «Teach Like a Champion» عن Technique 55: Least Invasive Intervention (دوغ ليموف)، بقصة سعودية ورسم وهوية الأستاذ. نفس الأستاذ فهد ونفس الفصل من الحلقة الأولى.",
+  "language": "ar",
+  "dialect": "سعودية بيضاء",
+  "ttsModel": "eleven_v4",
+  "voice": {
+    "mode": "one",
+    "brief": "صوت واحد للقصة كلها، يغيّر نبرته لكل شخصية بأوامر ElevenLabs v4 (بين قوسين مربعين، قبل الكلام اللي تلوّنه، وتبقى لين الأمر اللي بعده). نفس صوت الحلقة الأولى.",
+    "settings": "eleven_v4: Stability قرابة 50%، Similarity قرابة 75%، Style صفر. البطء بـ[slowly] والوقفات بـ[pause] و«…».",
+    "takes": "~/Movies/Al-Ostath Marketing/02-fix-it-small/takes/"
+  },
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "targetSeconds": 115
+  },
+  "roles": {
+    "narrator": {
+      "label": "الراوي",
+      "tone": "[warmly] للسرد، [softly] للحظات الهادية، [dramatically] للكشف، [slowly] للخلاصة"
+    },
+    "teacher": {
+      "label": "الأستاذ فهد",
+      "tone": "يوم يوقّف الدرس: [sarcastic] [annoyed] [tired]. يوم ما يوقّف: [warmly] [happy] [excited]، والهمس [whispers]"
+    },
+    "saud": {
+      "label": "سعود",
+      "tone": "[childlike voice] مع [surprised] أو [mischievously]"
+    },
+    "abdullah": {
+      "label": "عبدالله",
+      "tone": "[childlike voice] [whispers]"
+    },
+    "usher": {
+      "label": "موظف السينما",
+      "tone": "[whispers] [deep voice]"
+    }
+  },
+  "lines": [
+    {
+      "id": "01",
+      "role": "narrator",
+      "text": "[warmly] تَبي الطّالِب اللي يِسولِف يِسْكِت؟… [dramatically] لا تْنادي عَلَيه قِدّام الفَصْل."
+    },
+    {
+      "id": "02",
+      "role": "teacher",
+      "text": "[warmly] يَعْني لَوْ قَسَمْنا البيتْزا على ثَمانْيَة…"
+    },
+    {
+      "id": "03",
+      "role": "teacher",
+      "text": "[sarcastic] سْعود! عَسى السّالْفَة حِلْوَة هِناك؟"
+    },
+    {
+      "id": "04",
+      "role": "saud",
+      "text": "[childlike voice] [surprised] مين؟ أنا؟"
+    },
+    {
+      "id": "05",
+      "role": "narrator",
+      "text": "[dramatically] كِلّ ما وَقَف عَشان طالِب… [pause] وِقْفوا مَعَه التِّسْعَة وعِشْرين الباقين."
+    },
+    {
+      "id": "06",
+      "role": "teacher",
+      "text": "[annoyed] تُرْكي، خَلاص الطَّقْطَقَة."
+    },
+    {
+      "id": "07",
+      "role": "teacher",
+      "text": "[tired] ماجِد… ارْفَع راسَك لَوْ سَمَحْت."
+    },
+    {
+      "id": "08",
+      "role": "narrator",
+      "text": "[warmly] وهو مَشْغول بْواحِد… واحِد ثاني يِلْقى لَه شي أحْلى يْسَوّيه."
+    },
+    {
+      "id": "09",
+      "role": "narrator",
+      "text": "[slowly] بَعْد ثِنْعَش دَقيقَة… [dramatically] البيتْزا لَسّا ما انْقَسَمَت."
+    },
+    {
+      "id": "10",
+      "role": "narrator",
+      "text": "[warmly] يوم الخَميس، فَهَد ياخُذ وَلَد أخوه للسّينِما."
+    },
+    {
+      "id": "11",
+      "role": "narrator",
+      "text": "[softly] جَوّال يِضَوّي… [pause] وَلَد يِرْفُس الكُرْسي… [dramatically] والمُوَظَّف… ما يْوَقِّف الفيلْم."
+    },
+    {
+      "id": "12",
+      "role": "usher",
+      "text": "[whispers] [deep voice] رُجولَك يا بَطَل… مَشْكور."
+    },
+    {
+      "id": "13",
+      "role": "narrator",
+      "text": "[softly] لَوْ كانوا يْوَقْفون الفيلْم كِلّ مَرَّة… ما شِفْنا النِّهايَة أبَد."
+    },
+    {
+      "id": "14",
+      "role": "teacher",
+      "text": "[whispers] [surprised] وأنا أوَقِّف فيلْمي كِلّ دَقيقْتَين!"
+    },
+    {
+      "id": "15",
+      "role": "narrator",
+      "text": "[warmly] خَلّك تَحْت في السِّلَّم قَدّ ما تِقْدَر… [slowly] وخَلّ الفيلْم شَغّال."
+    },
+    {
+      "id": "16",
+      "role": "narrator",
+      "text": "[warmly] الأحَد. نَفْس الفَصْل. [pause] وهالمَرَّة… فَهَد ما يْوَقِّف."
+    },
+    {
+      "id": "17",
+      "role": "teacher",
+      "text": "[warmly] يَعْني البيتْزا تِنْقِسِم ثَمانْيَة…"
+    },
+    {
+      "id": "18",
+      "role": "narrator",
+      "text": "[softly] نَظْرَة… [pause] لَمْسَة… [pause] بِدون ما يْسَلِّط عَلَيه الضّوء."
+    },
+    {
+      "id": "19",
+      "role": "teacher",
+      "text": "[happy] يَلّا الكِلّ، الأقْلام تِكْتِب."
+    },
+    {
+      "id": "20",
+      "role": "teacher",
+      "text": "[warmly] باقي اثْنَين يْطالْعون السّبّورَة… [pause] شُكْراً."
+    },
+    {
+      "id": "21",
+      "role": "teacher",
+      "text": "[excited] التِفِت لِزَميلَك… ثَلاثين ثانْيَة… يَلّا!"
+    },
+    {
+      "id": "22",
+      "role": "teacher",
+      "text": "[whispers] سْعود، أبي قَلَمَك يِكْتِب… بَرْجَع لَك بَعْد ثَلاثين ثانْيَة."
+    },
+    {
+      "id": "23",
+      "role": "narrator",
+      "text": "[warmly] والهَمْسَة اللي بَعْدَها… مَدْح لِطالِب ثاني."
+    },
+    {
+      "id": "24",
+      "role": "narrator",
+      "text": "[softly] مو تَجاهُل… [slowly] تَصْحيح صَغير، وهو لَسّا صَغير."
+    },
+    {
+      "id": "25",
+      "role": "narrator",
+      "text": "[warmly] بَعْد أسْبوعَين، سْعود يْجَرِّب حَرَكْتَه القَديمَة."
+    },
+    {
+      "id": "26",
+      "role": "saud",
+      "text": "[childlike voice] [mischievously] شَباب! مين يَبي يِسْمَع نُكْتَة؟"
+    },
+    {
+      "id": "27",
+      "role": "narrator",
+      "text": "[softly] وفَهَد… ما احْتاج يْوَقِّف أصْلاً."
+    },
+    {
+      "id": "28",
+      "role": "abdullah",
+      "text": "[childlike voice] [whispers] اشْش… خَلّنا نْشوف النِّهايَة."
+    },
+    {
+      "id": "29",
+      "role": "narrator",
+      "text": "[warmly] اسْتْراتيجِيَّة: أخَفّ تَدَخُّل. [slowly] صَحِّحْها وهي صَغيرَة… [pause] وخَلّ الدَّرْس يِمْشي."
+    }
+  ],
+  "sfx": []
+}

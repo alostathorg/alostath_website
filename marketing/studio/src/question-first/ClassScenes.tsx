@@ -1,9 +1,10 @@
 // The classroom scenes: the hook, Wednesday (the name first), Sunday (the question first), ten minutes later, and the
 // payoff. Every beat is keyed on the speakers' words (timeline.ts).
-import { AbsoluteFill, Img, interpolate, useCurrentFrame } from "remotion";
+import { Img, interpolate, useCurrentFrame } from "remotion";
 import { asset, C, LOGO, logoWidth, MONO, TEXT } from "../brand";
 import { StandingKid, Teacher } from "../components/People";
-import { Canvas, Sk } from "../components/Sketch";
+import { Page } from "../components/Page";
+import { Sk } from "../components/Sketch";
 import { Bulb, Ring, Tick, Timer } from "../components/Things";
 import { At, Bubble, Label, Tag } from "../components/Words";
 import { clamp, progress } from "../lib/motion";
@@ -20,12 +21,6 @@ const QUIET = shuffled(
 /** A bulb going out (or coming on) as a quick fade. */
 const flick = (frame: number, at: number) => progress(frame, at, 5);
 
-export const Page: React.FC<{ svg?: React.ReactNode; children?: React.ReactNode }> = ({ svg, children }) => (
-  <AbsoluteFill style={{ backgroundColor: C.paper }}>
-    <Canvas>{svg}</Canvas>
-    {children}
-  </AbsoluteFill>
-);
 
 /** The teacher at the top right of the classroom, where his bubbles start. */
 const TEACHER = { x: 975, y: 545 };
