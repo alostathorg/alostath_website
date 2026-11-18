@@ -12,6 +12,9 @@
 //   --voice   whose voice the take is, when a video has a voice per role; lines of another role are kept as
 //             placeholders until that voice comes. A one-voice video (script.json "voice": { "mode": "one" }) needs none.
 //   --only    keep just these lines from this take (the best line from each of several takes)
+//   --at      move a line's start (and the previous line's end) to a time in the take, e.g. --at 22=64.5, for when
+//             Whisper loses a word at a boundary (it heard «يلا!» late and left it at the start of the next line); find
+//             the silence on the take's loudness first. Repeat it for several lines.
 // Writes ~/Movies/Al-Ostath Marketing/<video>/lines/<nn>-<role>.mp3 + .words.json, and lines/takes.json.
 import { execFileSync, spawnSync } from "node:child_process";
 import { createReadStream, existsSync } from "node:fs";
@@ -192,6 +195,16 @@ for (const [i, g] of aligned ? [] : groups.entries()) {
 const cuts = [Math.max(0, groups[0][0].start - 0.15)];
 for (let i = 1; i < groups.length; i++) cuts.push(quietest((groups[i - 1].at(-1).end + groups[i][0].start) / 2));
 cuts.push(duration);
+
+// Hand corrections: --at <line>=<seconds> sets where that line starts in the take.
+args.forEach((a, k) => {
+  if (a !== "--at") return;
+  const [line, at] = args[k + 1].split("=");
+  const i = ids.indexOf(line);
+  if (i <= 0) throw new Error(`--at ${args[k + 1]}: ${line} is not a line after the first in --lines`);
+  console.log(`cut before ${line}: ${cuts[i].toFixed(2)} → ${Number(at).toFixed(2)} s (by hand)`);
+  cuts[i] = Number(at);
+});
 
 // 4. Cut each line, and keep its words (script text, measured timing) relative to the cut.
 const takes = (await readJSON(join(out, "lines", "takes.json"))) ?? {};
