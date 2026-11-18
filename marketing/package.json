@@ -1,0 +1,12 @@
+{
+  "name": "alostath-marketing",
+  "private": true,
+  "type": "module",
+  "description": "Al-Ostath Foundation's marketing content: voice tools (voice/), the video studio (studio/) and the video projects (videos/).",
+  "scripts": {
+    "voice:split": "node --env-file-if-exists=.env.local voice/split.mjs"
+  },
+  "dependencies": {
+    "@elevenlabs/elevenlabs-js": "^2.77.0"
+  }
+}

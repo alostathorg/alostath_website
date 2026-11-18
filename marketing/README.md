@@ -138,8 +138,16 @@ npm run render -- 01-question-first           # الفيديو النهائي ب
 
 ### الأصوات
 
-تتولّد في موقع ElevenLabs، سطر سطر بأسماء `01.mp3`، `02.mp3`… وتنحط في `~/Movies/Al-Ostath Marketing/<الفيديو>/lines/`.
-أدوات التقسيم وتوقيت الكلمات (Whisper محلياً) تنضاف من سعة المساكن مع أول صوت.
+صوت واحد للفيديو كله، يغيّر نبرته لكل شخصية بأوامر ElevenLabs v4 (`[warmly]`، `[childlike voice]`، `[elderly voice]`، `[pause]`…).
+النص الجاهز للصق في `videos/<الفيديو>/elevenlabs.txt`، ويتولّد في موقع ElevenLabs كتسجيل واحد.
+التسجيل يتقسّم سطر سطر مع توقيت كل كلمة، محلياً بـWhisper وبدون رصيد (أو بمحاذاة ElevenLabs إذا انحط مفتاح في `marketing/.env.local`):
+
+```sh
+cd marketing && npm install
+npm run voice:split -- 01-question-first <التسجيل.mp3> --lines 01-24
+```
+
+التسجيلات في `~/Movies/Al-Ostath Marketing/<الفيديو>/takes/`، والسطور بعد التقسيم في `lines/` جنبها.
 
 ## الموقع ما يتأثر
 
